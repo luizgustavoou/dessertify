@@ -1,0 +1,37 @@
+<div class="relative mb-8">
+  <img [src]="product.image.desktop" [alt]="product.name" class="max-h-56 rounded-lg" />
+
+  <div *ngIf="cartProduct; else isNotInCart"
+    class="flex justify-between items-center bg-red-500 text-white rounded-full h-10 px-4 py-2 w-fit min-w-[180px] absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+
+    <button class="flex items-center" (click)="onRemoveProduct($event)">
+      <mat-icon aria-hidden="false" aria-label="Remove one product to cart" fontIcon="do_not_disturb_on"
+        class="opacity-70 hover:opacity-100 cursor-pointer"></mat-icon>
+    </button>
+
+    <span>{{ cartProduct.quantity }}</span>
+
+    <button class="flex items-center" (click)="onAddProduct($event)">
+      <mat-icon aria-hidden="false" aria-label="Add one product to cart" fontIcon="add_shopping_cart"
+        class="opacity-70 hover:opacity-100"></mat-icon>
+    </button>
+  </div>
+
+  <ng-template #isNotInCart>
+    <app-button class="w-fit min-w-[180px] absolute -bottom-6 left-1/2 transform -translate-x-1/2" variant="secondary"
+      (buttonClick)="onAddProduct($event)">
+
+      <mat-icon aria-hidden="false" aria-label="Add to cart" fontIcon="add_shopping_cart"
+        class="!text-red-500"></mat-icon>
+
+      <span class="ml-2 font-semibold">
+        Add to Cart
+      </span>
+    </app-button>
+  </ng-template>
+
+</div>
+
+<p class="text-sm text-gray-500">{{ product.category }}</p>
+<p class="font-semibold text-red-900">{{ product.name }}</p>
+<p class="font-semibold text-red-500">{{ product.price | currency }}</p>

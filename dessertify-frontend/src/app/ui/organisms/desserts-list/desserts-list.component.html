@@ -1,0 +1,26 @@
+<h2 class="font-bold text-rose-900 text-3xl mb-8" #h2>Desserts</h2>
+
+<ng-template>
+  <p>This is a template fragment</p>
+</ng-template>
+
+<ng-content *ngIf="products$  | async as request; ">
+
+  <ng-content *ngIf="!request.loading; else loadingState">
+    <ul class="flex flex-wrap gap-7">
+      <li *ngFor="let product of request.data">
+        <app-cart-item [product]="product" [cartProduct]="productInCart(product.id) | async"
+          (addProduct)="handleAddProduct($event, product)" (removeProduct)="handleRemoveProduct($event, product)">
+        </app-cart-item>
+
+      </li>
+    </ul>
+
+  </ng-content>
+
+  <ng-template #loadingState>
+    <app-cart-item-skeleton></app-cart-item-skeleton>
+  </ng-template>
+
+
+</ng-content>
