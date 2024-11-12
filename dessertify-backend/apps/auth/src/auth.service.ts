@@ -8,17 +8,9 @@ export class AuthService {
   ) {}
 
   async getHello(): Promise<void> {
-    try {
-      console.log('vou enviar');
-      await this.paymentsService.emit('user_created', {
-        name: 'John',
-        email: 'john@example.com',
-      });
-
-      console.log('enviou')
-    } catch (error) {
-      console.log('ERROOOO');
-      console.log(error);
-    }
+    await this.paymentsService.emit('user_created', {
+      name: 'John',
+      email: 'john@example.com',
+    });
   }
 }

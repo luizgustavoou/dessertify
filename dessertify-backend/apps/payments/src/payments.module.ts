@@ -10,7 +10,6 @@ import * as Joi from 'joi';
       isGlobal: true,
       validationSchema: Joi.object({
         RABBITMQ_URL: Joi.string().required(),
-        TCP_PORT: Joi.number().required(),
       }),
     }),
   ],

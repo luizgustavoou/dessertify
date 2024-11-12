@@ -14,17 +14,11 @@ import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
         name: 'PAYMENTS_SERVICE',
         useFactory: async (configService: ConfigService) => ({
           name: 'PAYMENTS_SERVICE',
-          transport: Transport.TCP,
+          transport: Transport.RMQ,
           options: {
-            host: configService.get<string>('PAYMENTS_HOST'),
-            port: configService.get<number>('PAYMENTS_TCP_PORT'),
+            urls: [configService.get<string>('RABBITMQ_URL')],
+            queue: 'payments',
           },
-
-          // transport: Transport.RMQ,
-          // options: {
-          //   urls: [configService.get<string>('RABBITMQ_URL')],
-          //   queue: 'payments',
-          // },
         }),
         inject: [ConfigService],
       },
@@ -35,8 +29,8 @@ import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
       validationSchema: Joi.object({
         HTTP_PORT: Joi.number().port().required(),
         RABBITMQ_URL: Joi.string().required(),
-        PAYMENTS_HOST: Joi.string().required(),
-        PAYMENTS_TCP_PORT: Joi.number().port().required(),
+        // PAYMENTS_HOST: Joi.string().required(),
+        // PAYMENTS_TCP_PORT: Joi.number().port().required(),
       }),
     }),
   ],
