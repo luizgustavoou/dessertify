@@ -1,12 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
-import { PaymentsService } from '@app/payments/payments.service';
+import { Controller } from '@nestjs/common';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller()
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
-
-  @Get()
-  getHello(): string {
-    return this.paymentsService.getHello();
+  @EventPattern('user_created')
+  getHello(@Payload() data: any) {
+    console.log('reeccbi: ', data);
   }
 }
