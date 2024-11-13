@@ -1,42 +1,55 @@
 <div class="flex flex-col gap-1 bg-white p-5 rounded-lg h-full">
-  <h2 class="font-bold text-2xl text-red-500 mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
+  <ng-content *ngIf="(cartProductsLength$ | async) ?? 0 > 0; else cartEmpty" class="flex flex-col items-center">
+    <h2 class="font-bold text-2xl text-red-500 mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
 
 
-  <section class="flex-1 overflow-auto scroll-smooth">
-    <div *ngFor="let product of cartProducts$ | async" class="flex flex-wrap items-center px-2">
-      <div>
-        <p>{{ product.name }}</p>
-        <p class="text-sm text-red font-bold">
-          <span class="mr-3">{{ product.quantity}}x</span>
-          <span class="mr-1 text-gray-400">&#64;</span>
-          <span class="mr-3 text-gray-400">{{ product.price | currency }}</span>
-          <span class="text-gray-500">{{ product.price * product.quantity | currency }}</span>
-        </p>
+    <section class="flex-1 overflow-auto scroll-smooth">
+      <div *ngFor="let product of cartProducts$ | async" class="flex flex-wrap items-center px-2">
+        <div>
+          <p>{{ product.name }}</p>
+          <p class="text-sm text-red font-bold">
+            <span class="mr-3">{{ product.quantity}}x</span>
+            <span class="mr-1 text-gray-400">&#64;</span>
+            <span class="mr-3 text-gray-400">{{ product.price | currency }}</span>
+            <span class="text-gray-500">{{ product.price * product.quantity | currency }}</span>
+          </p>
+        </div>
+
+        <button class="ms-auto" (click)="handleRemoveProduct(product)">
+          <mat-icon aria-hidden="false" aria-label="Remove to cart" fontIcon="highlight_off"
+            class="opacity-50 hover:opacity-100"></mat-icon>
+        </button>
+
+        <hr class="block my-5 h-[1px] w-full border-t-0 bg-gray-300" />
       </div>
 
-      <button class="ms-auto" (click)="handleRemoveProduct(product)">
-        <mat-icon aria-hidden="false" aria-label="Remove to cart" fontIcon="highlight_off"
-          class="opacity-50 hover:opacity-100"></mat-icon>
-      </button>
+    </section>
 
-      <hr class="block my-5 h-[1px] w-full border-t-0 bg-gray-300" />
+    <section class="mt-auto flex items-center">
+      <span class="mr-auto">Order total</span>
+      <span class="font-bold text-xl">{{ getTotal() | currency }}</span>
+    </section>
+
+    <aside class="p-5 text-sm flex items-center justify-center space-x-2">
+      <mat-icon aria-hidden="false" aria-label="Eco-friendly delivery" fontIcon="eco"
+        class="!text-green-500"></mat-icon>
+
+      <p>This is a <span class="font-semibold">carbon-neutral</span> delivery</p>
+    </aside>
+
+    <app-button variant="default" class="w-full">
+      Confirm Order
+    </app-button>
+  </ng-content>
+
+  <ng-template #cartEmpty>
+    <div class="flex flex-col items-center">
+      <img class="w-full max-w-[200px]" src="assets/images/illustration-empty-cart.svg" alt="">
+      <p class="font-bold text-sm text-rose-500">Your added items will appear here</p>
     </div>
-  </section>
+
+  </ng-template>
 
 
-  <section class="mt-auto flex items-center">
-    <span class="mr-auto">Order total</span>
-    <span class="font-bold text-xl">{{ getTotal() | currency }}</span>
-  </section>
-
-  <aside class="p-5 text-sm flex items-center justify-center space-x-2">
-    <mat-icon aria-hidden="false" aria-label="Eco-friendly delivery" fontIcon="eco" class="!text-green-500"></mat-icon>
-
-    <p>This is a <span class="font-semibold">carbon-neutral</span> delivery</p>
-  </aside>
-
-  <app-button variant="default" class="w-full">
-    Confirm Order
-  </app-button>
 
 </div>
