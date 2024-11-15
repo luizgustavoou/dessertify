@@ -14,7 +14,7 @@ export class ProductsServiceImpl implements ProductsService {
   public getProducts(): Observable<Product[]> {
     const products$ = this.httpClient
       .get<Product[]>('/assets/data.json')
-      .pipe(delay(2000));
+      .pipe(delay(700));
 
     return products$;
   }

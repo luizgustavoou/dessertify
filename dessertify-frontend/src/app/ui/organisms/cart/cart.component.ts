@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -12,16 +11,62 @@ import { MatIconModule } from '@angular/material/icon';
 import { clearProduct } from '../../../application/actions/cart.action';
 import { AppButtonComponent } from '../../atoms/app-button/app-button.component';
 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+// import { DialogComponent } from '../../molecules/dialog/dialog.component';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatIconModule, AppButtonComponent],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    AppButtonComponent,
+    // DialogComponent,
+    MatButtonModule,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogTitle,
+    MatDialogContent,
+  ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
+  myContext = { $implicit: 'World', localSk: 'Svet' };
+
   cartProducts$: Observable<CartProduct[]>;
   cartProductsLength$: Observable<number>;
+
+  @ViewChild('myTemplate', {read: TemplateRef}) myTemplate!: TemplateRef<unknown> | undefined; // Referência ao ng-template
+  @ViewChild('viewContainer', { read: ViewContainerRef })
+  viewContainer!: ViewContainerRef; // Referência ao container onde o template será inserido
+
+
+  public dialog = inject(MatDialog);
+
+  openDialog(template: TemplateRef<any>): void {
+    this.dialog.open(template, {
+      data: {
+        name: 'Luiz',
+      },
+    });
+  }
 
   constructor(private store: Store<AppState>) {
     this.cartProducts$ = this.store.select(selectCartProducts);
