@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartProduct, Product } from '../../../../domain/models/products';
-import { ProductsApi } from '../../../../infra/http/products/products.api';
+import { CartProduct, Product } from '../../../domain/models/products';
+import { ProductsApi } from '../../../infra/http/products/products.api';
 import { Store } from '@ngrx/store';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
-import { AppState } from '../../../../application/state/app.state';
-import { selectCartProducts } from '../../../../application/state/selectors/cart.selector';
+import { AppState } from '../../../application/state/app.state';
+import { selectCartProducts } from '../../../application/state/selectors/cart.selector';
 import {
   addProduct,
   removeProduct,
-} from '../../../../application/state/actions/cart.action';
+} from '../../../application/state/actions/cart.action';
 import { CartItemComponent } from '../../molecules/cart-item/cart-item.component';
 import { CartItemSkeletonComponent } from '../../molecules/cart-item-skeleton/cart-item-skeleton.component';
-import { MaterialModule } from '../../../../shared/material.module';
+import { MaterialModule } from '../../../shared/material.module';
 
 interface RequestState<T = unknown> {
   loading: boolean;

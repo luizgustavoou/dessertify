@@ -1,9 +1,8 @@
 <div class="flex flex-col gap-1 bg-white p-5 rounded-lg h-full">
-  <button mat-raised-button (click)="openDialog()">Abrir Diálogo Flexível</button>
 
 
   <ng-content *ngIf="(cartProductsLength$ | async) ?? 0 > 0; else cartEmpty" class="flex flex-col items-center">
-    <h2 class="font-bold text-2xl text-red-500 mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
+    <h2 class="font-bold text-2xl text-primary mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
 
     <section class="flex-1 overflow-auto scroll-smooth">
       <div *ngFor="let product of cartProducts$ | async" class="flex flex-wrap items-center px-2">
@@ -39,9 +38,7 @@
       <p>This is a <span class="font-semibold">carbon-neutral</span> delivery</p>
     </aside>
 
-    <app-button variant="default" class="w-full">
-      Confirm Order
-    </app-button>
+    <button mat-flat-button (click)="openDialog()">Confirm Order</button>
   </ng-content>
 
   <ng-template #cartEmpty>

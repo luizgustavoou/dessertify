@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
+
   html, body { height: 100%; }
   body {
     font-family: 'Red Hat Text', sans-serif;
-
   }
   // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

@@ -1,21 +1,21 @@
 import { Store } from '@ngrx/store';
 import { Observable, lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../../../../application/state/app.state';
-import { Product, CartProduct } from '../../../../domain/models/products';
+import { AppState } from '../../../application/state/app.state';
+import { Product, CartProduct } from '../../../domain/models/products';
 import {
   selectCartProducts,
   selectCartTotal,
-} from '../../../../application/state/selectors/cart.selector';
+} from '../../../application/state/selectors/cart.selector';
 import { MatIconModule } from '@angular/material/icon';
-import { clearProduct } from '../../../../application/state/actions/cart.action';
+import { clearProduct } from '../../../application/state/actions/cart.action';
 import { AppButtonComponent } from '../../atoms/app-button/app-button.component';
 
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ConcludeOrderComponent } from '../conclude-order/conclude-order.component';
-import { MaterialModule } from '../../../../shared/material.module';
+import { MaterialModule } from '../../../shared/material.module';
 import { SeparatorComponent } from "../../atoms/separator/separator.component";
 
 @Component({
