@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartProduct, Product } from '../../../../domain/models/products';
-import { ProductsService } from '../../../../infra/http/products/products.service';
+import { ProductsApi } from '../../../../infra/http/products/products.api';
 import { Store } from '@ngrx/store';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
 import { AppState } from '../../../../application/state/app.state';
@@ -38,14 +38,14 @@ export class DessertsListComponent {
   products$!: Observable<RequestState<Product[]>>;
 
   constructor(
-    private readonly productsService: ProductsService,
+    private readonly productsApi: ProductsApi,
     private store: Store<AppState>
   ) {
     this.cartProducts$ = this.store.select(selectCartProducts);
   }
 
   ngOnInit() {
-    this.products$ = this.productsService.getProducts().pipe(
+    this.products$ = this.productsApi.getProducts().pipe(
       map((products) => ({
         loading: false,
         data: products,

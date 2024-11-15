@@ -1,11 +1,41 @@
-<mat-dialog-content>
-  <h2 class="font-bold text-2xl text-red-800">Order Confirmed</h2>
-  <p class="text-sm text-gray-500">We hope you enjoy your food!</p>
-</mat-dialog-content>
+<div class="p-8 h-full flex flex-col">
+  <header class="mb-3">
+    <mat-icon aria-hidden="false" aria-label="Check order" fontIcon="check_circle"
+      class="text-green-500 scale-[1.75] mb-7"></mat-icon>
 
-<button mat-raised-button>Start new order</button>
+    <h2 class="font-bold text-2xl text-red-800">Order Confirmed</h2>
+    <p class="text-sm text-gray-500">We hope you enjoy your food!</p>
+  </header>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Fechar</button>
+  <mat-dialog-content class="flex-1 p-8 space-y-4">
+    <ng-content *ngFor="let product of (cartProducts$ | async)">
+      <div class="flex items-center gap-3">
+        <img [src]="product.image.thumbnail" [alt]="product.name" class="max-w-14 w-full rounded-lg" />
 
-</mat-dialog-actions>
+        <div class="space-y-1">
+          <p class="font-bold">{{ product.name }}</p>
+          <p class="text-red font-bold">
+            <span class="text-sm mr-3 text-red-500 ">{{ product.quantity}}x</span>
+            <span class="text-xs mr-1 text-gray-400">&#64;</span>
+            <span class="text-sm text-gray-400">{{ product.price | currency }}</span>
+          </p>
+        </div>
+
+        <p class="ms-auto font-bold">{{ product.price * product.quantity | currency }}</p>
+      </div>
+
+
+      <app-separator />
+    </ng-content>
+
+    <section class="flex justify-between items-center">
+      <p>Order Total</p>
+      <p class="text-xl font-bold text-rose-900">{{ getTotal() | currency }}</p>
+    </section>
+  </mat-dialog-content>
+
+
+  <mat-dialog-actions [align]="'center'">
+    <button mat-raised-button class="w-full mb-2" (click)="closeDialog()">Start new order</button>
+  </mat-dialog-actions>
+</div>

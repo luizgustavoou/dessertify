@@ -3,12 +3,12 @@ import { Product } from '../../../domain/models/products';
 import { delay, firstValueFrom, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-export abstract class ProductsService {
+export abstract class ProductsApi {
   abstract getProducts(): Observable<Product[]>;
 }
 
 @Injectable()
-export class ProductsServiceImpl implements ProductsService {
+export class ProductsApiImpl implements ProductsApi {
   constructor(private httpClient: HttpClient) {}
 
   public getProducts(): Observable<Product[]> {

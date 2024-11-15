@@ -9,11 +9,11 @@
       <div *ngFor="let product of cartProducts$ | async" class="flex flex-wrap items-center px-2">
         <div>
           <p>{{ product.name }}</p>
-          <p class="text-sm text-red font-bold">
-            <span class="mr-3">{{ product.quantity}}x</span>
-            <span class="mr-1 text-gray-400">&#64;</span>
-            <span class="mr-3 text-gray-400">{{ product.price | currency }}</span>
-            <span class="text-gray-500">{{ product.price * product.quantity | currency }}</span>
+          <p class="font-bold">
+            <span class="text-sm mr-3 font-bold text-red-500">{{ product.quantity}}x</span>
+            <span class="text-xs mr-1 text-gray-400">&#64;</span>
+            <span class="text-sm mr-3 text-gray-400">{{ product.price | currency }}</span>
+            <span class="text-sm text-gray-500">{{ product.price * product.quantity | currency }}</span>
           </p>
         </div>
 
@@ -22,7 +22,7 @@
             class="opacity-50 hover:opacity-100"></mat-icon>
         </button>
 
-        <hr class="block my-5 h-[1px] w-full border-t-0 bg-gray-300" />
+        <app-separator />
       </div>
 
     </section>

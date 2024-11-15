@@ -4,8 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductsServiceImpl } from './infra/http/products/products.service';
-import { ProductsService } from './infra/http/products/products.service';
+import { ProductsApi } from './infra/http/products/products.api';
+import { ProductsApiImpl } from './infra/http/products/products.api';
 import { AppButtonComponent } from './presentation/ui/atoms/app-button/app-button.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,8 +29,8 @@ import { cartReducer } from './application/state/reducers/cart.reducer';
   providers: [
     provideHttpClient(),
     {
-      provide: ProductsService,
-      useClass: ProductsServiceImpl,
+      provide: ProductsApi,
+      useClass: ProductsApiImpl,
     },
     provideAnimationsAsync(),
   ],
