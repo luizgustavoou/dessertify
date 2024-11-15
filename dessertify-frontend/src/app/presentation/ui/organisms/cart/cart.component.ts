@@ -1,51 +1,38 @@
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../../../application/states/app.state';
-import { Product, CartProduct } from '../../../domain/entities/products';
+import { AppState } from '../../../../application/state/app.state';
+import { Product, CartProduct } from '../../../../domain/models/products';
 import {
   selectCartProducts,
   selectCartTotal,
-} from '../../../application/selectors/cart.selector';
+} from '../../../../application/state/selectors/cart.selector';
 import { MatIconModule } from '@angular/material/icon';
-import { clearProduct } from '../../../application/actions/cart.action';
+import { clearProduct } from '../../../../application/state/actions/cart.action';
 import { AppButtonComponent } from '../../atoms/app-button/app-button.component';
 
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
 } from '@angular/material/dialog';
-// import { DialogComponent } from '../../molecules/dialog/dialog.component';
+import { ConcludeOrderComponent } from '../conclude-order/conclude-order.component';
+import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
+    ConcludeOrderComponent,
     CommonModule,
-    MatIconModule,
     AppButtonComponent,
-    // DialogComponent,
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent,
+    MaterialModule
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
   myContext = { $implicit: 'World', localSk: 'Svet' };
@@ -53,18 +40,15 @@ export class CartComponent {
   cartProducts$: Observable<CartProduct[]>;
   cartProductsLength$: Observable<number>;
 
-  @ViewChild('myTemplate', {read: TemplateRef}) myTemplate!: TemplateRef<unknown> | undefined; // Referência ao ng-template
-  @ViewChild('viewContainer', { read: ViewContainerRef })
-  viewContainer!: ViewContainerRef; // Referência ao container onde o template será inserido
-
-
   public dialog = inject(MatDialog);
 
-  openDialog(template: TemplateRef<any>): void {
-    this.dialog.open(template, {
+  openDialog(): void {
+    this.dialog.open(ConcludeOrderComponent, {
       data: {
         name: 'Luiz',
       },
+      width: "600px",
+      maxWidth: "100vw",
     });
   }
 

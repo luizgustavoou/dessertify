@@ -4,7 +4,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { CartProduct, Product } from '../../../domain/entities/products';
+import { CartProduct, Product } from '../../../../domain/models/products';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AppButtonComponent } from '../../atoms/app-button/app-button.component';

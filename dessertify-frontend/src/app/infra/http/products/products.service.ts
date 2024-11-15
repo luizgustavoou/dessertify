@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../../../domain/entities/products';
+import { Product } from '../../../domain/models/products';
 import { delay, firstValueFrom, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 

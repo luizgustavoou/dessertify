@@ -4,16 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductsServiceImpl } from './application/services/products/products.service';
-import { ProductsService } from './application/services/products/products.service';
-import { AppButtonComponent } from './ui/atoms/app-button/app-button.component';
+import { ProductsServiceImpl } from './infra/http/products/products.service';
+import { ProductsService } from './infra/http/products/products.service';
+import { AppButtonComponent } from './presentation/ui/atoms/app-button/app-button.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconModule } from '@angular/material/icon';
-import { CartComponent } from './ui/organisms/cart/cart.component';
-import { DessertsListComponent } from './ui/organisms/desserts-list/desserts-list.component';
+import { CartComponent } from './presentation/ui/organisms/cart/cart.component';
+import { DessertsListComponent } from './presentation/ui/organisms/desserts-list/desserts-list.component';
 import { StoreModule } from '@ngrx/store';
-import { AppState } from './application/states/app.state';
-import { cartReducer } from './application/reducers/cart.reducer';
+import { AppState } from './application/state/app.state';
+import { cartReducer } from './application/state/reducers/cart.reducer';
 
 @NgModule({
   declarations: [AppComponent],

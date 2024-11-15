@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { Product } from '../../domain/entities/products';
-import { ICartState } from '../states/cart.state';
+import { Product } from '../../../domain/models/products';
+import { ICartState } from '../cart.state';
 import {
   addProduct,
   clear,

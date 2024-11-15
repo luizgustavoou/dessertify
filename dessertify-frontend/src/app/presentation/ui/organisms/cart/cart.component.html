@@ -1,18 +1,6 @@
 <div class="flex flex-col gap-1 bg-white p-5 rounded-lg h-full">
-  <button mat-raised-button (click)="openDialog(dialogTemplate)">Abrir Diálogo Flexível</button>
+  <button mat-raised-button (click)="openDialog()">Abrir Diálogo Flexível</button>
 
-
-
-  <ng-template #dialogTemplate let-data let-dialogRef="dialogRef">
-    <h2 mat-dialog-title>{{ data.name }}</h2>
-
-    <mat-dialog-content>
-      <p>Conteúdo do diálogo</p>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Fechar</button>
-    </mat-dialog-actions>
-  </ng-template>
 
   <ng-content *ngIf="(cartProductsLength$ | async) ?? 0 > 0; else cartEmpty" class="flex flex-col items-center">
     <h2 class="font-bold text-2xl text-red-500 mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>

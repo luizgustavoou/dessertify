@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { CartProduct, Product } from '../../../domain/entities/products';
-import { ProductsService } from '../../../application/services/products/products.service';
+import { CartProduct, Product } from '../../../../domain/models/products';
+import { ProductsService } from '../../../../infra/http/products/products.service';
 import { Store } from '@ngrx/store';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
-import { AppState } from '../../../application/states/app.state';
-import { selectCartProducts } from '../../../application/selectors/cart.selector';
+import { AppState } from '../../../../application/state/app.state';
+import { selectCartProducts } from '../../../../application/state/selectors/cart.selector';
 import {
   addProduct,
   removeProduct,
-} from '../../../application/actions/cart.action';
+} from '../../../../application/state/actions/cart.action';
 import { CartItemComponent } from '../../molecules/cart-item/cart-item.component';
-import { CartItemSkeletonComponent } from "../../molecules/cart-item-skeleton/cart-item-skeleton.component";
+import { CartItemSkeletonComponent } from '../../molecules/cart-item-skeleton/cart-item-skeleton.component';
+import { MaterialModule } from '../../../../shared/material.module';
 
 interface RequestState<T = unknown> {
   loading: boolean;
@@ -23,7 +23,12 @@ interface RequestState<T = unknown> {
 @Component({
   selector: 'app-desserts-list',
   standalone: true,
-  imports: [MatIconModule, CommonModule, CartItemComponent, CartItemSkeletonComponent],
+  imports: [
+    MaterialModule,
+    CommonModule,
+    CartItemComponent,
+    CartItemSkeletonComponent,
+  ],
   templateUrl: './desserts-list.component.html',
   styleUrl: './desserts-list.component.scss',
 })
@@ -49,7 +54,7 @@ export class DessertsListComponent {
       startWith({ loading: true, error: null, data: [] }),
       catchError((error) => {
         return of({ loading: false, error, data: [] });
-      }),
+      })
     );
   }
 
