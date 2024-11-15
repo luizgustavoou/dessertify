@@ -1,15 +1,21 @@
 @use '@angular/material' as mat;
+@use 'stylesm3-theme.scss';
+
+@include mat.core();
+
+html {
+  @include mat.core-theme(stylesm3-theme.$light-theme);
+  @include mat.button-theme(stylesm3-theme.$light-theme);
+
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html, body { height: 100%; }
-  body {
-    // font-family: 'Red Hat Text', sans-serif;
-  }
-
+  html, body { height: 100%;}
+  
   ::-webkit-scrollbar {
     width: 10px;
   }

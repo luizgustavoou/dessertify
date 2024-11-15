@@ -1,3 +1,11 @@
+@use '@angular/material' as mat;
+
+
+$theme: mat.define-theme();
+
+.tertiary-button {
+  // @include mat.button-color($theme, $color-variant: primary)
+}
 
 .button-multi-actions {
   font-feature-settings: inherit;
@@ -33,3 +41,5 @@
   color: var(--mdc-filled-button-label-text-color, var(--mat-app-on-primary));
   background-color: var(--mdc-filled-button-container-color, var(--mat-app-primary));
 }
+
+
