@@ -3,10 +3,14 @@
 
 @include mat.core();
 
+
 html {
   @include mat.core-theme(stylesm3-theme.$light-theme);
   @include mat.button-theme(stylesm3-theme.$light-theme);
+}
 
+.text-primary {
+  color: mat.get-theme-color(stylesm3-theme.$light-theme, primary, 50);
 }
 
 @tailwind base;
@@ -15,7 +19,7 @@ html {
 
 @layer base {
   html, body { height: 100%;}
-  
+
   ::-webkit-scrollbar {
     width: 10px;
   }

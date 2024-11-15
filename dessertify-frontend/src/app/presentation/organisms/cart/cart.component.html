@@ -2,7 +2,7 @@
 
 
   <ng-content *ngIf="(cartProductsLength$ | async) ?? 0 > 0; else cartEmpty" class="flex flex-col items-center">
-    <h2 class="font-bold text-2xl text-primary mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
+    <h2 class="font-bold text-2xl mb-4 text-primary">Your Cart ({{ cartProductsLength$ | async}})</h2>
 
     <section class="flex-1 overflow-auto scroll-smooth">
       <ng-content *ngFor="let product of cartProducts$ | async">
@@ -10,7 +10,7 @@
           <div>
             <p>{{ product.name }}</p>
             <p class="font-bold">
-              <span class="text-sm mr-3 font-bold text-red-500">{{ product.quantity}}x</span>
+              <span class="text-sm mr-3 font-bold text-primary">{{ product.quantity}}x</span>
               <span class="text-xs mr-1 text-gray-400">&#64;</span>
               <span class="text-sm mr-3 text-gray-400">{{ product.price | currency }}</span>
               <span class="text-sm text-gray-500">{{ product.price * product.quantity | currency }}</span>

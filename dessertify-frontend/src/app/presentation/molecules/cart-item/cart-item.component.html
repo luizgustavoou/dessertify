@@ -32,7 +32,7 @@
       (buttonClick)="onAddProduct($event)">
 
       <mat-icon aria-hidden="false" aria-label="Add to cart" fontIcon="add_shopping_cart"
-        class="!text-red-500"></mat-icon>
+        class="!text-primary"></mat-icon>
 
       <span class="ml-2 font-semibold">
         Add to Cart
@@ -44,4 +44,4 @@
 
 <p class="text-sm text-gray-500">{{ product.category }}</p>
 <p class="font-semibold text-red-900">{{ product.name }}</p>
-<p class="font-semibold text-red-500">{{ product.price | currency }}</p>
+<p class="font-semibold text-primary">{{ product.price | currency }}</p>
