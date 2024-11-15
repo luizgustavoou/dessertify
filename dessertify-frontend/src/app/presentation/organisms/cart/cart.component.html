@@ -5,24 +5,27 @@
     <h2 class="font-bold text-2xl text-primary mb-4">Your Cart ({{ cartProductsLength$ | async}})</h2>
 
     <section class="flex-1 overflow-auto scroll-smooth">
-      <div *ngFor="let product of cartProducts$ | async" class="flex flex-wrap items-center px-2">
-        <div>
-          <p>{{ product.name }}</p>
-          <p class="font-bold">
-            <span class="text-sm mr-3 font-bold text-red-500">{{ product.quantity}}x</span>
-            <span class="text-xs mr-1 text-gray-400">&#64;</span>
-            <span class="text-sm mr-3 text-gray-400">{{ product.price | currency }}</span>
-            <span class="text-sm text-gray-500">{{ product.price * product.quantity | currency }}</span>
-          </p>
+      <ng-content *ngFor="let product of cartProducts$ | async">
+        <div class="flex flex-wrap items-center px-2">
+          <div>
+            <p>{{ product.name }}</p>
+            <p class="font-bold">
+              <span class="text-sm mr-3 font-bold text-red-500">{{ product.quantity}}x</span>
+              <span class="text-xs mr-1 text-gray-400">&#64;</span>
+              <span class="text-sm mr-3 text-gray-400">{{ product.price | currency }}</span>
+              <span class="text-sm text-gray-500">{{ product.price * product.quantity | currency }}</span>
+            </p>
+          </div>
+
+          <button class="ms-auto" (click)="handleRemoveProduct(product)">
+            <mat-icon aria-hidden="false" aria-label="Remove to cart" fontIcon="highlight_off"
+              class="opacity-50 hover:opacity-100"></mat-icon>
+          </button>
         </div>
 
-        <button class="ms-auto" (click)="handleRemoveProduct(product)">
-          <mat-icon aria-hidden="false" aria-label="Remove to cart" fontIcon="highlight_off"
-            class="opacity-50 hover:opacity-100"></mat-icon>
-        </button>
-
         <app-separator />
-      </div>
+
+      </ng-content>
 
     </section>
 

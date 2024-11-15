@@ -1,28 +1,23 @@
+@use '@angular/material' as mat;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-
   html, body { height: 100%; }
   body {
-    font-family: 'Red Hat Text', sans-serif;
+    // font-family: 'Red Hat Text', sans-serif;
   }
-  // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-
-    /* width */
   ::-webkit-scrollbar {
     width: 10px;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
 
-  /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 5px;
@@ -33,44 +28,54 @@
     background: #555;
   }
 }
-// $red: hsl(14, 86%, 42%);
-// $green: hsl(159, 69%, 38%);
-// $rose-50: hsl(20, 50%, 98%);
-// $rose-100: hsl(13, 31%, 94%);
-// $rose-300: hsl(14, 25%, 72%);
-// $rose-400: hsl(7, 20%, 60%);
-// $rose-500: hsl(12, 20%, 44%);
-// $rose-900: hsl(14, 65%, 9%);
 
-// .red {
-//   color: $red;
+// $light-theme-primary-pallete: (
+//   50: #e8eaf6,
+//   100: #c5cae9,
+//   200: #9fa8da,
+//   300: #7986cb,
+//   400: #5c6bc0,
+//   500: #3f51b5,
+//   600: #394aae,
+//   700: #3140a5,
+//   800: #29379d,
+//   900: #1a237e,
+//   contrast: (
+//     50: #000,
+//     100: #000,
+//     200: #000,
+//     300: #fff,
+//     400: #fff,
+//     500: #fff,
+//     600: #fff,
+//     700: #fff,
+//     800: #fff,
+//   )
+// );
+
+// $light-theme-typography: mat.m2-define-typography-config(
+//   $font-family: 'Red Hat Text, sans-serif'
+// );
+
+// $light-theme-primary: mat.m2-define-palette($light-theme-primary-pallete);
+// $light-theme-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+// $light-theme-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// $light-theme: mat.m2-define-light-theme((
+//   color: (
+//     primary: $light-theme-primary,
+//     accent: $light-theme-accent,
+//     warn: $light-theme-warn
+//   ),
+//   typography: $light-theme-typography
+// ));
+
+
+// body.dark-theme {
+//   // @include mat.all-component-themes(mat.$m2-dark-theme);
 // }
 
-// .green {
-//   color: $green;
-// }
+// @include mat.all-component-themes($light-theme);
 
-// .rose-50 {
-//   background-color: $rose-50;
-// }
 
-// .rose-100 {
-//   background-color: $rose-100;
-// }
-
-// .rose-300 {
-//   background-color: $rose-300;
-// }
-
-// .rose-400 {
-//   background-color: $rose-400;
-// }
-
-// .rose-500 {
-//   background-color: $rose-500;
-// }
-
-// .rose-900 {
-//   background-color: $rose-900;
-// }
 
