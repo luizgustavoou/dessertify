@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { selectCartProducts } from '../../../../application/state/selectors/cart.selector';
 import { Observable } from 'rxjs';
 import { MaterialModule } from '../../../../shared/material.module';
-import { SeparatorComponent } from "../../../../ui/atoms/separator/separator.component";
+import { SeparatorComponent } from "../../atoms/separator/separator.component";
 
 interface Order {
   products: Product[];

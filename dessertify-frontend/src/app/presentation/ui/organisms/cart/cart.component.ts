@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ConcludeOrderComponent } from '../conclude-order/conclude-order.component';
 import { MaterialModule } from '../../../../shared/material.module';
-import { SeparatorComponent } from "../../../../ui/atoms/separator/separator.component";
+import { SeparatorComponent } from "../../atoms/separator/separator.component";
 
 @Component({
   selector: 'app-cart',
