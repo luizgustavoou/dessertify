@@ -13,6 +13,10 @@ html {
   color: mat.get-theme-color(stylesm3-theme.$light-theme, primary, 50);
 }
 
+.text-error {
+  color: mat.get-theme-color(stylesm3-theme.$light-theme, error, 50);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

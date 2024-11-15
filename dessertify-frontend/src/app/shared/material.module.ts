@@ -7,10 +7,24 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
+import {
+  MatSnackBarAction,
+  MatSnackBarActions,
+  MatSnackBarLabel,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 
 @NgModule({
-  imports: [MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+  imports: [
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogTitle,
+    MatDialogContent,
+    MatSnackBarLabel,
+    MatSnackBarActions,
+    MatSnackBarAction,
+  ],
   exports: [
     MatIconModule,
     MatButtonModule,
@@ -19,7 +33,11 @@ import {MatDividerModule} from '@angular/material/divider';
     MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonModule,
+    MatSnackBarLabel,
+    MatSnackBarActions,
+    MatSnackBarAction,
   ],
 })
 export class MaterialModule {}

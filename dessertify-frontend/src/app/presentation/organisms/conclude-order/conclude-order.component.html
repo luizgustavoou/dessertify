@@ -36,6 +36,17 @@
 
 
   <mat-dialog-actions [align]="'center'">
-    <button mat-flat-button class="w-full mb-2" (click)="closeDialog()">Start new order</button>
+    <button mat-flat-button class="w-full mb-2" (click)="concludeOrder()">Start new order</button>
   </mat-dialog-actions>
 </div>
+
+
+<ng-template let-snackBarRef>
+  <span class="example-pizza-party">
+    Pizza party!!!
+  </span>
+  <span>
+    <!-- <button mat-button matSnackBarAction (click)="barRef.dismissWithAction()">🍕</button> -->
+  </span>
+
+</ng-template>
