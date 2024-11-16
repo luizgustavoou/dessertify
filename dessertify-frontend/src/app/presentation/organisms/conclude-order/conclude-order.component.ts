@@ -7,14 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CartProduct, Product } from '../../../domain/models/products';
-import { AppState } from '../../../application/state/app.state';
 import { Store } from '@ngrx/store';
-import { selectCartProducts } from '../../../application/state/selectors/cart.selector';
 import { Observable } from 'rxjs';
-import { MaterialModule } from '../../../shared/material.module';
-import { SeparatorComponent } from '../../atoms/separator/separator.component';
-import { clear } from '../../../application/state/actions/cart.action';
 import {
   MatSnackBar,
   MatSnackBarAction,
@@ -22,11 +16,14 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
-import { PizzaPartyAnnotatedComponent } from '../../molecules/pizza-party-annotated/pizza-party-annotated.component';
+import { CartProduct, Product } from '@/domain/models/products';
+import { SeparatorComponent } from '@/presentation/atoms/separator/separator.component';
+import { MaterialModule } from '@/shared/material.module';
+import { AppState } from '@/application/state/app.state';
+import { selectCartProducts } from '@/application/state/selectors/cart.selector';
+import { clear } from '@/application/state/actions/cart.action';
 
-interface Order {
-  products: Product[];
-}
+import { PizzaPartyAnnotatedComponent } from '@/presentation/molecules/pizza-party-annotated/pizza-party-annotated.component';
 
 @Component({
   selector: 'app-conclude-order',
@@ -53,7 +50,7 @@ export class ConcludeOrderComponent {
     // });
     // this._snackBar.openFromTemplate(this.template!, {});
     this._snackBar.open('Dessert order completed successfully!', 'Close', {
-      duration: 3000
+      duration: 3000,
     });
   }
 

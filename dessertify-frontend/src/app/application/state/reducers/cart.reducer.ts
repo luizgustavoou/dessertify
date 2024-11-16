@@ -1,12 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { Product } from '../../../domain/models/products';
-import { ICartState } from '../cart.state';
-import {
-  addProduct,
-  clear,
-  clearProduct,
-  removeProduct,
-} from '../actions/cart.action';
+import { addProduct, clear, clearProduct, removeProduct } from '@/application/state/actions/cart.action';
+import { ICartState } from '@/application/state/cart.state';
+import { Product } from '@/domain/models/products';
+
 
 export const initialState: ICartState = {
   products: [],

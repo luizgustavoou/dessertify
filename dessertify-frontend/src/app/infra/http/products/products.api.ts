@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../../../domain/models/products';
-import { delay, firstValueFrom, Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Product } from '@/domain/models/products';
 
 export abstract class ProductsApi {
   abstract getProducts(): Observable<Product[]>;

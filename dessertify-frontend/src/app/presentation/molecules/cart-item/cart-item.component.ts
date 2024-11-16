@@ -1,14 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CartProduct, Product } from '../../../domain/models/products';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { AppButtonComponent } from '../../atoms/app-button/app-button.component';
-import { MaterialModule } from '../../../shared/material.module';
+import { MaterialModule } from '@/shared/material.module';
+import { CartProduct, Product } from '@/domain/models/products';
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
-  imports: [CommonModule, AppButtonComponent, MaterialModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })
