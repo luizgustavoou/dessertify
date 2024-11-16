@@ -6,7 +6,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
@@ -36,13 +36,15 @@ export class ConcludeOrderComponent {
   private _snackBar = inject(MatSnackBar);
   private _store = inject(Store<AppState>);
 
-  @ViewChild(TemplateRef) template: TemplateRef<unknown> | undefined;
+  @ViewChild('templateSnackBar') template: TemplateRef<unknown> | undefined;
 
   cartProducts$: Observable<CartProduct[]> =
     this._store.select(selectCartProducts);
 
   // public data: Order = inject(MAT_DIALOG_DATA);
   public dialogRef = inject(MatDialogRef<ConcludeOrderComponent>);
+
+  public dialog = inject(MatDialog);
 
   openSnackBar() {
     // this._snackBar.openFromComponent(PizzaPartyAnnotatedComponent, {
