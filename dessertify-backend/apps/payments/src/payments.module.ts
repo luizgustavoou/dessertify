@@ -3,7 +3,7 @@ import { PaymentsController } from '@app/payments/payments.controller';
 import { PaymentsService } from '@app/payments/payments.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '@app/payments/prisma.service';
 
 @Module({
   imports: [
@@ -11,6 +11,7 @@ import { PrismaService } from './prisma.service';
       isGlobal: true,
       validationSchema: Joi.object({
         RABBITMQ_URL: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
       }),
     }),
   ],

@@ -6,7 +6,7 @@ import { CommonModule } from '@app/common';
 import { AuthController } from '@app/auth/auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '@app/auth/prisma.service';
 
 @Module({
   imports: [
@@ -30,6 +30,7 @@ import { PrismaService } from './prisma.service';
       validationSchema: Joi.object({
         HTTP_PORT: Joi.number().port().required(),
         RABBITMQ_URL: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
         // PAYMENTS_HOST: Joi.string().required(),
         // PAYMENTS_TCP_PORT: Joi.number().port().required(),
       }),
