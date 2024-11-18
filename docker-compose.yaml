@@ -16,7 +16,7 @@ services:
       context: ./dessertify-backend
       dockerfile: ./apps/auth/Dockerfile
       target: development
-    command: pnpm run start:dev auth
+    command:  pnpm run start:dev auth
     env_file:
       - ./dessertify-backend/apps/auth/.env
     ports:
@@ -25,18 +25,38 @@ services:
       - ./dessertify-backend:/usr/src/app
     depends_on:
       - rabbitmq
+      - postgres
   payments:
     build:
       context: ./dessertify-backend
       dockerfile: ./apps/payments/Dockerfile
       target: development
-    command: pnpm run start:dev payments
+    command:  pnpm run start:dev payments
     env_file:
       - ./dessertify-backend/apps/payments/.env
+    ports:
+      - '3001:3001'
     volumes:
       - ./dessertify-backend:/usr/src/app
     depends_on:
       - rabbitmq
+      - postgres
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_MULTIPLE_DATABASES: dessertify_payments, dessertify_auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb-scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d postgres"]
+      interval: 2s
+      timeout: 1s
+      retries: 20
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -52,3 +72,4 @@ services:
       start_period: 30s
 volumes:
   rabbitmq_data:
+  postgres_data:

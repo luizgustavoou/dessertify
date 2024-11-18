@@ -6,6 +6,7 @@ import { CommonModule } from '@app/common';
 import { AuthController } from '@app/auth/auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PrismaService],
 })
 export class AuthModule {}
