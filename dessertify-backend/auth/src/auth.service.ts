@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { catchError, lastValueFrom, Observable, of } from 'rxjs';
 import { SigninParamsDto } from '@/dtos/signin.dto';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()

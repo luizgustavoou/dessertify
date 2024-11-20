@@ -1,18 +1,28 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
 import { SigninParamsDto } from '@/dtos/signin.dto';
+import { AuthGuard } from '@/guards/auth.guard';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {
-    console.log('ola caralho');
+  constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 
   @Get()
   getHello() {
-    // return this.authService.getHello();
-    return 'hello world!';
+    return this.authService.getHello();
   }
 
   @Post('signin')
