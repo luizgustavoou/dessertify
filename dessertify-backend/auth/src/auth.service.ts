@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from '@/domain/repositories/auth.repository';
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
+import { ITokenPayload } from '@/domain/interfaces/token-payload';
 @Injectable()
 export class AuthService {
   constructor(
@@ -52,7 +53,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    const payload = {
+    const payload: ITokenPayload = {
       sub: customer.id,
       firstName: customer.firstName,
       lastName: customer.lastName,
