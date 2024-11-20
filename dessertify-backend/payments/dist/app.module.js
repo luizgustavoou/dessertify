@@ -12,7 +12,7 @@ const config_1 = require("@nestjs/config");
 const Joi = require("joi");
 const payments_controller_1 = require("./payments.controller");
 const payments_service_1 = require("./payments.service");
-const prisma_service_1 = require("./prisma.service");
+const prisma_module_1 = require("./infra/database/prisma.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
             }),
         ],
         controllers: [payments_controller_1.PaymentsController],
-        providers: [payments_service_1.PaymentsService, prisma_service_1.PrismaService],
+        providers: [payments_service_1.PaymentsService, prisma_module_1.PrismaModule],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

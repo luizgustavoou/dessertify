@@ -3,10 +3,10 @@ import * as Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PrismaService } from '@/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from '@/auth.controller';
+import { AuthController } from '@/presentation/controllers/auth.controller';
 import { AuthService } from '@/auth.service';
+import { PrismaModule } from '@/infra/database/prisma.module';
 
 @Module({
   imports: [
@@ -45,6 +45,6 @@ import { AuthService } from '@/auth.service';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService],
+  providers: [AuthService, PrismaModule],
 })
 export class AppModule {}

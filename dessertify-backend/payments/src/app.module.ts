@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { PaymentsController } from '@/payments.controller';
 import { PaymentsService } from '@/payments.service';
-import { PrismaService } from '@/prisma.service';
+import { PrismaModule } from '@/infra/database/prisma.module';
 
 @Module({
   imports: [
@@ -16,6 +16,6 @@ import { PrismaService } from '@/prisma.service';
     }),
   ],
   controllers: [PaymentsController],
-  providers: [PaymentsService, PrismaService],
+  providers: [PaymentsService, PrismaModule],
 })
 export class AppModule {}

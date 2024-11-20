@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { SigninParamsDto } from '@/dtos/signin.dto';
+import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {

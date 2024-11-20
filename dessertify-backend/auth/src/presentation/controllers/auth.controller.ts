@@ -6,9 +6,9 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SigninParamsDto } from '@/dtos/signin.dto';
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthService } from '../../auth.service';
+import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
+import { AuthGuard } from '@/core/guards/auth.guard';
 
 @Controller()
 export class AuthController {
