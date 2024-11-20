@@ -10,6 +10,8 @@ import { AuthService } from '@/auth.service';
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { AuthGuard } from '@/core/guards/auth.guard';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
+import { CurrentUser } from '@/core/decorators/current-user.decorator';
+import { ITokenPayload } from '@/domain/interfaces/token-payload';
 
 @Controller()
 export class AuthController {
@@ -17,8 +19,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  getProfile(@CurrentUser() user: ITokenPayload) {
+    return user;
   }
 
   @Get()
