@@ -1,10 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, lastValueFrom, Observable, of } from 'rxjs';
+import { SigninParamsDto } from '@/dtos/signin.dto';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
     @Inject('PAYMENTS_SERVICE') private readonly paymentsService: ClientProxy,
+    private readonly jwtService: JwtService,
   ) {}
 
   async getHello(): Promise<void> {
@@ -12,5 +15,16 @@ export class AuthService {
       name: 'John',
       email: 'john@example.com',
     });
+  }
+
+  async signin(params: SigninParamsDto) {
+    const token = await this.jwtService.signAsync({
+      id: 'ssadsadassda',
+      email: 'johndoe@gmail.com',
+    });
+
+    return {
+      token,
+    };
   }
 }
