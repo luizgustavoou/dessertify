@@ -13,31 +13,31 @@ services:
       - ./dessertify-frontend:/usr/src/app
   auth:
     build:
-      context: ./dessertify-backend
-      dockerfile: ./apps/auth/Dockerfile
+      context: ./dessertify-backend/auth
+      dockerfile: Dockerfile
       target: development
-    command:  pnpm run start:dev auth
+    command:  yarn start:dev
     env_file:
-      - ./dessertify-backend/apps/auth/.env
+      - ./dessertify-backend/auth/.env
     ports:
       - '3001:3001'
     volumes:
-      - ./dessertify-backend:/usr/src/app
+      - ./dessertify-backend/auth:/usr/src/app
     depends_on:
       - rabbitmq
       - postgres
   payments:
     build:
-      context: ./dessertify-backend
-      dockerfile: ./apps/payments/Dockerfile
+      context: ./dessertify-backend/payments
+      dockerfile: Dockerfile
       target: development
-    command:  pnpm run start:dev payments
+    command:  yarn start:dev
     env_file:
-      - ./dessertify-backend/apps/payments/.env
+      - ./dessertify-backend/payments/.env
     ports:
-      - '3001:3001'
+      - '3002:3002'
     volumes:
-      - ./dessertify-backend:/usr/src/app
+      - ./dessertify-backend/payments:/usr/src/app
     depends_on:
       - rabbitmq
       - postgres
