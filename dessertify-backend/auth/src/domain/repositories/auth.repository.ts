@@ -6,7 +6,7 @@ export abstract class AuthRepository {
   ): Promise<CustomerEntity>;
   abstract findOneCustomerByEmail(
     params: TFindOneCustomerByEmailParams,
-  ): Promise<CustomerEntity>;
+  ): Promise<CustomerEntity | null>;
 }
 
 export interface ICreateCustomerParams {

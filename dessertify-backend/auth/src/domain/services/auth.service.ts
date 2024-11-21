@@ -10,9 +10,16 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from '@/domain/repositories/auth.repository';
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
-import { ITokenPayload } from '@/domain/interfaces/token-payload';
+import { CustomerEntity } from '@/domain/entities/customer.entity';
+
+export abstract class AuthService {
+  abstract signup(params: SignupParamsDto): Promise<CustomerEntity>;
+
+  abstract signin(params: SigninParamsDto): Promise<CustomerEntity>;
+}
+
 @Injectable()
-export class AuthService {
+export class AuthServiceImpl implements AuthService {
   constructor(
     @Inject('PAYMENTS_SERVICE') private readonly paymentsService: ClientProxy,
     private readonly jwtService: JwtService,
@@ -26,7 +33,7 @@ export class AuthService {
     });
   }
 
-  async signup(params: SignupParamsDto) {
+  async signup(params: SignupParamsDto): Promise<CustomerEntity> {
     const customer = await this.authRepository.findOneCustomerByEmail({
       email: params.email,
     });
@@ -40,7 +47,7 @@ export class AuthService {
     return newCustomer;
   }
 
-  async signin(params: SigninParamsDto) {
+  async signin(params: SigninParamsDto): Promise<CustomerEntity> {
     const customer = await this.authRepository.findOneCustomerByEmail({
       email: params.email,
     });
@@ -49,21 +56,10 @@ export class AuthService {
       throw new NotFoundException('Customer not found');
     }
 
-    if (customer.password != params.password) {
+    if (!customer.isPasswordValid(params.password)) {
       throw new UnauthorizedException('Invalid password');
     }
 
-    const payload: ITokenPayload = {
-      sub: customer.id,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      email: customer.email,
-    };
-
-    const access_token = await this.jwtService.signAsync(payload);
-
-    return {
-      access_token,
-    };
+    return customer;
   }
 }

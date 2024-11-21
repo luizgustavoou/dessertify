@@ -28,15 +28,15 @@ export class PrismaAuthRepository implements AuthRepository {
       },
     });
 
-    return {
+    return new CustomerEntity({
       ...newCustomer,
       password: newCustomer.customerAuth.password,
-    };
+    });
   }
 
   async findOneCustomerByEmail(
     params: TFindOneCustomerByEmailParams,
-  ): Promise<CustomerEntity> {
+  ): Promise<CustomerEntity | null> {
     const customer = await this.prismaService.customer.findUnique({
       where: {
         email: params.email,
@@ -46,13 +46,11 @@ export class PrismaAuthRepository implements AuthRepository {
       },
     });
 
-    if (!customer) {
-      return null;
-    }
-
-    return {
-      ...customer,
-      password: customer?.customerAuth?.password,
-    };
+    return customer
+      ? new CustomerEntity({
+          ...customer,
+          password: customer.customerAuth.password,
+        })
+      : null;
   }
 }

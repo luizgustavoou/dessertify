@@ -5,10 +5,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@/presentation/controllers/auth.controller';
-import { AuthService } from '@/auth.service';
+import { AuthService, AuthServiceImpl } from '@/domain/services/auth.service';
 import { PrismaModule } from '@/infra/database/prisma.module';
-import { AuthRepository } from './domain/repositories/auth.repository';
-import { PrismaAuthRepository } from './infra/repositories/auth.repository';
+import { AuthRepository } from '@/domain/repositories/auth.repository';
+import { PrismaAuthRepository } from '@/infra/repositories/auth.repository';
+import {
+  SigninUseCase,
+  SigninUseCaseImpl,
+} from '@/application/usecases/signin.usecase';
 
 @Module({
   imports: [
@@ -49,7 +53,14 @@ import { PrismaAuthRepository } from './infra/repositories/auth.repository';
   ],
   controllers: [AuthController],
   providers: [
-    AuthService,
+    {
+      provide: SigninUseCase,
+      useClass: SigninUseCaseImpl,
+    },
+    {
+      provide: AuthService,
+      useClass: AuthServiceImpl,
+    },
     {
       provide: AuthRepository,
       useClass: PrismaAuthRepository,
