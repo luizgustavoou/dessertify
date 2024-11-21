@@ -13,6 +13,10 @@ import {
   SigninUseCase,
   SigninUseCaseImpl,
 } from '@/application/usecases/signin.usecase';
+import {
+  SignupUseCase,
+  SignupUseCaseImpl,
+} from '@/application/usecases/signup.usecase';
 
 @Module({
   imports: [
@@ -53,6 +57,10 @@ import {
   ],
   controllers: [AuthController],
   providers: [
+    {
+      provide: SignupUseCase,
+      useClass: SignupUseCaseImpl,
+    },
     {
       provide: SigninUseCase,
       useClass: SigninUseCaseImpl,

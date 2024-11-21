@@ -13,11 +13,12 @@ import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
 import { CurrentUser } from '@/core/decorators/current-user.decorator';
 import { ITokenPayload } from '@/domain/interfaces/token-payload';
 import { SigninUseCase } from '@/application/usecases/signin.usecase';
+import { SignupUseCase } from '@/application/usecases/signup.usecase';
 
 @Controller()
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
+    private readonly signupUseCase: SignupUseCase,
     private readonly signinUseCase: SigninUseCase,
   ) {}
 
@@ -29,7 +30,7 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() body: SignupParamsDto) {
-    return this.authService.signup(body);
+    return this.signupUseCase.execute(body);
   }
 
   @Post('signin')
