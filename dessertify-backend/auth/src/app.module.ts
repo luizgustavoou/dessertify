@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@/presentation/controllers/auth.controller';
 import { AuthService, AuthServiceImpl } from '@/domain/services/auth.service';
 import { PrismaModule } from '@/infra/database/prisma.module';
-import { AuthRepository } from '@/domain/repositories/auth.repository';
+import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
 import { PrismaAuthRepository } from '@/infra/repositories/auth.repository';
 import {
   SigninUseCase,
@@ -17,6 +17,8 @@ import {
   SignupUseCase,
   SignupUseCaseImpl,
 } from '@/application/usecases/signup.usecase';
+import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
+import { BcryptHashProvider } from '@/infra/providers/bcrypt-hash.provider';
 
 @Module({
   imports: [
@@ -57,6 +59,10 @@ import {
   ],
   controllers: [AuthController],
   providers: [
+    {
+      provide: HashProvider,
+      useClass: BcryptHashProvider,
+    },
     {
       provide: SignupUseCase,
       useClass: SignupUseCaseImpl,

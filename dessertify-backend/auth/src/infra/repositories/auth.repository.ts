@@ -3,7 +3,7 @@ import {
   AuthRepository,
   ICreateCustomerParams,
   TFindOneCustomerByEmailParams,
-} from '@/domain/repositories/auth.repository';
+} from '@/domain/contracts/repositories/auth.repository';
 import { PrismaService } from '@/infra/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 

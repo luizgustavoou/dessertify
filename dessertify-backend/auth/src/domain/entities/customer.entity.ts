@@ -1,3 +1,5 @@
+import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
+
 export class CustomerEntity {
   public id: string;
   public email: string;
@@ -11,8 +13,17 @@ export class CustomerEntity {
     Object.assign(this, params);
   }
 
-  public isPasswordValid(password: string): boolean {
-    return this.password === password;
+  public async isPasswordValid(
+    password: string,
+    hashProvider: HashProvider,
+  ): Promise<boolean> {
+    const hashPassword = await hashProvider.hash({ content: password });
+
+    const compare = await hashProvider.compare({
+      password: this.password,
+      hashPassword,
+    });
+
+    return compare;
   }
 }
-

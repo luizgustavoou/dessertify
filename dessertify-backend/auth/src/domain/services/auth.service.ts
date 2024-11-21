@@ -1,16 +1,14 @@
 import {
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { JwtService } from '@nestjs/jwt';
-import { AuthRepository } from '@/domain/repositories/auth.repository';
+import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
 import { CustomerEntity } from '@/domain/entities/customer.entity';
+import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 
 export abstract class AuthService {
   abstract signup(params: SignupParamsDto): Promise<CustomerEntity>;
@@ -21,17 +19,9 @@ export abstract class AuthService {
 @Injectable()
 export class AuthServiceImpl implements AuthService {
   constructor(
-    @Inject('PAYMENTS_SERVICE') private readonly paymentsService: ClientProxy,
-    private readonly jwtService: JwtService,
     private readonly authRepository: AuthRepository,
+    private readonly hashProvider: HashProvider,
   ) {}
-
-  async getHello(): Promise<void> {
-    await this.paymentsService.emit('user_created', {
-      name: 'John',
-      email: 'john@example.com',
-    });
-  }
 
   async signup(params: SignupParamsDto): Promise<CustomerEntity> {
     const customer = await this.authRepository.findOneCustomerByEmail({
@@ -42,7 +32,14 @@ export class AuthServiceImpl implements AuthService {
       throw new ConflictException('Customer with this email already exists');
     }
 
-    const newCustomer = await this.authRepository.createCustomer(params);
+    const hashPassword = await this.hashProvider.hash({
+      content: params.password,
+    });
+
+    const newCustomer = await this.authRepository.createCustomer({
+      ...params,
+      password: hashPassword,
+    });
 
     return newCustomer;
   }
@@ -56,7 +53,7 @@ export class AuthServiceImpl implements AuthService {
       throw new NotFoundException('Customer not found');
     }
 
-    if (!customer.isPasswordValid(params.password)) {
+    if (!customer.isPasswordValid(params.password, this.hashProvider)) {
       throw new UnauthorizedException('Invalid password');
     }
 
