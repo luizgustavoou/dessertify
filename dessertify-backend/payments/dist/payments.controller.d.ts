@@ -1,3 +1,4 @@
+import { ConsumeMessage } from 'amqplib';
 export declare class PaymentsController {
-    getHello(data: any): void;
+    pubSubHandler(msg: {}, amqpMsg: ConsumeMessage): Promise<void>;
 }

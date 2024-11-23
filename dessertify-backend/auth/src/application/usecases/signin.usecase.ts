@@ -1,8 +1,7 @@
 import { ITokenPayload } from '@/domain/interfaces/token-payload';
 import { AuthService } from '@/domain/services/auth.service';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ClientProxy } from '@nestjs/microservices';
 
 export abstract class SigninUseCase {
   abstract execute(
@@ -22,7 +21,6 @@ export type TSigninUseCaseResponse = {
 @Injectable()
 export class SigninUseCaseImpl implements SigninUseCase {
   constructor(
-    @Inject('PAYMENTS_SERVICE') private readonly paymentsService: ClientProxy,
     private readonly jwtService: JwtService,
     private readonly authService: AuthService,
   ) {}

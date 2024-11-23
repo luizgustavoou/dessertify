@@ -19,9 +19,11 @@ import {
 } from '@/application/usecases/signup.usecase';
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 import { BcryptHashProvider } from '@/infra/providers/bcrypt-hash.provider';
+import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
+    RabbitMqModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -40,21 +42,35 @@ import { BcryptHashProvider } from '@/infra/providers/bcrypt-hash.provider';
       }),
       inject: [ConfigService],
     }),
-    ClientsModule.registerAsync([
-      {
-        name: 'PAYMENTS_SERVICE',
-        imports: [ConfigModule],
-        useFactory: async (configService: ConfigService) => ({
-          name: 'PAYMENTS_SERVICE',
-          transport: Transport.RMQ,
-          options: {
-            urls: [configService.get<string>('RABBITMQ_URL')],
-            queue: 'payments',
-          },
-        }),
-        inject: [ConfigService],
-      },
-    ]),
+    // ClientsModule.registerAsync([
+    //   {
+    //     name: 'PAYMENTS_SERVICE',
+    //     imports: [ConfigModule],
+    //     useFactory: async (configService: ConfigService) => ({
+    //       name: 'PAYMENTS_SERVICE',
+    //       transport: Transport.RMQ,
+    //       options: {
+    //         urls: [configService.get<string>('RABBITMQ_URL')],
+    //         queue: 'payments',
+    //       },
+    //     }),
+    //     inject: [ConfigService],
+    //   },
+    //   {
+    //     name: 'CUSTOMERS_SERVICE',
+    //     imports: [ConfigModule],
+    //     useFactory: async (configService: ConfigService) => ({
+    //       name: 'CUSTOMERS_SERVICE',
+    //       transport: Transport.RMQ,
+    //       options: {
+    //         urls: [configService.get<string>('RABBITMQ_URL')],
+    //         queue: 'customers',
+            
+    //       },
+    //     }),
+    //     inject: [ConfigService],
+    //   },
+    // ]),
     PrismaModule,
   ],
   controllers: [AuthController],

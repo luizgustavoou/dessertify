@@ -13,22 +13,25 @@ const Joi = require("joi");
 const payments_controller_1 = require("./payments.controller");
 const payments_service_1 = require("./payments.service");
 const prisma_module_1 = require("./infra/database/prisma.module");
+const rabbitmq_module_1 = require("./infra/messaging/rabbitmq/rabbitmq.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            rabbitmq_module_1.RabbitMqModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 validationSchema: Joi.object({
                     RABBITMQ_URL: Joi.string().required(),
                     DATABASE_URL: Joi.string().required(),
+                    HTTP_PORT: Joi.number().port().required(),
                 }),
             }),
         ],
         controllers: [payments_controller_1.PaymentsController],
-        providers: [payments_service_1.PaymentsService, prisma_module_1.PrismaModule],
+        providers: [payments_service_1.PaymentsService, prisma_module_1.PrismaModule, payments_controller_1.PaymentsController],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

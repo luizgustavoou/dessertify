@@ -22,6 +22,11 @@ export class AuthController {
     private readonly signinUseCase: SigninUseCase,
   ) {}
 
+  @Get('teste')
+  async teste() {
+    return await this.signupUseCase.teste();
+  }
+
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@CurrentUser() user: ITokenPayload) {
@@ -30,11 +35,11 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() body: SignupParamsDto) {
-    return this.signupUseCase.execute(body);
+    return await this.signupUseCase.execute(body);
   }
 
   @Post('signin')
   async signin(@Body() body: SigninParamsDto) {
-    return this.signinUseCase.execute(body);
+    return await this.signinUseCase.execute(body);
   }
 }
