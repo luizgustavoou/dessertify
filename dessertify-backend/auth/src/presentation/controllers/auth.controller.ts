@@ -24,7 +24,6 @@ export class AuthController {
     private readonly amqpConnection: AmqpConnection,
   ) {}
 
-
   // @RabbitRPC({
   //   routingKey: 'rpc-2',
   //   exchange: 'exchange2',
@@ -36,7 +35,6 @@ export class AuthController {
   //   };
   // }
 
-  
   // @Get('teste2')
   // async teste2() {
   //   return this.amqpConnection.request({

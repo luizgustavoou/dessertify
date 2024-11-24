@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AppService } from '@/app.service';
-import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { ConsumeMessage } from 'amqplib';
+import { CustomerCreatedDto } from '@/presentation/dtos/customer-created.dto';
 
 @Controller()
 export class AppController {
@@ -12,8 +13,10 @@ export class AppController {
     routingKey: 'customers.created',
     queue: 'orders',
   })
-  public async customerCreatedEventHandler(msg: {}, amqpMsg: ConsumeMessage) {
-    console.log(`Received message: ${JSON.stringify(msg)}`);
-    console.log('amqpMsg ', amqpMsg);
+  // @UsePipes(ValidationPipe)
+  public async customerCreatedEventHandler(@RabbitPayload() message: CustomerCreatedDto) {
+    console.log(`Received message: ${JSON.stringify(message)}`);
+    console.log(typeof message)
+    console.log(message instanceof CustomerCreatedDto)
   }
 }

@@ -6,7 +6,7 @@ const config_1 = require("@nestjs/config");
 const common_1 = require("@nestjs/common");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalPipes(new common_1.ValidationPipe({ transform: true, whitelist: true }));
     const configService = app.get(config_1.ConfigService);
     const port = configService.get('HTTP_PORT');
     await app.listen(port);
