@@ -65,7 +65,7 @@ import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
     //       options: {
     //         urls: [configService.get<string>('RABBITMQ_URL')],
     //         queue: 'customers',
-            
+
     //       },
     //     }),
     //     inject: [ConfigService],
@@ -75,6 +75,7 @@ import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
   ],
   controllers: [AuthController],
   providers: [
+    AuthController,
     {
       provide: HashProvider,
       useClass: BcryptHashProvider,

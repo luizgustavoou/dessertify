@@ -41,6 +41,21 @@ services:
     depends_on:
       - rabbitmq
       - postgres
+  orders:
+    build:
+      context: ./dessertify-backend/orders
+      dockerfile: Dockerfile
+      target: development
+    command:  yarn start:dev
+    env_file:
+      - ./dessertify-backend/orders/.env
+    ports:
+      - '3003:3003'
+    volumes:
+      - ./dessertify-backend/orders:/usr/src/app
+    depends_on:
+      - rabbitmq
+      - postgres
   postgres:
     image: postgres
     ports:
@@ -48,7 +63,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: user
-      POSTGRES_MULTIPLE_DATABASES: dessertify_payments, dessertify_auth
+      POSTGRES_MULTIPLE_DATABASES: dessertify_payments, dessertify_auth, dessertify_orders
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./initdb-scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
