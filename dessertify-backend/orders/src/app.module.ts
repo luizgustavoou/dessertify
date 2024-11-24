@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@/infra/database/prisma.module';
 import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
-import { AppController } from '@/presentation/dtos/app.controller';
+import { AppController } from '@/presentation/controllers/app.controller';
 import { AppService } from '@/app.service';
 
 @Module({

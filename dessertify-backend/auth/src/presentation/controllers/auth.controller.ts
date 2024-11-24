@@ -25,25 +25,30 @@ export class AuthController {
   ) {}
 
 
-  @RabbitRPC({
-    routingKey: 'rpc-2',
-    exchange: 'exchange2',
-    queue: 'rpc-2',
-  })
-  rpc(message: object) {
-    return {
-      echo: message,
-    };
-  }
+  // @RabbitRPC({
+  //   routingKey: 'rpc-2',
+  //   exchange: 'exchange2',
+  //   queue: 'rpc-2',
+  // })
+  // rpc(message: object) {
+  //   return {
+  //     echo: message,
+  //   };
+  // }
 
   
+  // @Get('teste2')
+  // async teste2() {
+  //   return this.amqpConnection.request({
+  //     exchange: 'exchange2',
+  //     routingKey: 'rpc-2',
+  //   });
+  //   return await this.signupUseCase.teste();
+  // }
+
   @Get('teste')
   async teste() {
-    return this.amqpConnection.request({
-      exchange: 'exchange2',
-      routingKey: 'rpc-2',
-    });
-    // return await this.signupUseCase.teste();
+    return await this.signupUseCase.teste();
   }
 
   @UseGuards(AuthGuard)

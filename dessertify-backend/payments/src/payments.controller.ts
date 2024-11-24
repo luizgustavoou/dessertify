@@ -1,6 +1,5 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Controller } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ConsumeMessage } from 'amqplib';
 
 @Controller()
@@ -22,12 +21,11 @@ export class PaymentsController {
 
   @RabbitSubscribe({
     exchange: 'customers-topic-exchange',
-    routingKey: 'customers.*',
+    routingKey: 'customers.created',
     queue: 'payments',
   })
-  public async pubSubHandler(msg: {}, amqpMsg: ConsumeMessage) {
+  public async customerCreatedEventHandler(msg: {}, amqpMsg: ConsumeMessage) {
     console.log(`Received message: ${JSON.stringify(msg)}`);
     console.log('amqpMsg ', amqpMsg);
-    
   }
 }

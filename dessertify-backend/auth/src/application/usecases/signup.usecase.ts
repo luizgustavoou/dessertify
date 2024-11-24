@@ -28,42 +28,29 @@ export class SignupUseCaseImpl implements SignupUseCase {
   constructor(
     private readonly authService: AuthService,
     private readonly amqpConnection: AmqpConnection,
-    // @Inject('CUSTOMERS_SERVICE')
-    // private readonly customersServiced: ClientProxy,
   ) {}
 
   async teste(): Promise<void> {
-    // await this.customersServiced.emit(
-    //   'customer_created',
-    //   new CustomerCreatedEvent(
-    //     randomUUID(),
-    //     'luiz@gmail.com',
-    //     'luiz',
-    //     'umbelino',
-    //   ),
-    // );
-
-    console.log('envaindo...');
-    
-    this.amqpConnection.publish(
+    await this.amqpConnection.publish(
       'customers-topic-exchange',
       'customers.created',
-      { msg: 'hello-world!' },
+      new CustomerCreatedEvent(randomUUID(), 'john@gmail.com', 'John', 'Doe'),
     );
   }
 
   async execute(params: TSignupUseCaseParams): Promise<TSignupUseCaseResponse> {
     const customer = await this.authService.signup(params);
 
-    // await this.customersServiced.emit(
-    //   'customer_created',
-    //   new CustomerCreatedEvent(
-    //     customer.id,
-    //     customer.email,
-    //     customer.firstName,
-    //     customer.lastName,
-    //   ),
-    // );
+    await this.amqpConnection.publish(
+      'customers-topic-exchange',
+      'customers.created',
+      new CustomerCreatedEvent(
+        customer.id,
+        customer.email,
+        customer.firstName,
+        customer.lastName,
+      ),
+    );
 
     return customer;
   }

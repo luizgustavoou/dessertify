@@ -15,7 +15,7 @@ const nestjs_rabbitmq_1 = require("@golevelup/nestjs-rabbitmq");
 const common_1 = require("@nestjs/common");
 const amqplib_1 = require("amqplib");
 let PaymentsController = class PaymentsController {
-    async pubSubHandler(msg, amqpMsg) {
+    async customerCreatedEventHandler(msg, amqpMsg) {
         console.log(`Received message: ${JSON.stringify(msg)}`);
         console.log('amqpMsg ', amqpMsg);
     }
@@ -24,13 +24,13 @@ exports.PaymentsController = PaymentsController;
 __decorate([
     (0, nestjs_rabbitmq_1.RabbitSubscribe)({
         exchange: 'customers-topic-exchange',
-        routingKey: 'customers.*',
+        routingKey: 'customers.created',
         queue: 'payments',
     }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, typeof (_a = typeof amqplib_1.ConsumeMessage !== "undefined" && amqplib_1.ConsumeMessage) === "function" ? _a : Object]),
     __metadata("design:returntype", Promise)
-], PaymentsController.prototype, "pubSubHandler", null);
+], PaymentsController.prototype, "customerCreatedEventHandler", null);
 exports.PaymentsController = PaymentsController = __decorate([
     (0, common_1.Controller)()
 ], PaymentsController);
