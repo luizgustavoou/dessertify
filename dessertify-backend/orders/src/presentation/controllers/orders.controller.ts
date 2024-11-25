@@ -5,7 +5,7 @@ import { ConsumeMessage } from 'amqplib';
 import { CustomerCreatedDto } from '@/presentation/dtos/customer-created.dto';
 
 @Controller()
-export class AppController {
+export class OrdersController {
   constructor(private readonly appService: AppService) {}
 
   @RabbitSubscribe({

@@ -4,8 +4,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@/infra/database/prisma.module';
 import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
-import { AppController } from '@/presentation/controllers/app.controller';
+import { OrdersController } from '@/presentation/controllers/orders.controller';
 import { AppService } from '@/app.service';
+import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
+import { PrismaOrdersRepository } from '@/infra/repositories/orders.repository';
 
 @Module({
   imports: [
@@ -20,7 +22,14 @@ import { AppService } from '@/app.service';
     }),
     PrismaModule,
   ],
-  controllers: [AppController],
-  providers: [AppController, AppService],
+  controllers: [OrdersController],
+  providers: [
+    OrdersController,
+    AppService,
+    {
+      provide: OrdersRepository,
+      useClass: PrismaOrdersRepository,
+    },
+  ],
 })
 export class AppModule {}
