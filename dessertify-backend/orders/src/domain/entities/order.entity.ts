@@ -91,4 +91,12 @@ export class OrderEntity extends Entity<IOrderProps> {
   get updatedAt(): Date {
     return this._updatedAt;
   }
+
+  set status(status: OrderStatus) {
+    this.props.status = status;
+  }
+
+  set customerId(customerId: string) {
+    this.props.customerId = customerId;
+  }
 }

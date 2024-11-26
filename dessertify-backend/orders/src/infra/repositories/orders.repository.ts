@@ -5,12 +5,32 @@ import {
   OrdersRepository,
   TDeleteOrderParams,
   TFindManyOrdersParams,
+  TFindOneOrderByIdParams,
 } from '@/domain/contracts/repositories/orders.repository';
 import { OrderFactory } from '@/infra/factories/order.factory';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findOneById(
+    params: TFindOneOrderByIdParams,
+  ): Promise<OrderEntity | null> {
+    const order = await this.prismaService.order.findUnique({
+      where: {
+        id: params.id,
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    return order && OrderFactory.toDomain(order);
+  }
 
   async findManyOrders(params: TFindManyOrdersParams): Promise<OrderEntity[]> {
     const orders = await this.prismaService.order.findMany({
@@ -40,10 +60,12 @@ export class PrismaOrdersRepository implements OrdersRepository {
         customerId: params.customerId,
         status: params.status as any,
         items: {
+          deleteMany: {},
           createMany: {
             data: params.items,
           },
         },
+
       },
       create: {
         customerId: params.customerId,

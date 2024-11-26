@@ -6,7 +6,15 @@ export abstract class OrdersRepository {
   ): Promise<OrderEntity[]>;
   abstract saveOrder(params: OrderEntity): Promise<OrderEntity>;
   abstract deleteOrder(params: TDeleteOrderParams): Promise<OrderEntity | null>;
+  abstract findOneById(
+    params: TFindOneOrderByIdParams,
+  ): Promise<OrderEntity | null>;
 }
+
+// findOneById
+export type TFindOneOrderByIdParams = {
+  id: string;
+};
 
 // findMany
 export type TFindManyOrdersParams = {

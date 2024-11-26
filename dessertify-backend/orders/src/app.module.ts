@@ -21,6 +21,10 @@ import { PrismaProductsRepository } from '@/infra/repositories/products.reposito
 import { v4 as uuidv4 } from 'uuid';
 import { ProductEntity } from './domain/entities/product.entity';
 import { PrismaService } from '@/infra/database/prisma.service';
+import {
+  UpdateOrderUseCase,
+  UpdateOrderUseCaseImpl,
+} from '@/application/usecases/update-order.usecase';
 
 @Module({
   imports: [
@@ -55,6 +59,10 @@ import { PrismaService } from '@/infra/database/prisma.service';
       provide: CreateOrderUseCase,
       useClass: CreateOrderUseCaseImpl,
     },
+    {
+      provide: UpdateOrderUseCase,
+      useClass: UpdateOrderUseCaseImpl,
+    },
   ],
 })
 export class AppModule {
@@ -65,14 +73,12 @@ export class AppModule {
   async onModuleInit() {
     // const products = [
     //   {
-    //     name: 'Teclado Reddragon',
-    //     price: 1000,
+    //     name: 'Mouse logitech',
+    //     price: 250,
     //   },
     // ];
-
     // for (const product of products) {
     //   const uuid = uuidv4();
-
     //   const upsertedProduct = await this.prismaService.product.upsert({
     //     where: {
     //       id: uuid,
