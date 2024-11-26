@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Order {
-  id         String      @id @default(cuid())
+  id         String      @id @default(uuid())
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   status     OrderStatus
@@ -17,7 +17,7 @@ model Order {
 }
 
 model OrderItem {
-  id        String  @id @default(cuid())
+  id        String  @id @default(uuid())
   order     Order   @relation(fields: [orderId], references: [id])
   orderId   String
   product   Product @relation(fields: [productId], references: [id])
@@ -29,7 +29,7 @@ model OrderItem {
 }
 
 model Product {
-  id     String      @id @default(cuid())
+  id     String      @id @default(uuid())
   name   String
   price  Float
   orders OrderItem[]

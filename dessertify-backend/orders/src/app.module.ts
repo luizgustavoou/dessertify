@@ -8,6 +8,19 @@ import { OrdersController } from '@/presentation/controllers/orders.controller';
 import { AppService } from '@/app.service';
 import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
 import { PrismaOrdersRepository } from '@/infra/repositories/orders.repository';
+import { ProductsRepository } from '@/domain/contracts/repositories/products.repository';
+import {
+  CreateOrderUseCase,
+  CreateOrderUseCaseImpl,
+} from '@/application/usecases/create-order.usecase';
+import {
+  OrderService,
+  OrderServiceImpl,
+} from '@/domain/services/orders.service';
+import { PrismaProductsRepository } from '@/infra/repositories/products.repository';
+import { v4 as uuidv4 } from 'uuid';
+import { ProductEntity } from './domain/entities/product.entity';
+import { PrismaService } from '@/infra/database/prisma.service';
 
 @Module({
   imports: [
@@ -30,6 +43,46 @@ import { PrismaOrdersRepository } from '@/infra/repositories/orders.repository';
       provide: OrdersRepository,
       useClass: PrismaOrdersRepository,
     },
+    {
+      provide: ProductsRepository,
+      useClass: PrismaProductsRepository,
+    },
+    {
+      provide: OrderService,
+      useClass: OrderServiceImpl,
+    },
+    {
+      provide: CreateOrderUseCase,
+      useClass: CreateOrderUseCaseImpl,
+    },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private readonly productsRepository: ProductsRepository,
+    private readonly prismaService: PrismaService,
+  ) {}
+  async onModuleInit() {
+    // const products = [
+    //   {
+    //     name: 'Teclado Reddragon',
+    //     price: 1000,
+    //   },
+    // ];
+
+    // for (const product of products) {
+    //   const uuid = uuidv4();
+
+    //   const upsertedProduct = await this.prismaService.product.upsert({
+    //     where: {
+    //       id: uuid,
+    //     },
+    //     update: {},
+    //     create: {
+    //       name: product.name,
+    //       price: product.price,
+    //     },
+    //   });
+    // }
+  }
+}

@@ -1,27 +1,15 @@
 import { CustomerEntity } from '@/domain/entities/customer.entity';
 import { CustomerCreatedEvent } from '@/domain/events/customer-created.event';
 import { AuthService } from '@/domain/services/auth.service';
-import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { randomUUID } from 'crypto';
+import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { Injectable } from '@nestjs/common';
 
 export abstract class SignupUseCase {
-  abstract execute(
-    params: TSignupUseCaseParams,
-  ): Promise<TSignupUseCaseResponse>;
+  abstract execute(params: SignupParamsDto): Promise<CustomerEntity>;
 
   abstract teste(): Promise<void>;
 }
-
-export type TSignupUseCaseParams = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-};
-
-export type TSignupUseCaseResponse = CustomerEntity;
 
 @Injectable()
 export class SignupUseCaseImpl implements SignupUseCase {
@@ -31,14 +19,14 @@ export class SignupUseCaseImpl implements SignupUseCase {
   ) {}
 
   async teste(): Promise<void> {
-    await this.amqpConnection.publish(
-      'customers-topic-exchange',
-      'customers.created',
-      new CustomerCreatedEvent(randomUUID(), 'john@gmail.com', 'John', 'Doe'),
-    );
+    // await this.amqpConnection.publish(
+    //   'customers-topic-exchange',
+    //   'customers.created',
+    //   new CustomerCreatedEvent(randomUUID(), 'john@gmail.com', 'John', 'Doe'),
+    // );
   }
 
-  async execute(params: TSignupUseCaseParams): Promise<TSignupUseCaseResponse> {
+  async execute(params: SignupParamsDto): Promise<CustomerEntity> {
     const customer = await this.authService.signup(params);
 
     await this.amqpConnection.publish(

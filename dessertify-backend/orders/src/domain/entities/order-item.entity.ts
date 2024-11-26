@@ -1,13 +1,56 @@
-import { ProductEntity } from '@/domain/entities/product.entity';
+import { IProductProps, ProductEntity } from '@/domain/entities/product.entity';
+import { Entity } from './entity';
 
-export class OrderItemEntity {
-  public id: string;
-  public orderId: string;
-  public product: ProductEntity;
-  public createdAt: Date;
-  public updatedAt: Date;
+export interface IOrderItemProps {
+  id?: string;
+  orderId: string;
+  productId: string;
+  quantity: number;
+}
 
-  constructor(params: Partial<OrderItemEntity>) {
-    Object.assign(this, params);
+export class OrderItemEntity extends Entity<IOrderItemProps> {
+  private _product: ProductEntity;
+  private _createdAt: Date;
+  private _updatedAt: Date;
+
+  constructor({ id, ...props }: IOrderItemProps) {
+    super(props, id);
+  }
+
+  public static create(props: IOrderItemProps): OrderItemEntity {
+    const instance = new OrderItemEntity(props);
+
+    return instance;
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  set product(product: IProductProps | ProductEntity) {
+    this._product =
+      product instanceof ProductEntity
+        ? product
+        : ProductEntity.create(product);
+  }
+
+  get product(): ProductEntity {
+    return this._product;
+  }
+
+  get orderId(): string {
+    return this.orderId;
+  }
+
+  get quantity(): number {
+    return this.quantity;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }
