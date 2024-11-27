@@ -1,11 +1,11 @@
-import { UnmarshalledOrder } from '@/domain/entities/order.entity';
+import { RawOrder } from '@/domain/entities/order.entity';
 import { OrderService } from '@/domain/services/orders.service';
 import { Injectable } from '@nestjs/common';
 
 export abstract class CreateOrderUseCase {
   abstract execute(
     params: TCreateOrderUseCaseParams,
-  ): Promise<UnmarshalledOrder>;
+  ): Promise<RawOrder>;
 }
 
 export type TCreateOrderUseCaseParams = {
@@ -20,7 +20,7 @@ export type TCreateOrderUseCaseParams = {
 export class CreateOrderUseCaseImpl implements CreateOrderUseCase {
   constructor(private readonly orderService: OrderService) {}
 
-  async execute(params: TCreateOrderUseCaseParams): Promise<UnmarshalledOrder> {
+  async execute(params: TCreateOrderUseCaseParams): Promise<RawOrder> {
     const order = await this.orderService.createOrder(params);
 
     return order;

@@ -1,4 +1,3 @@
-import { OrderItemEntity } from '@/domain/entities/order-item.entity';
 import { Entity } from '@/domain/entities/entity';
 
 export const OrderStatus = {
@@ -20,21 +19,21 @@ export interface IOrderProps {
   customerId: string;
   items: IOrderItem[];
   status: OrderStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export interface UnmarshalledOrder {
+export interface RawOrder {
   id: string;
   customerId: string;
   items: IOrderItem[];
+  status: OrderStatus;
   createdAt: string;
   updatedAt: string;
-  status: OrderStatus;
 }
 
 export class OrderEntity extends Entity<IOrderProps> {
   private _items: IOrderItem[];
-  private _createdAt: Date;
-  private _updatedAt: Date;
 
   private constructor({ id, ...props }: IOrderProps) {
     super(props, id);
@@ -52,13 +51,13 @@ export class OrderEntity extends Entity<IOrderProps> {
     return instance;
   }
 
-  public unmarshal(): UnmarshalledOrder {
+  public raw(): RawOrder {
     return {
       id: this.id,
       customerId: this.customerId,
       items: this.items,
-      createdAt: this.createdAt?.toISOString(),
-      updatedAt: this.updatedAt?.toISOString(),
+      createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString(),
       status: this.status,
     };
   }
@@ -85,11 +84,11 @@ export class OrderEntity extends Entity<IOrderProps> {
   }
 
   get createdAt(): Date {
-    return this._createdAt;
+    return this.props.createdAt;
   }
 
   get updatedAt(): Date {
-    return this._updatedAt;
+    return this.props.updatedAt;
   }
 
   set status(status: OrderStatus) {
