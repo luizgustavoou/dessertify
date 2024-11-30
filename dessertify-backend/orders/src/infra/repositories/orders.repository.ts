@@ -29,7 +29,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return order && OrderFactory.toDomain(order, id);
+    return order && OrderFactory.toDomain(order);
   }
 
   async findManyOrders(params: TFindManyOrdersParams): Promise<OrderEntity[]> {
@@ -48,11 +48,11 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return orders.map(({ id, ...order }) => OrderFactory.toDomain(order, id));
+    return orders.map((order) => OrderFactory.toDomain(order));
   }
 
   async saveOrder(params: OrderEntity): Promise<OrderEntity> {
-    const { id, ...order } = await this.prismaService.order.upsert({
+    const order = await this.prismaService.order.upsert({
       where: {
         id: params.id,
       },
@@ -62,7 +62,10 @@ export class PrismaOrdersRepository implements OrdersRepository {
         items: {
           deleteMany: {},
           createMany: {
-            data: params.items,
+            data: params.items.map((item) => ({
+              productId: item.product.id,
+              quantity: item.quantity,
+            })),
           },
         },
       },
@@ -71,7 +74,10 @@ export class PrismaOrdersRepository implements OrdersRepository {
         status: params.status as any,
         items: {
           createMany: {
-            data: params.items,
+            data: params.items.map((item) => ({
+              productId: item.product.id,
+              quantity: item.quantity,
+            })),
           },
         },
       },
@@ -84,11 +90,11 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(order, id);
+    return OrderFactory.toDomain(order);
   }
 
   async deleteOrder(params: TDeleteOrderParams): Promise<OrderEntity | null> {
-    const { id, ...orderDeleted } = await this.prismaService.order.delete({
+    const orderDeleted = await this.prismaService.order.delete({
       where: {
         id: params.orderId,
       },
@@ -101,6 +107,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(orderDeleted, id);
+    return OrderFactory.toDomain(orderDeleted);
   }
 }

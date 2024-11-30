@@ -45,7 +45,6 @@ export class OrdersController {
 
   @Post('')
   public async createOrder(@Body() createOrderDto: CreateOrderDto) {
-    console.log('body ', createOrderDto);
     return await this.createOrderUseCase.execute(createOrderDto);
   }
 

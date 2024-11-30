@@ -40,7 +40,25 @@ export class OrderServiceImpl implements OrderService {
       order.customerId = params.customerId;
     }
 
-    order.items = params.items;
+    const itemsWithDomainProduct = await Promise.all(
+      params.items.map(async (item) => {
+        const product = await this.productsRepository.findOneById({
+          id: item.productId,
+        });
+
+        if (!product) {
+          throw new NotFoundException('Product not found');
+        }
+
+        return {
+          product: product,
+          productId: item.productId,
+          quantity: item.quantity,
+        };
+      }),
+    );
+
+    order.items = itemsWithDomainProduct;
 
     await this.ordersRepository.saveOrder(order);
 
@@ -48,21 +66,28 @@ export class OrderServiceImpl implements OrderService {
   }
 
   async createOrder(params: CreateOrderDto): Promise<RawOrder> {
-    for (const item of params.items) {
-      const product = await this.productsRepository.findOneById({
-        id: item.productId,
-      });
+    const itemsWithDomainProduct = await Promise.all(
+      params.items.map(async (item) => {
+        const product = await this.productsRepository.findOneById({
+          id: item.productId,
+        });
 
-      if (!product) {
-        throw new NotFoundException('Product not found');
-      }
-    }
+        if (!product) {
+          throw new NotFoundException('Product not found');
+        }
+
+        return {
+          product: product,
+          quantity: item.quantity,
+        };
+      }),
+    );
 
     const order = OrderEntity.create({
       customerId: params.customerId,
       status: OrderStatus.PENDING,
-      items: params.items.map((item) => ({
-        productId: item.productId,
+      items: itemsWithDomainProduct.map((item) => ({
+        product: item.product,
         quantity: item.quantity,
       })),
     });
