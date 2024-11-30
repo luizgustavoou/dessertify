@@ -11,18 +11,18 @@ import { CardDto } from '@/presentation/dtos/card.dto';
 import { Type } from 'class-transformer';
 
 export class CreateChargeDto {
-  // @IsDefined()
-  // @IsNotEmptyObject()
-  // @IsObject()
-  // @ValidateNested()
-  // @Type(() => CardDto)
-  // card: CardDto;
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CardDto)
+  card: CardDto;
 
-  // @IsPositive()
-  // amount: number;
+  @IsPositive()
+  amount: number;
 
-  // @IsEmail()
-  // email: string;
+  @IsEmail()
+  email: string;
 
   @IsUUID()
   orderId: string;
