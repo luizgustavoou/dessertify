@@ -71,7 +71,6 @@ export class OrderEntity extends Entity<IOrderProps> {
   set items(items: IBaseOrderItemProps[]) {
     this._items = [];
 
-    console.log('items ', items)
     this._items = items.map((item) =>
       OrderItemEntity.create({ ...item, orderId: this.id }),
     );

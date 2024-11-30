@@ -19,24 +19,16 @@ export interface IRawProduct {
 
 export class ProductEntity extends Entity<IProductProps> {
   constructor({ id, ...props }: IProductProps) {
-    
-    
-    console.log('--------------------')
-    console.log('props ', props)
     if (props.name.length < 3) {
       throw new UnprocessableEntityException(
         'Product name must have at least 3 characters',
       );
     }
-
-    console.log('passsei')
-    console.log('--------------------')
-
-    // if (props.price <= 0) {
-    //   throw new UnprocessableEntityException(
-    //     'Product price must be greater than 0',
-    //   );
-    // }
+    if (props.price <= 0) {
+      throw new UnprocessableEntityException(
+        'Product price must be greater than 0',
+      );
+    }
 
     super(props, id);
   }

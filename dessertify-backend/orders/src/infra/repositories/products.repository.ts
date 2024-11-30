@@ -23,7 +23,6 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
     });
 
-    console.log('product ', product)
     return product && ProductEntity.create(product);
   }
 
