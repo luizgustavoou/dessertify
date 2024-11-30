@@ -29,19 +29,19 @@ export class OrdersController {
     private readonly findManyOrdersUseCase: FindManyOrdersUseCase,
   ) {}
 
-  @RabbitSubscribe({
-    exchange: 'customers-topic-exchange',
-    routingKey: 'customers.created',
-    queue: 'orders',
-  })
-  // @UsePipes(ValidationPipe)
-  public async customerCreatedEventHandler(
-    @RabbitPayload() message: CustomerCreatedDto,
-  ) {
-    console.log(`Received message: ${JSON.stringify(message)}`);
-    console.log(typeof message);
-    console.log(message instanceof CustomerCreatedDto);
-  }
+  // @RabbitSubscribe({
+  //   exchange: 'customers-topic-exchange',
+  //   routingKey: 'customers.created',
+  //   queue: 'orders',
+  // })
+  // // @UsePipes(ValidationPipe)
+  // public async customerCreatedEventHandler(
+  //   @RabbitPayload() message: CustomerCreatedDto,
+  // ) {
+  //   console.log(`Received message: ${JSON.stringify(message)}`);
+  //   console.log(typeof message);
+  //   console.log(message instanceof CustomerCreatedDto);
+  // }
 
   @Post('')
   public async createOrder(@Body() createOrderDto: CreateOrderDto) {

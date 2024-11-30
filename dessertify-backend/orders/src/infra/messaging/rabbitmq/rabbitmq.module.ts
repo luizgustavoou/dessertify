@@ -14,8 +14,7 @@ import { ConfigService } from '@nestjs/config';
         ],
         uri: configService.get<string>('RABBITMQ_URL'),
         connectionInitOptions: { wait: false },
-        enableControllerDiscovery: true
-        
+        enableControllerDiscovery: true,
       }),
       inject: [ConfigService],
     }),

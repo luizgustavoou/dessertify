@@ -1,6 +1,7 @@
-import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Controller } from '@nestjs/common';
+import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { Controller, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ConsumeMessage } from 'amqplib';
+import { CreateChargeDto } from '@/presentation/dtos/create-charge.dto';
 
 @Controller()
 export class PaymentsController {
@@ -22,10 +23,22 @@ export class PaymentsController {
   @RabbitSubscribe({
     exchange: 'customers-topic-exchange',
     routingKey: 'customers.created',
-    queue: 'payments',
+    queue: 'payments.customer_registration',
   })
   public async customerCreatedEventHandler(msg: {}, amqpMsg: ConsumeMessage) {
+    console.log('[customerCreatedEventHandler]');
     console.log(`Received message: ${JSON.stringify(msg)}`);
-    console.log('amqpMsg ', amqpMsg);
+  }
+
+  @RabbitSubscribe({
+    exchange: 'orders-topic-exchange',
+    routingKey: 'orders.created',
+    queue: 'payments.order_registration',
+  })
+  @UsePipes(ValidationPipe)
+  // public async orderCreatedEventHandler(msg: {}, amqpMsg: ConsumeMessage) {
+  public async orderCreatedEventHandler(@RabbitPayload() msg: CreateChargeDto) {
+    console.log('[orderCreatedEventHandler]');
+    console.log('Received message: ', msg);
   }
 }

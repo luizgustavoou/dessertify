@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
