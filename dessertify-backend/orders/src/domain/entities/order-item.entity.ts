@@ -1,11 +1,13 @@
 import { IProductProps, ProductEntity } from '@/domain/entities/product.entity';
-import { Entity } from './entity';
+import { Entity } from '@/domain/entities/entity';
 
-export interface IOrderItemProps {
-  id?: string;
-  orderId: string;
+export interface IBaseOrderItemProps {
   productId: string;
   quantity: number;
+}
+
+export interface IOrderItemProps extends IBaseOrderItemProps {
+  orderId: string;
 }
 
 export class OrderItemEntity extends Entity<IOrderItemProps> {
@@ -13,12 +15,12 @@ export class OrderItemEntity extends Entity<IOrderItemProps> {
   private _createdAt: Date;
   private _updatedAt: Date;
 
-  constructor({ id, ...props }: IOrderItemProps) {
+  constructor(props: IOrderItemProps, id?: string) {
     super(props, id);
   }
 
-  public static create(props: IOrderItemProps): OrderItemEntity {
-    const instance = new OrderItemEntity(props);
+  public static create(props: IOrderItemProps, id?: string): OrderItemEntity {
+    const instance = new OrderItemEntity(props, id);
 
     return instance;
   }

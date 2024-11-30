@@ -1,7 +1,6 @@
 import { Entity } from '@/domain/entities/entity';
 
 export interface IProductProps {
-  id?: string;
   name: string;
   price: number;
 }
@@ -10,12 +9,12 @@ export class ProductEntity extends Entity<IProductProps> {
   private _createdAt: Date;
   private _updatedAt: Date;
 
-  constructor({ id, ...props }: IProductProps) {
+  constructor(props: IProductProps, id?: string) {
     super(props, id);
   }
 
-  public static create(props: IProductProps): ProductEntity {
-    const instance = new ProductEntity(props);
+  public static create(props: IProductProps, id?: string): ProductEntity {
+    const instance = new ProductEntity(props, id);
 
     return instance;
   }

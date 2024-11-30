@@ -18,13 +18,15 @@ import {
   OrderServiceImpl,
 } from '@/domain/services/orders.service';
 import { PrismaProductsRepository } from '@/infra/repositories/products.repository';
-import { v4 as uuidv4 } from 'uuid';
-import { ProductEntity } from './domain/entities/product.entity';
 import { PrismaService } from '@/infra/database/prisma.service';
 import {
   UpdateOrderUseCase,
   UpdateOrderUseCaseImpl,
 } from '@/application/usecases/update-order.usecase';
+import {
+  FindManyOrdersUseCase,
+  FindManyOrdersUseCaseImpl,
+} from '@/application/usecases/find-many-orders.usecase';
 
 @Module({
   imports: [
@@ -54,6 +56,10 @@ import {
     {
       provide: OrderService,
       useClass: OrderServiceImpl,
+    },
+    {
+      provide: FindManyOrdersUseCase,
+      useClass: FindManyOrdersUseCaseImpl,
     },
     {
       provide: CreateOrderUseCase,

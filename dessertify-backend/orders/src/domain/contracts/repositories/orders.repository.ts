@@ -18,11 +18,9 @@ export type TFindOneOrderByIdParams = {
 
 // findMany
 export type TFindManyOrdersParams = {
-  filter: {
-    customerId?: string;
-    skip?: number;
-    take?: number;
-  };
+  customerId?: string;
+  skip?: number;
+  take?: number;
 };
 
 // delete

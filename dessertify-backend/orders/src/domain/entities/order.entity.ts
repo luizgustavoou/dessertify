@@ -1,4 +1,5 @@
 import { Entity } from '@/domain/entities/entity';
+import { IBaseOrderItemProps } from '@/domain/entities/order-item.entity';
 
 export const OrderStatus = {
   PENDING: 'PENDING',
@@ -9,15 +10,9 @@ export const OrderStatus = {
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
-export interface IOrderItem {
-  id?: string;
-  productId: string;
-  quantity: number;
-}
 export interface IOrderProps {
-  id?: string;
   customerId: string;
-  items: IOrderItem[];
+  items: IBaseOrderItemProps[];
   status: OrderStatus;
   createdAt?: Date;
   updatedAt?: Date;
@@ -26,16 +21,16 @@ export interface IOrderProps {
 export interface RawOrder {
   id: string;
   customerId: string;
-  items: IOrderItem[];
+  items: IBaseOrderItemProps[];
   status: OrderStatus;
   createdAt: string;
   updatedAt: string;
 }
 
 export class OrderEntity extends Entity<IOrderProps> {
-  private _items: IOrderItem[];
+  private _items: IBaseOrderItemProps[];
 
-  private constructor({ id, ...props }: IOrderProps) {
+  private constructor(props: IOrderProps, id?: string) {
     super(props, id);
 
     if (props.items.length === 0) {
@@ -44,8 +39,8 @@ export class OrderEntity extends Entity<IOrderProps> {
     }
   }
 
-  public static create(props: IOrderProps): OrderEntity {
-    const instance = new OrderEntity(props);
+  public static create(props: IOrderProps, id?: string): OrderEntity {
+    const instance = new OrderEntity(props, id);
 
     instance.items = props.items;
     return instance;
@@ -62,7 +57,7 @@ export class OrderEntity extends Entity<IOrderProps> {
     };
   }
 
-  set items(items: IOrderItem[]) {
+  set items(items: IBaseOrderItemProps[]) {
     this._items = [];
     this._items = items;
   }
@@ -75,7 +70,7 @@ export class OrderEntity extends Entity<IOrderProps> {
     return this.props.customerId;
   }
 
-  get items(): IOrderItem[] {
+  get items(): IBaseOrderItemProps[] {
     return this._items;
   }
 

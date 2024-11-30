@@ -8,10 +8,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
 import { ProductsRepository } from '@/domain/contracts/repositories/products.repository';
 import { UpdateOrderDto } from '@/presentation/dtos/update-order.dto';
+import { FindManyOrdersQueryDto } from '@/presentation/dtos/find-many-orders.dto';
 
 export abstract class OrderService {
   abstract createOrder(params: CreateOrderDto): Promise<RawOrder>;
   abstract updateOrder(id: string, params: UpdateOrderDto): Promise<RawOrder>;
+  abstract findManyOrders(params: FindManyOrdersQueryDto): Promise<RawOrder[]>;
 }
 
 @Injectable()
@@ -68,5 +70,11 @@ export class OrderServiceImpl implements OrderService {
     const savedOrder = await this.ordersRepository.saveOrder(order);
 
     return savedOrder.raw();
+  }
+
+  async findManyOrders(params: FindManyOrdersQueryDto): Promise<RawOrder[]> {
+    const orders = await this.ordersRepository.findManyOrders(params);
+
+    return orders.map((order) => order.raw());
   }
 }

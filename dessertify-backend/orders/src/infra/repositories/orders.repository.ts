@@ -16,7 +16,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   async findOneById(
     params: TFindOneOrderByIdParams,
   ): Promise<OrderEntity | null> {
-    const order = await this.prismaService.order.findUnique({
+    const { id, ...order } = await this.prismaService.order.findUnique({
       where: {
         id: params.id,
       },
@@ -29,15 +29,15 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return order && OrderFactory.toDomain(order);
+    return order && OrderFactory.toDomain(order, id);
   }
 
   async findManyOrders(params: TFindManyOrdersParams): Promise<OrderEntity[]> {
     const orders = await this.prismaService.order.findMany({
-      skip: params.filter.skip,
-      take: params.filter.take,
+      skip: params.skip,
+      take: params.take,
       where: {
-        customerId: params.filter.customerId,
+        customerId: params.customerId,
       },
       include: {
         items: {
@@ -48,11 +48,11 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return orders.map((order) => OrderFactory.toDomain(order));
+    return orders.map(({ id, ...order }) => OrderFactory.toDomain(order, id));
   }
 
   async saveOrder(params: OrderEntity): Promise<OrderEntity> {
-    const order = await this.prismaService.order.upsert({
+    const { id, ...order } = await this.prismaService.order.upsert({
       where: {
         id: params.id,
       },
@@ -65,7 +65,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
             data: params.items,
           },
         },
-
       },
       create: {
         customerId: params.customerId,
@@ -85,11 +84,11 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(order);
+    return OrderFactory.toDomain(order, id);
   }
 
   async deleteOrder(params: TDeleteOrderParams): Promise<OrderEntity | null> {
-    const orderDeleted = await this.prismaService.order.delete({
+    const { id, ...orderDeleted } = await this.prismaService.order.delete({
       where: {
         id: params.orderId,
       },
@@ -102,6 +101,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(orderDeleted);
+    return OrderFactory.toDomain(orderDeleted, id);
   }
 }
