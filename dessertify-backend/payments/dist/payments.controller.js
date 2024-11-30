@@ -45,7 +45,6 @@ __decorate([
         routingKey: 'orders.created',
         queue: 'payments.order_registration',
     }),
-    (0, common_1.UsePipes)(common_1.ValidationPipe),
     __param(0, (0, nestjs_rabbitmq_1.RabbitPayload)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_charge_dto_1.CreateChargeDto]),

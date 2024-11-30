@@ -35,8 +35,6 @@ export class PaymentsController {
     routingKey: 'orders.created',
     queue: 'payments.order_registration',
   })
-  @UsePipes(ValidationPipe)
-  // public async orderCreatedEventHandler(msg: {}, amqpMsg: ConsumeMessage) {
   public async orderCreatedEventHandler(@RabbitPayload() msg: CreateChargeDto) {
     console.log('[orderCreatedEventHandler]');
     console.log('Received message: ', msg);
