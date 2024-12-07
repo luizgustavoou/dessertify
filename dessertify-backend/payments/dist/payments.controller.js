@@ -18,7 +18,14 @@ const nestjs_rabbitmq_1 = require("@golevelup/nestjs-rabbitmq");
 const common_1 = require("@nestjs/common");
 const amqplib_1 = require("amqplib");
 const create_charge_dto_1 = require("./presentation/dtos/create-charge.dto");
+const stripe_service_1 = require("./infra/payments/stripe/stripe.service");
 let PaymentsController = class PaymentsController {
+    constructor(stripeService) {
+        this.stripeService = stripeService;
+    }
+    testeStripe() {
+        return this.stripeService.createPaymentIntent(200);
+    }
     async customerCreatedEventHandler(msg, amqpMsg) {
         console.log('[customerCreatedEventHandler]');
         console.log(`Received message: ${JSON.stringify(msg)}`);
@@ -29,6 +36,12 @@ let PaymentsController = class PaymentsController {
     }
 };
 exports.PaymentsController = PaymentsController;
+__decorate([
+    (0, common_1.Post)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PaymentsController.prototype, "testeStripe", null);
 __decorate([
     (0, nestjs_rabbitmq_1.RabbitSubscribe)({
         exchange: 'customers-topic-exchange',
@@ -51,6 +64,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PaymentsController.prototype, "orderCreatedEventHandler", null);
 exports.PaymentsController = PaymentsController = __decorate([
-    (0, common_1.Controller)()
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [stripe_service_1.StripeService])
 ], PaymentsController);
 //# sourceMappingURL=payments.controller.js.map

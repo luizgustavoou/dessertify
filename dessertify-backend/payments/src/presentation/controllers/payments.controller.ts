@@ -1,10 +1,12 @@
 import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Controller, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ConsumeMessage } from 'amqplib';
 import { CreateChargeDto } from '@/presentation/dtos/create-charge.dto';
+import { StripeService } from '@/infra/payments/stripe/stripe.service';
 
 @Controller()
 export class PaymentsController {
+  constructor(private readonly stripeService: StripeService) {}
   // @EventPattern('customer_created')
   // async handleUserCreated(@Payload() data: any, @Ctx() context: RmqContext) {
   //   // Obtendo o canal do contexto
@@ -19,6 +21,10 @@ export class PaymentsController {
 
   //   channel.ack(originalMsg);
   // }
+  @Post()
+  testeStripe() {
+    return this.stripeService.createPaymentIntent(200);
+  }
 
   @RabbitSubscribe({
     exchange: 'customers-topic-exchange',

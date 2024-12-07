@@ -10,16 +10,19 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const Joi = require("joi");
-const payments_controller_1 = require("./payments.controller");
+const payments_controller_1 = require("./presentation/controllers/payments.controller");
 const payments_service_1 = require("./payments.service");
 const prisma_module_1 = require("./infra/database/prisma.module");
 const rabbitmq_module_1 = require("./infra/messaging/rabbitmq/rabbitmq.module");
+const stripe_module_1 = require("./infra/payments/stripe/stripe.module");
+const payments_intent_stripe_webhook_controller_1 = require("./presentation/controllers/webhooks/stripe/payments-intent-stripe-webhook.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            stripe_module_1.StripeModule,
             rabbitmq_module_1.RabbitMqModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
@@ -27,10 +30,11 @@ exports.AppModule = AppModule = __decorate([
                     RABBITMQ_URL: Joi.string().required(),
                     DATABASE_URL: Joi.string().required(),
                     HTTP_PORT: Joi.number().port().required(),
+                    STRIPE_SECRET_KEY: Joi.string().required(),
                 }),
             }),
         ],
-        controllers: [payments_controller_1.PaymentsController],
+        controllers: [payments_controller_1.PaymentsController, payments_intent_stripe_webhook_controller_1.PaymentsIntentsStripeWebhook],
         providers: [payments_service_1.PaymentsService, prisma_module_1.PrismaModule, payments_controller_1.PaymentsController],
     })
 ], AppModule);
