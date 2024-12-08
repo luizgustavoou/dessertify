@@ -9,12 +9,13 @@ export class StripeService {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   }
 
-  public async createPaymentIntent(amount: number) {
+  public async createPaymentIntent(
+    amount: number,
+  ): Promise<Stripe.PaymentIntent> {
     // const paymentMethod = await this.stripe.paymentMethods.create({
     //   type: 'card',
     //   card,
     // });
-
 
     const paymentIntent = await this.stripe.paymentIntents.create({
       // payment_method: paymentMethod.id,
@@ -26,5 +27,19 @@ export class StripeService {
     });
 
     return paymentIntent;
+  }
+
+  public async createCustomer(params: {
+    id: string;
+    email: string;
+  }): Promise<Stripe.Customer> {
+    const customer = await this.stripe.customers.create({
+      email: params.email,
+      metadata: {
+        customer_id: params.id,
+      },
+    });
+
+    return customer;
   }
 }

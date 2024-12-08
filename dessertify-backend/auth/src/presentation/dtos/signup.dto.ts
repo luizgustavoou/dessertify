@@ -13,6 +13,6 @@ export class SignupParamsDto {
   firstName: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   lastName: string;
 }
