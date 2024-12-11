@@ -1,6 +1,6 @@
 import { IRawOrder } from '@/domain/entities/order.entity';
 import { CreateChargeEvent } from '@/domain/events/create-charge.event';
-import { OrderService } from '@/domain/services/orders.service';
+import { OrderService } from '@/domain/services';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 import { CardDetails } from '@/domain/events/create-charge.event';

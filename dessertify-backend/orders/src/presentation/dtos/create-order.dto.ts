@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class ItemDto {
+class ItemDto {
   @IsUUID()
   productId: string;
 

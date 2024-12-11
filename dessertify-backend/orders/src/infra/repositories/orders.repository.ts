@@ -16,7 +16,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   async findOneById(
     params: TFindOneOrderByIdParams,
   ): Promise<OrderEntity | null> {
-    const { id, ...order } = await this.prismaService.order.findUnique({
+    const order = await this.prismaService.order.findUnique({
       where: {
         id: params.id,
       },

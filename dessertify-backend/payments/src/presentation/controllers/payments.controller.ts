@@ -1,9 +1,8 @@
 import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ConsumeMessage } from 'amqplib';
-import { CreateChargeDto } from '@/presentation/dtos/create-charge.dto';
 import { StripeService } from '@/infra/payments/stripe/stripe.service';
-import { CreateCustomerDto } from '@/presentation/dtos/create-customer.dto';
+import { CreateCustomerDto, CreateChargeDto } from '@/presentation/dtos';
 import { CreateCustomerUseCase } from '@/application/usecases';
 
 @Controller()
