@@ -10,12 +10,15 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const Joi = require("joi");
-const payments_controller_1 = require("./presentation/controllers/payments.controller");
 const payments_service_1 = require("./payments.service");
 const prisma_module_1 = require("./infra/database/prisma.module");
 const rabbitmq_module_1 = require("./infra/messaging/rabbitmq/rabbitmq.module");
 const stripe_module_1 = require("./infra/payments/stripe/stripe.module");
-const payments_intent_stripe_webhook_controller_1 = require("./presentation/controllers/webhooks/stripe/payments-intent-stripe-webhook.controller");
+const controllers_1 = require("./presentation/controllers");
+const usecases_1 = require("./application/usecases");
+const services_1 = require("./domain/services");
+const repositories_1 = require("./infra/repositories");
+const repositories_2 = require("./domain/repositories");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -33,9 +36,22 @@ exports.AppModule = AppModule = __decorate([
                     STRIPE_SECRET_KEY: Joi.string().required(),
                 }),
             }),
+            prisma_module_1.PrismaModule,
         ],
-        controllers: [payments_controller_1.PaymentsController, payments_intent_stripe_webhook_controller_1.PaymentsIntentsStripeWebhook],
-        providers: [payments_service_1.PaymentsService, prisma_module_1.PrismaModule, payments_controller_1.PaymentsController],
+        controllers: [controllers_1.PaymentsController, controllers_1.PaymentsIntentsStripeWebhook],
+        providers: [
+            payments_service_1.PaymentsService,
+            controllers_1.PaymentsController,
+            { provide: usecases_1.CreateCustomerUseCase, useClass: usecases_1.CreateCustomerUseCaseImpl },
+            {
+                provide: services_1.CustomersService,
+                useClass: services_1.CustomersServiceImpl,
+            },
+            {
+                provide: repositories_2.CustomersRepository,
+                useClass: repositories_1.PrismaCustomersRepository,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

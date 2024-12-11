@@ -4,10 +4,7 @@ import {
   OrderItemEntity,
   RawBaseOrderItem,
 } from '@/domain/entities/order-item.entity';
-import {
-  BadRequestException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { UnprocessableEntityException } from '@nestjs/common';
 
 export const OrderStatus = {
   PENDING: 'PENDING',
@@ -27,7 +24,7 @@ export interface IOrderProps {
   updatedAt?: Date;
 }
 
-export interface RawOrder {
+export interface IRawOrder {
   id: string;
   customerId: string;
   items: RawBaseOrderItem[];
@@ -57,7 +54,7 @@ export class OrderEntity extends Entity<IOrderProps> {
     return instance;
   }
 
-  public raw(): RawOrder {
+  public raw(): IRawOrder {
     return {
       id: this.id,
       customerId: this.customerId,

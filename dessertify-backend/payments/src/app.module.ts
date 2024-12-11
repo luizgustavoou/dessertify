@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { PaymentsController } from '@/presentation/controllers/payments.controller';
 import { PaymentsService } from '@/payments.service';
 import { PrismaModule } from '@/infra/database/prisma.module';
 import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
 import { StripeModule } from '@/infra/payments/stripe/stripe.module';
-import { PaymentsIntentsStripeWebhook } from '@/presentation/controllers/webhooks/stripe/payments-intent-stripe-webhook.controller';
+import {
+  PaymentsIntentsStripeWebhook,
+  PaymentsController,
+} from '@/presentation/controllers';
+import {
+  CreateCustomerUseCase,
+  CreateCustomerUseCaseImpl,
+} from '@/application/usecases';
+import { CustomersService, CustomersServiceImpl } from '@/domain/services';
+import { PrismaCustomersRepository } from '@/infra/repositories';
+import { CustomersRepository } from '@/domain/repositories';
 
 @Module({
   imports: [
@@ -21,8 +30,21 @@ import { PaymentsIntentsStripeWebhook } from '@/presentation/controllers/webhook
         STRIPE_SECRET_KEY: Joi.string().required(),
       }),
     }),
+    PrismaModule,
   ],
   controllers: [PaymentsController, PaymentsIntentsStripeWebhook],
-  providers: [PaymentsService, PrismaModule, PaymentsController], // É necessário colocar o PaymentsController em providers para conseguir escutar as mensagens do RabbitMQ
+  providers: [
+    PaymentsService,
+    PaymentsController,
+    { provide: CreateCustomerUseCase, useClass: CreateCustomerUseCaseImpl },
+    {
+      provide: CustomersService,
+      useClass: CustomersServiceImpl,
+    },
+    {
+      provide: CustomersRepository,
+      useClass: PrismaCustomersRepository,
+    },
+  ], // É necessário colocar o PaymentsController em providers para conseguir escutar as mensagens do RabbitMQ
 })
 export class AppModule {}

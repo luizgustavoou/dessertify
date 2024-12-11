@@ -1,16 +1,10 @@
 import { Expose } from 'class-transformer';
-import {
-  IsEmail,
-  isEmail,
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateCustomerDto {
   @Expose()
   @IsUUID()
-  public id: string;
+  public authCustomerId: string;
 
   @IsEmail()
   public email: string;

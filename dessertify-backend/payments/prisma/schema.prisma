@@ -26,10 +26,21 @@ model Product {
 }
 
 model Order {
-  id        String    @id @default(uuid())
-  products  Product[]
-  customerId    String
-  total     Float
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String    @id @default(uuid())
+  products   Product[]
+  customerId String
+  total      Float
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Customer {
+  id             String @id @default(uuid())
+  email          String @unique
+  firstName      String
+  lastName       String
+  authCustomerId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

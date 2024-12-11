@@ -4,10 +4,14 @@ import { ConsumeMessage } from 'amqplib';
 import { CreateChargeDto } from '@/presentation/dtos/create-charge.dto';
 import { StripeService } from '@/infra/payments/stripe/stripe.service';
 import { CreateCustomerDto } from '@/presentation/dtos/create-customer.dto';
+import { CreateCustomerUseCase } from '@/application/usecases';
 
 @Controller()
 export class PaymentsController {
-  constructor(private readonly stripeService: StripeService) {}
+  constructor(
+    private readonly stripeService: StripeService,
+    private readonly createCustomerUseCase: CreateCustomerUseCase,
+  ) {}
   @Post()
   testeStripe() {
     return this.stripeService.createPaymentIntent(200);
@@ -21,8 +25,7 @@ export class PaymentsController {
   public async customerCreatedEventHandler(
     @RabbitPayload() msg: CreateCustomerDto,
   ) {
-    console.log('[customerCreatedEventHandler]');
-    console.log(`Received message: ${JSON.stringify(msg)}`);
+    await this.createCustomerUseCase.execute(msg);
   }
 
   @RabbitSubscribe({

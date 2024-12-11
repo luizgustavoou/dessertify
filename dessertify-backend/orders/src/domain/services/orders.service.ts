@@ -2,7 +2,7 @@ import { CreateOrderDto } from '@/presentation/dtos/create-order.dto';
 import {
   OrderEntity,
   OrderStatus,
-  RawOrder,
+  IRawOrder,
 } from '@/domain/entities/order.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
@@ -11,9 +11,9 @@ import { UpdateOrderDto } from '@/presentation/dtos/update-order.dto';
 import { FindManyOrdersQueryDto } from '@/presentation/dtos/find-many-orders.dto';
 
 export abstract class OrderService {
-  abstract createOrder(params: CreateOrderDto): Promise<RawOrder>;
-  abstract updateOrder(id: string, params: UpdateOrderDto): Promise<RawOrder>;
-  abstract findManyOrders(params: FindManyOrdersQueryDto): Promise<RawOrder[]>;
+  abstract createOrder(params: CreateOrderDto): Promise<IRawOrder>;
+  abstract updateOrder(id: string, params: UpdateOrderDto): Promise<IRawOrder>;
+  abstract findManyOrders(params: FindManyOrdersQueryDto): Promise<IRawOrder[]>;
 }
 
 @Injectable()
@@ -23,7 +23,7 @@ export class OrderServiceImpl implements OrderService {
     private readonly productsRepository: ProductsRepository,
   ) {}
 
-  async updateOrder(id: string, params: UpdateOrderDto): Promise<RawOrder> {
+  async updateOrder(id: string, params: UpdateOrderDto): Promise<IRawOrder> {
     const order = await this.ordersRepository.findOneById({
       id,
     });
@@ -65,7 +65,7 @@ export class OrderServiceImpl implements OrderService {
     return order.raw();
   }
 
-  async createOrder(params: CreateOrderDto): Promise<RawOrder> {
+  async createOrder(params: CreateOrderDto): Promise<IRawOrder> {
     const itemsWithDomainProduct = await Promise.all(
       params.items.map(async (item) => {
         const product = await this.productsRepository.findOneById({
@@ -97,7 +97,7 @@ export class OrderServiceImpl implements OrderService {
     return savedOrder.raw();
   }
 
-  async findManyOrders(params: FindManyOrdersQueryDto): Promise<RawOrder[]> {
+  async findManyOrders(params: FindManyOrdersQueryDto): Promise<IRawOrder[]> {
     const orders = await this.ordersRepository.findManyOrders(params);
 
     return orders.map((order) => order.raw());
