@@ -1,12 +1,16 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
 @Injectable()
 export class StripeService {
   private readonly stripe: Stripe;
 
-  constructor() {
-    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  constructor(private readonly configService: ConfigService) {
+    const STRIPE_SECRET_KEY =
+      this.configService.getOrThrow<string>('STRIPE_SECRET_KEY');
+
+    this.stripe = new Stripe(STRIPE_SECRET_KEY);
   }
 
   public async createPaymentIntent(
