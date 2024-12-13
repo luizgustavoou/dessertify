@@ -11,9 +11,9 @@ import { Injectable } from '@nestjs/common';
 export class PrismaAuthRepository implements AuthRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createCustomer(params: ICreateCustomerParams): Promise<CustomerEntity> {
-    const newCustomer = await this.prismaService.customer.create({
-      data: {
+  async createCustomer(params: CustomerEntity): Promise<CustomerEntity> {
+    const newCustomer = await this.prismaService.customer.upsert({
+      create: {
         email: params.email,
         firstName: params.firstName,
         lastName: params.lastName,
@@ -23,12 +23,25 @@ export class PrismaAuthRepository implements AuthRepository {
           },
         },
       },
+      update: {
+        email: params.email,
+        firstName: params.firstName,
+        lastName: params.lastName,
+        customerAuth: {
+          update: {
+            password: params.password,
+          },
+        },
+      },
+      where: {
+        id: params.id,
+      },
       include: {
         customerAuth: true,
       },
     });
 
-    return new CustomerEntity({
+    return CustomerEntity.create({
       ...newCustomer,
       password: newCustomer.customerAuth.password,
     });
@@ -46,11 +59,12 @@ export class PrismaAuthRepository implements AuthRepository {
       },
     });
 
-    return customer
-      ? new CustomerEntity({
-          ...customer,
-          password: customer.customerAuth.password,
-        })
-      : null;
+    return (
+      customer &&
+      CustomerEntity.create({
+        ...customer,
+        password: customer.customerAuth.password,
+      })
+    );
   }
 }

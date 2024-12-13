@@ -1,4 +1,7 @@
-import { CustomerEntity } from '@/domain/entities/customer.entity';
+import {
+  CustomerEntity,
+  IRawCustomer,
+} from '@/domain/entities/customer.entity';
 import { CustomerCreatedEvent } from '@/domain/events/customer-created.event';
 import { AuthService } from '@/domain/services/auth.service';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
@@ -6,7 +9,7 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 
 export abstract class SignupUseCase {
-  abstract execute(params: SignupParamsDto): Promise<CustomerEntity>;
+  abstract execute(params: SignupParamsDto): Promise<IRawCustomer>;
 
   abstract teste(): Promise<void>;
 }
@@ -26,8 +29,8 @@ export class SignupUseCaseImpl implements SignupUseCase {
     // );
   }
 
-  async execute(params: SignupParamsDto): Promise<CustomerEntity> {
-    const customer = await this.authService.signup(params);
+  async execute(params: SignupParamsDto): Promise<IRawCustomer> {
+    const customer = await this.authService.registerCustomer(params);
 
     await this.amqpConnection.publish(
       'customers-topic-exchange',

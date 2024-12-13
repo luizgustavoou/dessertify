@@ -13,6 +13,7 @@ export interface IRawCustomer {
   email: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   authCustomerId: string;
 }
 
@@ -33,6 +34,7 @@ export class CustomerEntity extends Entity<ICustomerProps> {
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,
+      fullName: this.fullName,
       authCustomerId: this.authCustomerId,
     };
   }

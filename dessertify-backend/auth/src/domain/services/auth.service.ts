@@ -7,13 +7,31 @@ import {
 import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
-import { CustomerEntity } from '@/domain/entities/customer.entity';
+import {
+  CustomerEntity,
+  IRawCustomer,
+} from '@/domain/entities/customer.entity';
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 
-export abstract class AuthService {
-  abstract signup(params: SignupParamsDto): Promise<CustomerEntity>;
+export interface IRegisterCustomerParams {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
 
-  abstract signin(params: SigninParamsDto): Promise<CustomerEntity>;
+export interface ICheckCredentialsParams {
+  email: string;
+  password: string;
+}
+export abstract class AuthService {
+  abstract registerCustomer(
+    params: IRegisterCustomerParams,
+  ): Promise<IRawCustomer>;
+
+  abstract checkCredentials(
+    params: ICheckCredentialsParams,
+  ): Promise<IRawCustomer>;
 }
 
 @Injectable()
@@ -23,7 +41,9 @@ export class AuthServiceImpl implements AuthService {
     private readonly hashProvider: HashProvider,
   ) {}
 
-  async signup(params: SignupParamsDto): Promise<CustomerEntity> {
+  async registerCustomer(
+    params: IRegisterCustomerParams,
+  ): Promise<IRawCustomer> {
     const customer = await this.authRepository.findOneCustomerByEmail({
       email: params.email,
     });
@@ -36,15 +56,21 @@ export class AuthServiceImpl implements AuthService {
       content: params.password,
     });
 
-    const newCustomer = await this.authRepository.createCustomer({
-      ...params,
+    const newCustomer = CustomerEntity.create({
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName,
       password: hashPassword,
     });
 
-    return newCustomer;
+    const customerSaved = await this.authRepository.createCustomer(newCustomer);
+
+    return customerSaved.raw();
   }
 
-  async signin(params: SigninParamsDto): Promise<CustomerEntity> {
+  async checkCredentials(
+    params: ICheckCredentialsParams,
+  ): Promise<IRawCustomer> {
     const customer = await this.authRepository.findOneCustomerByEmail({
       email: params.email,
     });
@@ -57,6 +83,6 @@ export class AuthServiceImpl implements AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    return customer;
+    return customer.raw();
   }
 }

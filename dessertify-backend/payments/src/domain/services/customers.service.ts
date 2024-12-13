@@ -1,17 +1,17 @@
 import { CreateCustomerDto } from '@/presentation/dtos';
-import { CustomerEntity, ICustomerProps } from '@/domain/entities';
+import { CustomerEntity, IRawCustomer } from '@/domain/entities';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CustomersRepository } from '@/domain/repositories';
 
 export abstract class CustomersService {
-  abstract createCustomer(params: CreateCustomerDto): Promise<ICustomerProps>;
+  abstract createCustomer(params: CreateCustomerDto): Promise<IRawCustomer>;
 }
 
 @Injectable()
 export class CustomersServiceImpl implements CustomersService {
   constructor(private readonly customersRepository: CustomersRepository) {}
 
-  async createCustomer(params: CreateCustomerDto): Promise<ICustomerProps> {
+  async createCustomer(params: CreateCustomerDto): Promise<IRawCustomer> {
     const customer = await this.customersRepository.findByEmail(params.email);
 
     if (customer) {

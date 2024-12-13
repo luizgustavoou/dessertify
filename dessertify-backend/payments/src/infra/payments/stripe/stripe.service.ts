@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
+
 @Injectable()
 export class StripeService {
   private readonly stripe: Stripe;
@@ -36,9 +37,11 @@ export class StripeService {
   public async createCustomer(params: {
     id: string;
     email: string;
+    name: string;
   }): Promise<Stripe.Customer> {
     const customer = await this.stripe.customers.create({
       email: params.email,
+      name: params.name,
       metadata: {
         customer_id: params.id,
       },

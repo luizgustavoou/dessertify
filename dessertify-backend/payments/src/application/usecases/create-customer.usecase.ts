@@ -1,5 +1,6 @@
 import { ICustomerProps } from '@/domain/entities';
 import { CustomersService } from '@/domain/services';
+import { StripeService } from '@/infra/payments/stripe/stripe.service';
 import { CreateCustomerDto } from '@/presentation/dtos';
 import { Injectable } from '@nestjs/common';
 
@@ -9,9 +10,20 @@ export abstract class CreateCustomerUseCase {
 
 @Injectable()
 export class CreateCustomerUseCaseImpl implements CreateCustomerUseCase {
-  constructor(private readonly customersService: CustomersService) {}
+  constructor(
+    private readonly customersService: CustomersService,
+    private readonly stripeService: StripeService,
+  ) {}
 
-  execute(params: CreateCustomerDto): Promise<ICustomerProps> {
-    return this.customersService.createCustomer(params);
+  async execute(params: CreateCustomerDto): Promise<ICustomerProps> {
+    const customer = await this.customersService.createCustomer(params);
+
+    await this.stripeService.createCustomer({
+      id: customer.id,
+      email: customer.email,
+      name: `${customer.firstName} ${customer.lastName}`,
+    });
+
+    return customer;
   }
 }

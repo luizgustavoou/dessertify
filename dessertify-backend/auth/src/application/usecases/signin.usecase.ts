@@ -26,7 +26,7 @@ export class SigninUseCaseImpl implements SigninUseCase {
   ) {}
 
   async execute(params: TSigninUseCaseParams): Promise<TSigninUseCaseResponse> {
-    const customer = await this.authService.signin(params);
+    const customer = await this.authService.checkCredentials(params);
 
     const payload: ITokenPayload = {
       sub: customer.id,
