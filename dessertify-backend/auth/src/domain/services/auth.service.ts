@@ -5,14 +5,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
-import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
-import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
 import {
   CustomerEntity,
   IRawCustomer,
 } from '@/domain/entities/customer.entity';
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 
+// TODO: Refatorarm pois a autenticação não é responsabilidade do domínio, mas sim da aplicação
 export interface IRegisterCustomerParams {
   email: string;
   password: string;
