@@ -32,6 +32,7 @@ model Order {
   total      Float
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  paid       Boolean   @default(false)
 }
 
 model Customer {
@@ -39,7 +40,7 @@ model Customer {
   email          String @unique
   firstName      String
   lastName       String
-  authCustomerId String
+  authCustomerId String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -15,6 +15,10 @@ import { ConfigService } from '@nestjs/config';
             name: 'orders-topic-exchange',
             type: 'topic',
           },
+          {
+            name: 'payments-topic-exchange',
+            type: 'topic',
+          },
         ],
         uri: configService.get<string>('RABBITMQ_URL'),
         connectionInitOptions: { wait: false },

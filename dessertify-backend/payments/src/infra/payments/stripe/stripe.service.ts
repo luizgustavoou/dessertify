@@ -2,6 +2,15 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
+export type CreatePaymentIntentParams = {
+  amount: number;
+  orderId: string;
+};
+
+export type AttachPaymentMethodToCustomerParams = {
+  paymentMethodId: string;
+  stripeCustomerId: string;
+};
 
 @Injectable()
 export class StripeService {
@@ -15,23 +24,51 @@ export class StripeService {
   }
 
   public async createPaymentIntent(
-    amount: number,
+    params: CreatePaymentIntentParams,
   ): Promise<Stripe.PaymentIntent> {
+    // JEITO 1:
     // const paymentMethod = await this.stripe.paymentMethods.create({
     //   type: 'card',
     //   card,
     // });
 
+    // const paymentIntent = await this.stripe.paymentIntents.create({
+    //   payment_method: paymentMethod.id,
+    //   amount: params.amount,
+    //   confirm: true,
+    //   currency: 'brl',
+    //   metadata: {
+    //     order_id: params.orderId,
+    //   },
+    // });
+
+    // JEITO 2:
+
     const paymentIntent = await this.stripe.paymentIntents.create({
-      // payment_method: paymentMethod.id,
-      amount: amount * 100,
+      amount: params.amount,
       confirm: true,
       payment_method: 'pm_card_visa',
       payment_method_types: ['card'],
       currency: 'brl',
+      metadata: {
+        order_id: params.orderId,
+      },
     });
 
     return paymentIntent;
+  }
+
+  public async attachPaymentMethodToCustomer(
+    params: AttachPaymentMethodToCustomerParams,
+  ): Promise<Stripe.Response<Stripe.PaymentMethod>> {
+    const paymentMethodAtached = await this.stripe.paymentMethods.attach(
+      params.paymentMethodId,
+      {
+        customer: params.stripeCustomerId,
+      },
+    );
+
+    return paymentMethodAtached;
   }
 
   public async createCustomer(params: {

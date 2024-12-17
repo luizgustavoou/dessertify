@@ -16,6 +16,7 @@ import {
 import { CustomersService, CustomersServiceImpl } from '@/domain/services';
 import { PrismaCustomersRepository } from '@/infra/repositories';
 import { CustomersRepository } from '@/domain/repositories';
+import { ProcessOrderUseCase, ProcessOrderUseCaseImpl } from '@/application/usecases/process-order.usecase';
 
 @Module({
   imports: [
@@ -45,6 +46,10 @@ import { CustomersRepository } from '@/domain/repositories';
       provide: CustomersRepository,
       useClass: PrismaCustomersRepository,
     },
+    {
+      provide: ProcessOrderUseCase,
+      useClass: ProcessOrderUseCaseImpl,
+    }
   ], // É necessário colocar o PaymentsController em providers para conseguir escutar as mensagens do RabbitMQ
 })
 export class AppModule {}

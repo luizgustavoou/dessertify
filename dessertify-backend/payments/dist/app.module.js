@@ -19,6 +19,7 @@ const usecases_1 = require("./application/usecases");
 const services_1 = require("./domain/services");
 const repositories_1 = require("./infra/repositories");
 const repositories_2 = require("./domain/repositories");
+const process_order_usecase_1 = require("./application/usecases/process-order.usecase");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -51,6 +52,10 @@ exports.AppModule = AppModule = __decorate([
                 provide: repositories_2.CustomersRepository,
                 useClass: repositories_1.PrismaCustomersRepository,
             },
+            {
+                provide: process_order_usecase_1.ProcessOrderUseCase,
+                useClass: process_order_usecase_1.ProcessOrderUseCaseImpl,
+            }
         ],
     })
 ], AppModule);
