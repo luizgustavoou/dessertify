@@ -67,7 +67,7 @@ export class OrdersController {
   }
 
   @RabbitSubscribe({
-    exchange: 'payments-topic-exchange',
+    exchange: 'payments-topic-exchange',g
     routingKey: 'orders.paid',
     queue: 'payments.order_paid',
   })
