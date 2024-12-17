@@ -68,6 +68,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             })),
           },
         },
+        paid: params.paid,
       },
       create: {
         customerId: params.customerId,
@@ -80,6 +81,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             })),
           },
         },
+        paid: params.paid,
       },
       include: {
         items: {

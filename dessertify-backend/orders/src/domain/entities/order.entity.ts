@@ -20,6 +20,7 @@ export interface IOrderProps {
   customerId: string;
   items: IBaseOrderItemProps[];
   status: OrderStatus;
+  paid?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -28,7 +29,9 @@ export interface IRawOrder {
   id: string;
   customerId: string;
   items: RawBaseOrderItem[];
+  total: number;
   status: OrderStatus;
+  paid: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -51,6 +54,8 @@ export class OrderEntity extends Entity<IOrderProps> {
     const instance = new OrderEntity(props);
 
     instance.items = props.items;
+    instance.paid = false;
+    
     return instance;
   }
 
@@ -61,7 +66,9 @@ export class OrderEntity extends Entity<IOrderProps> {
       items: this.items.map((item) => item.raw()),
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
+      total: this.total,
       status: this.status,
+      paid: this.paid,
     };
   }
 
@@ -97,11 +104,26 @@ export class OrderEntity extends Entity<IOrderProps> {
     return this.props.updatedAt;
   }
 
+  get total(): number {
+    return this.items.reduce(
+      (acc, item) => acc + item.quantity * item.product.price,
+      0,
+    );
+  }
+
+  get paid(): boolean {
+    return this.props.paid;
+  }
+
   set status(status: OrderStatus) {
     this.props.status = status;
   }
 
   set customerId(customerId: string) {
     this.props.customerId = customerId;
+  }
+
+  set paid(paid: boolean) {
+    this.props.paid = paid;
   }
 }

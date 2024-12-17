@@ -20,6 +20,7 @@ import {
   SortingParam,
   SortingParams,
 } from '@/core/decorators/sorting-params.decorator';
+import { PaidOrderDto } from '@/presentation/dtos/paid-order.dto';
 
 @Controller()
 export class OrdersController {
@@ -63,5 +64,15 @@ export class OrdersController {
     sort?: SortingParam,
   ) {
     return await this.findManyOrdersUseCase.execute(findManyOrdersQueryDto);
+  }
+
+  @RabbitSubscribe({
+    exchange: 'payments-topic-exchange',
+    routingKey: 'orders.paid',
+    queue: 'payments.order_paid',
+  })
+  public async orderPaidEventHandler(@RabbitPayload() msg: PaidOrderDto) {
+    console.log('[orderPaidEventHandler]');
+    console.log('Received message: ', msg);
   }
 }

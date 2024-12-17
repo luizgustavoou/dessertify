@@ -27,15 +27,12 @@ export class CreateOrderUseCaseImpl implements CreateOrderUseCase {
   async execute(params: TCreateOrderUseCaseParams): Promise<IRawOrder> {
     const order = await this.orderService.createOrder(params);
 
-    const cardDetails = new CardDetails('123', '4242424242424242');
+    // const cardDetails = new CardDetails('123', '4242424242424242');
 
     const createChargeEvent = new CreateChargeEvent(
-      cardDetails,
-      order.items.reduce(
-        (acc, item) => acc + item.quantity * item.product.price,
-        0,
-      ),
-      'luiz@gmail.com',
+      // cardDetails,
+      order.total,
+      order.customerId,
       order.id,
     );
 

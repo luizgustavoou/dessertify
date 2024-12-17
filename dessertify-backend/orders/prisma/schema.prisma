@@ -14,6 +14,7 @@ model Order {
   status     OrderStatus
   items      OrderItem[]
   customerId String
+  paid       Boolean   @default(false)
 }
 
 model OrderItem {
