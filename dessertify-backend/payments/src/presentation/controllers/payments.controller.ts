@@ -1,7 +1,8 @@
 import {
-  AmqpConnection,
+  defaultNackErrorHandler,
   Nack,
   RabbitPayload,
+  RabbitRPC,
   RabbitSubscribe,
 } from '@golevelup/nestjs-rabbitmq';
 import { Controller, Post } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { StripeService } from '@/infra/payments/stripe/stripe.service';
 import { CreateCustomerDto, CreateChargeDto } from '@/presentation/dtos';
 import { CreateCustomerUseCase } from '@/application/usecases';
 import { ProcessOrderUseCase } from '@/application/usecases/process-order.usecase';
+import { delay, from, lastValueFrom } from 'rxjs';
 
 @Controller()
 export class PaymentsController {
@@ -16,7 +18,6 @@ export class PaymentsController {
     private readonly stripeService: StripeService,
     private readonly createCustomerUseCase: CreateCustomerUseCase,
     private readonly processOrderUseCase: ProcessOrderUseCase,
-    private readonly amqpConnection: AmqpConnection,
   ) {}
   @Post()
   testeStripe() {
@@ -39,10 +40,11 @@ export class PaymentsController {
     await this.createCustomerUseCase.execute(msg);
   }
 
-  @RabbitSubscribe({
+  @RabbitRPC({
     exchange: 'orders-topic-exchange',
     routingKey: 'orders.created',
-    queue: 'payments.order_registration',
+    queue: 'rpc-payments.order_registration',
+    errorHandler: defaultNackErrorHandler,
   })
   public async orderCreatedEventHandler(@RabbitPayload() msg: CreateChargeDto) {
     console.log('[PAYMENTS - Order Created Event Handler]');
@@ -50,9 +52,12 @@ export class PaymentsController {
     try {
       const res = await this.processOrderUseCase.execute(msg);
 
-      return res.client_secret;
+      return { client_secret: res.client_secret };
     } catch (error) {
       console.log('error ', error.message);
+
+      return new Nack(false)
+
     }
   }
 }

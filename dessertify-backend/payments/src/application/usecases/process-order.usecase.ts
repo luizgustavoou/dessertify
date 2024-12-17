@@ -23,14 +23,14 @@ export class ProcessOrderUseCaseImpl implements ProcessOrderUseCase {
   async execute(
     params: CreateChargeDto,
   ): Promise<IProcessOrderUseCaseResponse> {
-    const customer = await this.customersRepository.findByAuthCustomerId(
-      params.customerId,
-    );
+    // const customer = await this.customersRepository.findByAuthCustomerId(
+    //   params.customerId,
+    // );
 
-    if (!customer) {
-      // TODO: Enviar um evento de cliente não encontrado
-      throw new Error('Customer not found');
-    }
+    // if (!customer) {
+    //   // TODO: Enviar um evento de cliente não encontrado
+    //   throw new Error('Customer not found');
+    // }
 
     const charge = await this.stripeService.createPaymentIntent({
       amount: params.amount,
