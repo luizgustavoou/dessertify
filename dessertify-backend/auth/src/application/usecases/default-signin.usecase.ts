@@ -1,8 +1,7 @@
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
 import { IRawCustomer } from '@/domain/entities/customer.entity';
-import { ITokenPayload } from '@/domain/interfaces/token-payload';
-import { AuthService } from '@/domain/services/auth.service';
+import { ITokenPayload } from '@/application/interfaces/token-payload';
 import {
   Injectable,
   NotFoundException,
@@ -10,18 +9,18 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-export abstract class SigninUseCase {
+export abstract class DefaultSigninUseCase {
   abstract execute(
-    params: TSigninUseCaseParams,
-  ): Promise<TSigninUseCaseResponse>;
+    params: TDefaultSigninUseCaseParams,
+  ): Promise<TDefaultSigninUseCaseResponse>;
 }
 
-export type TSigninUseCaseParams = {
+export type TDefaultSigninUseCaseParams = {
   email: string;
   password: string;
 };
 
-export type TSigninUseCaseResponse = {
+export type TDefaultSigninUseCaseResponse = {
   access_token: string;
 };
 
@@ -31,15 +30,14 @@ export interface ICheckCredentialsParams {
 }
 
 @Injectable()
-export class SigninUseCaseImpl implements SigninUseCase {
+export class DefaultSigninUseCaseImpl implements DefaultSigninUseCase {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly authService: AuthService,
     private readonly authRepository: AuthRepository,
     private readonly hashProvider: HashProvider,
   ) {}
 
-  async execute(params: TSigninUseCaseParams): Promise<TSigninUseCaseResponse> {
+  async execute(params: TDefaultSigninUseCaseParams): Promise<TDefaultSigninUseCaseResponse> {
     const customer = await this.checkCredentials(params);
 
     const payload: ITokenPayload = {

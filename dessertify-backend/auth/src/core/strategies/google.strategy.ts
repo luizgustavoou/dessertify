@@ -1,3 +1,4 @@
+import { GoogleSigninUseCase } from '@/application/usecases/google-signin.usecase';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -5,7 +6,10 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    private readonly googleSigninUseCase: GoogleSigninUseCase,
+  ) {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_SECRET'),
@@ -21,14 +25,17 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     refreshToken: string,
     profile: any,
   ) {
-    console.log({ profile });
-    console.log(profile.photos)
-    console.log(profile.emails)
+    console.log({
+      accessToken,
+      refreshToken,
+    });
 
-    return {
-      email: profile.emails[0].value,
-      name: profile.displayName,
-      photo: profile.photos[0].value,
-    }
+    console.log('profile', profile);
+
+    return this.googleSigninUseCase.execute({
+      email: profile.email,
+      firstName: profile.given_name,
+      lastName: profile.family_name,
+    });
   }
 }

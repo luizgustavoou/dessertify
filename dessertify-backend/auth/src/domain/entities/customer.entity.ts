@@ -7,6 +7,7 @@ export interface ICustomerProps {
   firstName: string;
   lastName: string;
   password: string;
+  registerType?: RegisterType;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -17,13 +18,22 @@ export interface IRawCustomer {
   firstName: string;
   lastName: string;
   fullName: string;
+  registerType: RegisterType;
   createdAt: Date;
   updatedAt: Date;
 }
 
+export const RegisterType = {
+  DEFAULT: 'DEFAULT',
+  GOOGLE: 'GOOGLE',
+};
+
+export type RegisterType = (typeof RegisterType)[keyof typeof RegisterType];
+
 export class CustomerEntity extends Entity<ICustomerProps> {
   constructor({ id, ...props }: ICustomerProps) {
     super(props, id);
+    this.registerType = props.registerType || RegisterType.DEFAULT;
   }
 
   public static create(props: ICustomerProps): CustomerEntity {
@@ -53,6 +63,7 @@ export class CustomerEntity extends Entity<ICustomerProps> {
       firstName: this.firstName,
       lastName: this.lastName,
       fullName: this.fullName,
+      registerType: this.registerType,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -80,6 +91,10 @@ export class CustomerEntity extends Entity<ICustomerProps> {
 
   public get fullName(): string {
     return `${this.props.firstName} ${this.props.lastName}`;
+  }
+
+  public get registerType(): RegisterType {
+    return this.props.registerType;
   }
 
   public get createdAt(): Date {
@@ -113,5 +128,9 @@ export class CustomerEntity extends Entity<ICustomerProps> {
     }
 
     this.props.lastName = lastName;
+  }
+
+  set registerType(registerType: RegisterType) {
+    this.props.registerType = registerType;
   }
 }

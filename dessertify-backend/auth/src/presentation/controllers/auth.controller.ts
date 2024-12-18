@@ -9,8 +9,8 @@ import {
 import { SigninParamsDto } from '@/presentation/dtos/signin.dto';
 import { SignupParamsDto } from '@/presentation/dtos/signup.dto';
 import { CurrentUser } from '@/core/decorators/current-user.decorator';
-import { ITokenPayload } from '@/domain/interfaces/token-payload';
-import { SigninUseCase } from '@/application/usecases/signin.usecase';
+import { ITokenPayload } from '@/application/interfaces/token-payload';
+import { DefaultSigninUseCase } from '@/application/usecases/default-signin.usecase';
 import { SignupUseCase } from '@/application/usecases/signup.usecase';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { AuthGuard, GoogleAuthGuard } from '@/core/guards';
@@ -19,7 +19,7 @@ import { AuthGuard, GoogleAuthGuard } from '@/core/guards';
 export class AuthController {
   constructor(
     private readonly signupUseCase: SignupUseCase,
-    private readonly signinUseCase: SigninUseCase,
+    private readonly signinUseCase: DefaultSigninUseCase,
     private readonly amqpConnection: AmqpConnection,
   ) {}
 

@@ -1,4 +1,4 @@
-import { ITokenPayload } from '@/domain/interfaces/token-payload';
+import { ITokenPayload } from '@/application/interfaces/token-payload';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const CurrentUser = createParamDecorator<

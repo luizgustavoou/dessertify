@@ -1,7 +1,6 @@
 import { CustomerEntity } from '@/domain/entities/customer.entity';
 import {
   AuthRepository,
-  ICreateCustomerParams,
   TFindOneCustomerByEmailParams,
 } from '@/domain/contracts/repositories/auth.repository';
 import { PrismaService } from '@/infra/database/prisma.service';
@@ -20,6 +19,7 @@ export class PrismaAuthRepository implements AuthRepository {
         customerAuth: {
           create: {
             password: params.password,
+            registerType: params.registerType as any,
           },
         },
       },
@@ -30,6 +30,7 @@ export class PrismaAuthRepository implements AuthRepository {
         customerAuth: {
           update: {
             password: params.password,
+            registerType: params.registerType as any,
           },
         },
       },
@@ -64,6 +65,7 @@ export class PrismaAuthRepository implements AuthRepository {
       CustomerEntity.create({
         ...customer,
         password: customer.customerAuth.password,
+        registerType: customer.customerAuth.registerType,
       })
     );
   }

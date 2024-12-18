@@ -10,9 +10,9 @@ import { PrismaModule } from '@/infra/database/prisma.module';
 import { AuthRepository } from '@/domain/contracts/repositories/auth.repository';
 import { PrismaAuthRepository } from '@/infra/repositories/auth.repository';
 import {
-  SigninUseCase,
-  SigninUseCaseImpl,
-} from '@/application/usecases/signin.usecase';
+  DefaultSigninUseCase,
+  DefaultSigninUseCaseImpl,
+} from '@/application/usecases/default-signin.usecase';
 import {
   SignupUseCase,
   SignupUseCaseImpl,
@@ -21,6 +21,10 @@ import { HashProvider } from '@/domain/contracts/providers/hash-provider.contrac
 import { BcryptHashProvider } from '@/infra/providers/bcrypt-hash.provider';
 import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
 import { GoogleStrategy } from '@/core/strategies/google.strategy';
+import {
+  GoogleSigninUseCase,
+  GoogleSigninUseCaseImpl,
+} from '@/application/usecases/google-signin.usecase';
 
 @Module({
   imports: [
@@ -89,8 +93,8 @@ import { GoogleStrategy } from '@/core/strategies/google.strategy';
       useClass: SignupUseCaseImpl,
     },
     {
-      provide: SigninUseCase,
-      useClass: SigninUseCaseImpl,
+      provide: DefaultSigninUseCase,
+      useClass: DefaultSigninUseCaseImpl,
     },
     {
       provide: AuthService,
@@ -99,6 +103,10 @@ import { GoogleStrategy } from '@/core/strategies/google.strategy';
     {
       provide: AuthRepository,
       useClass: PrismaAuthRepository,
+    },
+    {
+      provide: GoogleSigninUseCase,
+      useClass: GoogleSigninUseCaseImpl,
     },
     GoogleStrategy,
   ],
