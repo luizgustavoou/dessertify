@@ -43,10 +43,6 @@ export class AuthController {
   //   return await this.signupUseCase.teste();
   // }
 
-  @Get('teste')
-  async teste() {
-    return await this.signupUseCase.teste();
-  }
 
   @UseGuards(AuthGuard)
   @Get('profile')

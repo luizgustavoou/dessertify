@@ -23,7 +23,7 @@ export interface IRegisterCustomerParams {
 export abstract class AuthService {
   abstract registerCustomer(
     params: IRegisterCustomerParams,
-  ): Promise<IRawCustomer>;
+  ): Promise<CustomerEntity>;
 }
 
 @Injectable()
@@ -35,7 +35,7 @@ export class AuthServiceImpl implements AuthService {
 
   async registerCustomer(
     params: IRegisterCustomerParams,
-  ): Promise<IRawCustomer> {
+  ): Promise<CustomerEntity> {
     const customer = await this.authRepository.findOneCustomerByEmail({
       email: params.email,
     });
@@ -57,7 +57,7 @@ export class AuthServiceImpl implements AuthService {
 
     const customerSaved = await this.authRepository.createCustomer(newCustomer);
 
-    return customerSaved.raw();
+    return customerSaved;
   }
 
 }

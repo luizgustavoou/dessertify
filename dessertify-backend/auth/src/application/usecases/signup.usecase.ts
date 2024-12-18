@@ -9,9 +9,7 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 
 export abstract class SignupUseCase {
-  abstract execute(params: SignupParamsDto): Promise<IRawCustomer>;
-
-  abstract teste(): Promise<void>;
+  abstract execute(params: SignupParamsDto): Promise<CustomerEntity>;
 }
 
 @Injectable()
@@ -21,15 +19,7 @@ export class SignupUseCaseImpl implements SignupUseCase {
     private readonly amqpConnection: AmqpConnection,
   ) {}
 
-  async teste(): Promise<void> {
-    // await this.amqpConnection.publish(
-    //   'customers-topic-exchange',
-    //   'customers.created',
-    //   new CustomerCreatedEvent(randomUUID(), 'john@gmail.com', 'John', 'Doe'),
-    // );
-  }
-
-  async execute(params: SignupParamsDto): Promise<IRawCustomer> {
+  async execute(params: SignupParamsDto): Promise<CustomerEntity> {
     const customer = await this.authService.registerCustomer(params);
 
     await this.amqpConnection.publish(

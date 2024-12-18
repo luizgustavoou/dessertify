@@ -6,6 +6,7 @@ import {
 import { ITokenPayload } from '@/application/interfaces/token-payload';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { SignupUseCase } from '@/application/usecases/signup.usecase';
 
 export abstract class GoogleSigninUseCase {
   abstract execute(
@@ -28,6 +29,7 @@ export class GoogleSigninUseCaseImpl implements GoogleSigninUseCase {
   constructor(
     private readonly jwtService: JwtService,
     private readonly authRepository: AuthRepository,
+    private readonly signupUseCase: SignupUseCase,
   ) {}
 
   async execute(
@@ -38,14 +40,12 @@ export class GoogleSigninUseCaseImpl implements GoogleSigninUseCase {
     });
 
     if (!customer) {
-      customer = CustomerEntity.create({
+      customer = await this.signupUseCase.execute({
         email: params.email,
         firstName: params.firstName,
         lastName: params.lastName,
         password: '',
-        registerType: RegisterType.GOOGLE,
       });
-
       await this.authRepository.createCustomer(customer);
     }
 
