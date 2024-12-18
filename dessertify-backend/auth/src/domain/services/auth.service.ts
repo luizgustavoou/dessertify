@@ -19,17 +19,10 @@ export interface IRegisterCustomerParams {
   lastName: string;
 }
 
-export interface ICheckCredentialsParams {
-  email: string;
-  password: string;
-}
+
 export abstract class AuthService {
   abstract registerCustomer(
     params: IRegisterCustomerParams,
-  ): Promise<IRawCustomer>;
-
-  abstract checkCredentials(
-    params: ICheckCredentialsParams,
   ): Promise<IRawCustomer>;
 }
 
@@ -67,21 +60,4 @@ export class AuthServiceImpl implements AuthService {
     return customerSaved.raw();
   }
 
-  async checkCredentials(
-    params: ICheckCredentialsParams,
-  ): Promise<IRawCustomer> {
-    const customer = await this.authRepository.findOneCustomerByEmail({
-      email: params.email,
-    });
-
-    if (!customer) {
-      throw new NotFoundException('Customer not found');
-    }
-
-    if (!customer.isPasswordValid(params.password, this.hashProvider)) {
-      throw new UnauthorizedException('Invalid password');
-    }
-
-    return customer.raw();
-  }
 }

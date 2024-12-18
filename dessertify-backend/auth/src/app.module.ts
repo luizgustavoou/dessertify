@@ -20,6 +20,7 @@ import {
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 import { BcryptHashProvider } from '@/infra/providers/bcrypt-hash.provider';
 import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
+import { GoogleStrategy } from '@/core/strategies/google.strategy';
 
 @Module({
   imports: [
@@ -31,6 +32,9 @@ import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
         RABBITMQ_URL: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        GOOGLE_CLIENT_ID: Joi.string().required(),
+        GOOGLE_SECRET: Joi.string().required(),
+        callbackURL: Joi.string().required(),
       }),
     }),
     JwtModule.registerAsync({
@@ -96,6 +100,7 @@ import { RabbitMqModule } from '@/infra/messaging/rabbitmq/rabbitmq.module';
       provide: AuthRepository,
       useClass: PrismaAuthRepository,
     },
+    GoogleStrategy,
   ],
 })
 export class AppModule {}
