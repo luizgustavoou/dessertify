@@ -70,6 +70,14 @@ export class OrderEntity extends Entity<IOrderProps> {
     };
   }
 
+  public paid(): void {
+    if (this.status != OrderStatus.WAITING_PAYMENT) {
+      throw new UnprocessableEntityException('Order is already paid');
+    }
+
+    this.status = OrderStatus.PENDING;
+  }
+
   set items(items: IBaseOrderItemProps[]) {
     this._items = [];
 

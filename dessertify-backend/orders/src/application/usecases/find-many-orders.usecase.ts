@@ -1,5 +1,5 @@
+import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
 import { IRawOrder } from '@/domain/entities/order.entity';
-import { OrderService } from '@/domain/services';
 import { FindManyOrdersQueryDto } from '@/presentation/dtos';
 import { Injectable } from '@nestjs/common';
 
@@ -9,11 +9,11 @@ export abstract class FindManyOrdersUseCase {
 
 @Injectable()
 export class FindManyOrdersUseCaseImpl implements FindManyOrdersUseCase {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute(params: FindManyOrdersQueryDto): Promise<IRawOrder[]> {
-    const order = await this.orderService.findManyOrders(params);
+    const orders = await this.ordersRepository.findManyOrders(params);
 
-    return order;
+    return orders.map((order) => order.raw());
   }
 }

@@ -9,7 +9,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { CustomerCreatedDto } from '@/presentation/dtos/customer-created.dto';
 import { CreateOrderDto } from '@/presentation/dtos/create-order.dto';
 import { CreateOrderUseCase } from '@/application/usecases/create-order.usecase';
 import { UpdateOrderDto } from '@/presentation/dtos/update-order.dto';
@@ -21,6 +20,7 @@ import {
   SortingParams,
 } from '@/core/decorators/sorting-params.decorator';
 import { PaidOrderDto } from '@/presentation/dtos/paid-order.dto';
+import { MarkOrderAsPaidUseCase } from '@/application/usecases/mark-order-as-paid.usecase';
 
 @Controller()
 export class OrdersController {
@@ -28,6 +28,7 @@ export class OrdersController {
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly updateOrderUseCase: UpdateOrderUseCase,
     private readonly findManyOrdersUseCase: FindManyOrdersUseCase,
+    private readonly markOrderAsPaidUseCase: MarkOrderAsPaidUseCase,
   ) {}
 
   // @RabbitSubscribe({
@@ -46,7 +47,7 @@ export class OrdersController {
 
   @Post('')
   public async createOrder(@Body() createOrderDto: CreateOrderDto) {
-    return await this.createOrderUseCase.execute(createOrderDto);
+    return this.createOrderUseCase.execute(createOrderDto);
   }
 
   @Put(':id')
@@ -54,7 +55,7 @@ export class OrdersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() createOrderDto: UpdateOrderDto,
   ) {
-    return await this.updateOrderUseCase.execute(id, createOrderDto);
+    return this.updateOrderUseCase.execute(id, createOrderDto);
   }
 
   @Get('')
@@ -63,7 +64,7 @@ export class OrdersController {
     @SortingParams(['name', 'createdAt', 'updatedAt'])
     sort?: SortingParam,
   ) {
-    return await this.findManyOrdersUseCase.execute(findManyOrdersQueryDto);
+    return this.findManyOrdersUseCase.execute(findManyOrdersQueryDto);
   }
 
   @RabbitSubscribe({
@@ -74,5 +75,7 @@ export class OrdersController {
   public async orderPaidEventHandler(@RabbitPayload() msg: PaidOrderDto) {
     console.log('[orderPaidEventHandler]');
     console.log('Received message: ', msg);
+
+    this.markOrderAsPaidUseCase.execute({ orderId: msg.orderId });
   }
 }

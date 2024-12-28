@@ -28,6 +28,10 @@ import {
   FindManyOrdersUseCase,
   FindManyOrdersUseCaseImpl,
 } from '@/application/usecases/find-many-orders.usecase';
+import {
+  MarkOrderAsPaidUseCase,
+  MarkOrderAsPaidUseCaseImpl,
+} from '@/application/usecases/mark-order-as-paid.usecase';
 
 @Module({
   imports: [
@@ -69,6 +73,10 @@ import {
     {
       provide: UpdateOrderUseCase,
       useClass: UpdateOrderUseCaseImpl,
+    },
+    {
+      provide: MarkOrderAsPaidUseCase,
+      useClass: MarkOrderAsPaidUseCaseImpl,
     },
   ],
 })
