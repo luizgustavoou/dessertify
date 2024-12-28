@@ -25,13 +25,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     refreshToken: string,
     profile: any,
   ) {
-    console.log({
-      accessToken,
-      refreshToken,
-    });
-
-    console.log('profile', profile);
-
     return this.googleSigninUseCase.execute({
       email: profile.email,
       firstName: profile.given_name,

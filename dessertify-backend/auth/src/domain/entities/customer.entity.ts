@@ -1,12 +1,16 @@
 import { HashProvider } from '@/domain/contracts/providers/hash-provider.contract';
 import { Entity } from '@/domain/entities/entity';
 
+export const RegisterType = {
+  DEFAULT: 'DEFAULT',
+  GOOGLE: 'GOOGLE',
+};
 export interface ICustomerProps {
   id?: string;
   email: string;
   firstName: string;
   lastName: string;
-  password: string;
+  password?: string | null;
   registerType?: RegisterType;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,15 +22,9 @@ export interface IRawCustomer {
   firstName: string;
   lastName: string;
   fullName: string;
-  registerType: RegisterType;
   createdAt: Date;
   updatedAt: Date;
 }
-
-export const RegisterType = {
-  DEFAULT: 'DEFAULT',
-  GOOGLE: 'GOOGLE',
-};
 
 export type RegisterType = (typeof RegisterType)[keyof typeof RegisterType];
 
@@ -49,8 +47,8 @@ export class CustomerEntity extends Entity<ICustomerProps> {
     const hashPassword = await hashProvider.hash({ content: password });
 
     const compare = await hashProvider.compare({
-      password: this.props.password,
-      hashPassword,
+      value: this.props.password,
+      hashValue: hashPassword,
     });
 
     return compare;
@@ -63,7 +61,6 @@ export class CustomerEntity extends Entity<ICustomerProps> {
       firstName: this.firstName,
       lastName: this.lastName,
       fullName: this.fullName,
-      registerType: this.registerType,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -85,7 +82,7 @@ export class CustomerEntity extends Entity<ICustomerProps> {
     return this.props.lastName;
   }
 
-  public get password(): string {
+  public get password(): string | null {
     return this.props.password;
   }
 

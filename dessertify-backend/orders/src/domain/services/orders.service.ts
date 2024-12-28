@@ -85,7 +85,7 @@ export class OrderServiceImpl implements OrderService {
 
     const order = OrderEntity.create({
       customerId: params.customerId,
-      status: OrderStatus.PENDING,
+      status: OrderStatus.WAITING_PAYMENT,
       items: itemsWithDomainProduct.map((item) => ({
         product: item.product,
         quantity: item.quantity,

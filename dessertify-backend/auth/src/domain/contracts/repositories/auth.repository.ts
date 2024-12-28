@@ -4,7 +4,7 @@ import {
 } from '@/domain/entities/customer.entity';
 
 export abstract class AuthRepository {
-  abstract createCustomer(params: CustomerEntity): Promise<CustomerEntity>;
+  abstract saveCustomer(params: CustomerEntity): Promise<CustomerEntity>;
   abstract findOneCustomerByEmail(
     params: TFindOneCustomerByEmailParams,
   ): Promise<CustomerEntity | null>;

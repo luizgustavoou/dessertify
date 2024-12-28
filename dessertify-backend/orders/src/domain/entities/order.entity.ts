@@ -7,6 +7,7 @@ import {
 import { UnprocessableEntityException } from '@nestjs/common';
 
 export const OrderStatus = {
+  WAITING_PAYMENT: 'WAITING_PAYMENT',
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
   DELIVERED: 'DELIVERED',
@@ -20,7 +21,6 @@ export interface IOrderProps {
   customerId: string;
   items: IBaseOrderItemProps[];
   status: OrderStatus;
-  paid?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -31,7 +31,6 @@ export interface IRawOrder {
   items: RawBaseOrderItem[];
   total: number;
   status: OrderStatus;
-  paid: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -54,8 +53,8 @@ export class OrderEntity extends Entity<IOrderProps> {
     const instance = new OrderEntity(props);
 
     instance.items = props.items;
-    instance.paid = false;
-    
+    instance.status = OrderStatus.WAITING_PAYMENT;
+
     return instance;
   }
 
@@ -68,7 +67,6 @@ export class OrderEntity extends Entity<IOrderProps> {
       updatedAt: this.updatedAt.toISOString(),
       total: this.total,
       status: this.status,
-      paid: this.paid,
     };
   }
 
@@ -111,19 +109,11 @@ export class OrderEntity extends Entity<IOrderProps> {
     );
   }
 
-  get paid(): boolean {
-    return this.props.paid;
-  }
-
   set status(status: OrderStatus) {
     this.props.status = status;
   }
 
   set customerId(customerId: string) {
     this.props.customerId = customerId;
-  }
-
-  set paid(paid: boolean) {
-    this.props.paid = paid;
   }
 }

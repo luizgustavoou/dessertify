@@ -18,7 +18,7 @@ export class BcryptHashProvider implements HashProvider {
   }
 
   async compare(params: TCompareParams): Promise<TCompareResponse> {
-    const result = await bcrypt.compare(params.password, params.hashPassword);
+    const result = await bcrypt.compare(params.value, params.hashValue);
 
     return result;
   }

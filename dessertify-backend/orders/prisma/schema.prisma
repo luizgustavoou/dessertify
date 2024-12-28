@@ -11,7 +11,7 @@ model Order {
   id         String      @id @default(uuid())
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  status     OrderStatus
+  status     OrderStatus @default(WAITING_PAYMENT)
   items      OrderItem[]
   customerId String
   paid       Boolean   @default(false)
@@ -40,6 +40,7 @@ model Product {
 }
 
 enum OrderStatus {
+  WAITING_PAYMENT
   PENDING
   CONFIRMED
   DELIVERED

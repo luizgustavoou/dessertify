@@ -25,8 +25,8 @@ model Customer {
 }
 
 model CustomerAuth {
-  id       String @id @default(uuid())
-  password String
+  id       String  @id @default(uuid())
+  password String?
 
   customer     Customer     @relation(fields: [customerId], references: [id])
   customerId   String       @unique

@@ -2,7 +2,11 @@ import { IRawOrder } from '@/domain/entities/order.entity';
 import { CreateChargeEvent } from '@/domain/events/create-charge.event';
 import { OrderService } from '@/domain/services';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CardDetails } from '@/domain/events/create-charge.event';
 
 export abstract class CreateOrderUseCase {
@@ -31,24 +35,29 @@ export class CreateOrderUseCaseImpl implements CreateOrderUseCase {
       const order = await this.orderService.createOrder(params);
 
       // const cardDetails = new CardDetails('123', '4242424242424242');
-  
+
       const createChargeEvent = new CreateChargeEvent(
         // cardDetails,
         order.total,
         order.customerId,
         order.id,
       );
-  
+
       const res = await this.amqpConnection.request<{ client_secret: string }>({
         exchange: 'orders-topic-exchange',
         routingKey: 'orders.created',
         payload: createChargeEvent,
       });
-  
+
       return { ...order, clientSecret: res.client_secret };
     } catch (error) {
-      throw new InternalServerErrorException('Error creating order');
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new InternalServerErrorException(
+        'Error creating order. Cause: ' + error.message,
+      );
     }
-   
   }
 }

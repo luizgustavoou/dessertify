@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 export class PrismaAuthRepository implements AuthRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createCustomer(params: CustomerEntity): Promise<CustomerEntity> {
+  async saveCustomer(params: CustomerEntity): Promise<CustomerEntity> {
     const newCustomer = await this.prismaService.customer.upsert({
       create: {
         email: params.email,
@@ -45,6 +45,7 @@ export class PrismaAuthRepository implements AuthRepository {
     return CustomerEntity.create({
       ...newCustomer,
       password: newCustomer.customerAuth.password,
+      registerType: newCustomer.customerAuth.registerType,
     });
   }
 

@@ -10,8 +10,8 @@ export type THashParams = {
 export type THashResponse = string;
 
 export type TCompareParams = {
-  password: string;
-  hashPassword: string;
+  value: string;
+  hashValue: string;
 };
 
 export type TCompareResponse = boolean;

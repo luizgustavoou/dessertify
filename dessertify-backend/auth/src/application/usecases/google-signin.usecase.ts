@@ -44,9 +44,9 @@ export class GoogleSigninUseCaseImpl implements GoogleSigninUseCase {
         email: params.email,
         firstName: params.firstName,
         lastName: params.lastName,
-        password: '',
+        password: null,
+        type: RegisterType.GOOGLE,
       });
-      await this.authRepository.createCustomer(customer);
     }
 
     const payload: ITokenPayload = {
