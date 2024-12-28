@@ -53,7 +53,7 @@ export class OrderEntity extends Entity<IOrderProps> {
     const instance = new OrderEntity(props);
 
     instance.items = props.items;
-    instance.status = OrderStatus.WAITING_PAYMENT;
+    instance.status = props.status ?? OrderStatus.WAITING_PAYMENT;
 
     return instance;
   }
