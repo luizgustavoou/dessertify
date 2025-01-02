@@ -1,41 +1,26 @@
 import { Entity } from '@/domain/entities/entity';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import { IRawProduct } from '@/domain/entities/product.entity';
 
 export interface IOrderItemProps {
   orderId: string;
   quantity: number;
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  product: IRawProduct;
 }
 
-export interface RawOrderItem {
+export interface IRawOrderItem {
   id: string;
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  product: IRawProduct;
   quantity: number;
   orderId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class OrderItemEntity extends Entity {
   private _quantity: number;
-  private _product: {
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  private _product: IRawProduct;
   private _orderId: string;
   private _createdAt: Date;
   private _updatedAt: Date;
@@ -61,12 +46,14 @@ export class OrderItemEntity extends Entity {
     return instance;
   }
 
-  public raw(): RawOrderItem {
+  public raw(): IRawOrderItem {
     return {
       id: this.id,
       orderId: this.orderId,
       product: this.product,
       quantity: this.quantity,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   }
 

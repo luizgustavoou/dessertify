@@ -1,19 +1,7 @@
 import { Entity } from '@/domain/entities/entity';
-import { OrderItemEntity } from '@/domain/entities/order-item.entity';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-
-export interface IBaseOrderItemProps {
-  id: string;
-  quantity: number;
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-}
+import { IRawOrderItem } from './order-item.entity';
 
 export const OrderStatus = {
   WAITING_PAYMENT: 'WAITING_PAYMENT',
@@ -27,7 +15,7 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export interface IOrderProps {
   customerId: string;
-  items: Optional<IBaseOrderItemProps, 'id'>[];
+  items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,15 +23,15 @@ export interface IOrderProps {
 export interface IRawOrder {
   id: string;
   customerId: string;
-  items: IBaseOrderItemProps[];
+  items: Omit<IRawOrderItem, 'orderId'>[];
   total: number;
   status: OrderStatus;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class OrderEntity extends Entity {
-  private _items: IBaseOrderItemProps[];
+  private _items: Omit<IRawOrderItem, 'orderId'>[];
   private _customerId: string;
   private _status: OrderStatus;
   private _createdAt: Date;
@@ -83,8 +71,8 @@ export class OrderEntity extends Entity {
       id: this.id,
       customerId: this.customerId,
       items: this.items,
-      createdAt: this.createdAt.toISOString(),
-      updatedAt: this.updatedAt.toISOString(),
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
       total: this.total,
       status: this.status,
     };
@@ -106,7 +94,7 @@ export class OrderEntity extends Entity {
     return this._customerId;
   }
 
-  get items(): IBaseOrderItemProps[] {
+  get items(): Omit<IRawOrderItem, 'orderId'>[] {
     return this._items;
   }
 
@@ -129,17 +117,16 @@ export class OrderEntity extends Entity {
     );
   }
 
-  set items(items: Optional<IBaseOrderItemProps, 'id'>[]) {
+  set items(items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[]) {
     this._items = [];
 
-    this._items = items.map((item) => {
-      const itemm = new OrderItemEntity(
-        { ...item, orderId: this.id },
-        item.id ?? uuidv4(),
-      );
-
-      return itemm.raw();
-    });
+    this._items = items.map((item) => ({
+      id: item.id || uuidv4(),
+      quantity: item.quantity,
+      product: item.product,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    }));
   }
 
   set customerId(customerId: string) {

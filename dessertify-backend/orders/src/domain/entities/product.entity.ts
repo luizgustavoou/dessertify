@@ -14,8 +14,8 @@ export interface IRawProduct {
   id: string;
   name: string;
   price: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class ProductEntity extends Entity {
@@ -57,8 +57,8 @@ export class ProductEntity extends Entity {
       id: this.id,
       name: this.name,
       price: this.price,
-      createdAt: this.createdAt?.toISOString(),
-      updatedAt: this.updatedAt?.toISOString(),
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   }
 

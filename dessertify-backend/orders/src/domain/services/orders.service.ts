@@ -48,6 +48,9 @@ export class OrderServiceImpl implements OrderService {
           product: product,
           productId: item.productId,
           quantity: item.quantity,
+          // TODO: Ver se utiliza o OrderItemEntity
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
       }),
     );
@@ -82,6 +85,9 @@ export class OrderServiceImpl implements OrderService {
       items: itemsWithDomainProduct.map((item) => ({
         product: item.product,
         quantity: item.quantity,
+        // TODO: Ver se utiliza o OrderItemEntity
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })),
     });
 
