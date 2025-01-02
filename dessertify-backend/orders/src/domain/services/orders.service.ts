@@ -30,10 +30,6 @@ export class OrderServiceImpl implements OrderService {
       throw new NotFoundException('Order not found');
     }
 
-    if (params.status) {
-      order.status = params.status;
-    }
-
     if (order.customerId) {
       order.customerId = params.customerId;
     }
@@ -83,7 +79,6 @@ export class OrderServiceImpl implements OrderService {
 
     const order = OrderEntity.create({
       customerId: params.customerId,
-      status: OrderStatus.WAITING_PAYMENT,
       items: itemsWithDomainProduct.map((item) => ({
         product: item.product,
         quantity: item.quantity,

@@ -1,4 +1,3 @@
-import { OrderStatus } from '@/presentation/enums/index';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -28,8 +27,4 @@ export class UpdateOrderDto {
   @Type(() => ItemDto)
   @ArrayMinSize(1)
   items?: ItemDto[];
-
-  @IsOptional()
-  @IsEnum(OrderStatus)
-  status?: OrderStatus;
 }

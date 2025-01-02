@@ -1,10 +1,19 @@
 import { Entity } from '@/domain/entities/entity';
-import {
-  IBaseOrderItemProps,
-  OrderItemEntity,
-  RawBaseOrderItem,
-} from '@/domain/entities/order-item.entity';
+import { OrderItemEntity } from '@/domain/entities/order-item.entity';
 import { UnprocessableEntityException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+
+export interface IBaseOrderItemProps {
+  id: string;
+  quantity: number;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
 
 export const OrderStatus = {
   WAITING_PAYMENT: 'WAITING_PAYMENT',
@@ -17,43 +26,54 @@ export const OrderStatus = {
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export interface IOrderProps {
-  id?: string;
   customerId: string;
-  items: IBaseOrderItemProps[];
-  status: OrderStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
+  items: Optional<IBaseOrderItemProps, 'id'>[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IRawOrder {
   id: string;
   customerId: string;
-  items: RawBaseOrderItem[];
+  items: IBaseOrderItemProps[];
   total: number;
   status: OrderStatus;
   createdAt: string;
   updatedAt: string;
 }
 
-export class OrderEntity extends Entity<IOrderProps> {
-  private _items: OrderItemEntity[];
+export class OrderEntity extends Entity {
+  private _items: IBaseOrderItemProps[];
+  private _customerId: string;
+  private _status: OrderStatus;
+  private _createdAt: Date;
+  private _updatedAt: Date;
 
-  private constructor({ id, ...props }: IOrderProps) {
-    super(props, id);
-
+  constructor(props: IOrderProps, id: string) {
     if (props.items.length === 0) {
       // TODO: Create a custom error class
       throw new UnprocessableEntityException(
         'Order must have at least one item',
       );
     }
+    super(id);
+
+    this.items = props.items;
+    this.customerId = props.customerId;
+    this._status = OrderStatus.WAITING_PAYMENT;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
   }
 
-  public static create(props: IOrderProps): OrderEntity {
-    const instance = new OrderEntity(props);
+  public static create(
+    props: Optional<IOrderProps, 'createdAt' | 'updatedAt'>,
+  ): OrderEntity {
+    const id = uuidv4();
 
-    instance.items = props.items;
-    instance.status = props.status ?? OrderStatus.WAITING_PAYMENT;
+    const createdAt = props.createdAt || new Date();
+    const updatedAt = props.updatedAt || new Date();
+
+    const instance = new OrderEntity({ ...props, createdAt, updatedAt }, id);
 
     return instance;
   }
@@ -62,7 +82,7 @@ export class OrderEntity extends Entity<IOrderProps> {
     return {
       id: this.id,
       customerId: this.customerId,
-      items: this.items.map((item) => item.raw()),
+      items: this.items,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
       total: this.total,
@@ -75,15 +95,7 @@ export class OrderEntity extends Entity<IOrderProps> {
       throw new UnprocessableEntityException('Order is already paid');
     }
 
-    this.status = OrderStatus.PENDING;
-  }
-
-  set items(items: IBaseOrderItemProps[]) {
-    this._items = [];
-
-    this._items = items.map((item) =>
-      OrderItemEntity.create({ ...item, orderId: this.id }),
-    );
+    this._status = OrderStatus.PENDING;
   }
 
   get id(): string {
@@ -91,23 +103,23 @@ export class OrderEntity extends Entity<IOrderProps> {
   }
 
   get customerId(): string {
-    return this.props.customerId;
+    return this._customerId;
   }
 
-  get items(): OrderItemEntity[] {
+  get items(): IBaseOrderItemProps[] {
     return this._items;
   }
 
   get status(): OrderStatus {
-    return this.props.status;
+    return this._status;
   }
 
   get createdAt(): Date {
-    return this.props.createdAt;
+    return this._createdAt;
   }
 
   get updatedAt(): Date {
-    return this.props.updatedAt;
+    return this._updatedAt;
   }
 
   get total(): number {
@@ -117,11 +129,28 @@ export class OrderEntity extends Entity<IOrderProps> {
     );
   }
 
-  set status(status: OrderStatus) {
-    this.props.status = status;
+  set items(items: Optional<IBaseOrderItemProps, 'id'>[]) {
+    this._items = [];
+
+    this._items = items.map((item) => {
+      const itemm = new OrderItemEntity(
+        { ...item, orderId: this.id },
+        item.id ?? uuidv4(),
+      );
+
+      return itemm.raw();
+    });
   }
 
   set customerId(customerId: string) {
-    this.props.customerId = customerId;
+    this._customerId = customerId;
+  }
+
+  set createdAt(createdAt: Date) {
+    this._createdAt = createdAt;
+  }
+
+  set updatedAt(updatedAt: Date) {
+    this._updatedAt = updatedAt;
   }
 }

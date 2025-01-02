@@ -1,12 +1,13 @@
 import { Entity } from '@/domain/entities/entity';
 import { UnprocessableEntityException } from '@nestjs/common';
 
+import { v4 as uuidv4 } from 'uuid';
+
 export interface IProductProps {
-  id?: string;
   name: string;
   price: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IRawProduct {
@@ -17,8 +18,13 @@ export interface IRawProduct {
   updatedAt: string;
 }
 
-export class ProductEntity extends Entity<IProductProps> {
-  constructor({ id, ...props }: IProductProps) {
+export class ProductEntity extends Entity {
+  private _name: string;
+  private _price: number;
+  private _createdAt: Date;
+  private _updatedAt: Date;
+
+  constructor(props: IProductProps, id: string) {
     if (props.name.length < 3) {
       throw new UnprocessableEntityException(
         'Product name must have at least 3 characters',
@@ -30,11 +36,18 @@ export class ProductEntity extends Entity<IProductProps> {
       );
     }
 
-    super(props, id);
+    super(id);
   }
 
-  public static create(props: IProductProps): ProductEntity {
-    const instance = new ProductEntity(props);
+  public static create(
+    props: Optional<IProductProps, 'createdAt' | 'updatedAt'>,
+  ): ProductEntity {
+    const id = uuidv4();
+
+    const createdAt = props.createdAt || new Date();
+    const updatedAt = props.updatedAt || new Date();
+
+    const instance = new ProductEntity({ ...props, createdAt, updatedAt }, id);
 
     return instance;
   }
@@ -54,18 +67,18 @@ export class ProductEntity extends Entity<IProductProps> {
   }
 
   get name(): string {
-    return this.props.name;
+    return this._name;
   }
 
   get price(): number {
-    return this.props.price;
+    return this._price;
   }
 
   get createdAt(): Date {
-    return this.props.createdAt;
+    return this._createdAt;
   }
 
   get updatedAt(): Date {
-    return this.props.updatedAt;
+    return this._updatedAt;
   }
 }

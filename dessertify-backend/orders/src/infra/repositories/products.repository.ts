@@ -7,7 +7,6 @@ import {
   TFindOneProductByIdParams,
 } from '@/domain/contracts/repositories/products.repository';
 import { ProductEntity } from '@/domain/entities/product.entity';
-import { ProductFactory } from '@/infra/factories/product.factory';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -23,7 +22,7 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
     });
 
-    return product && ProductEntity.create(product);
+    return product && new ProductEntity(product, product.id);
   }
 
   findManyProducts(params: TFindManyProductsParams): Promise<ProductEntity[]> {
@@ -45,7 +44,7 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
     });
 
-    return ProductFactory.toDomain(product);
+    return new ProductEntity(product, product.id);
   }
 
   deleteProduct(params: TDeleteProductParams): Promise<ProductEntity | null> {

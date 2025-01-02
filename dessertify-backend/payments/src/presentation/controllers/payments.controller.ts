@@ -10,7 +10,7 @@ import { StripeService } from '@/infra/payments/stripe/stripe.service';
 import { CreateCustomerDto, CreateChargeDto } from '@/presentation/dtos';
 import { CreateCustomerUseCase } from '@/application/usecases';
 import { ProcessOrderUseCase } from '@/application/usecases/process-order.usecase';
-import { delay, from, lastValueFrom } from 'rxjs';
+import { ConsumeMessage } from 'amqplib';
 
 @Controller()
 export class PaymentsController {
@@ -33,11 +33,17 @@ export class PaymentsController {
     queue: 'payments.customer_registration',
   })
   public async customerCreatedEventHandler(
-    @RabbitPayload() msg: CreateCustomerDto,
+    // @RabbitPayload() msg: CreateCustomerDto,
+    msg: any,
+    amqpMsg: ConsumeMessage
   ) {
     console.log('[PAYMENTS - Customer Created Event Handler]');
-    console.log('msg ', msg);
+    console.log('msg ', msg)
+    console.log('amqpMsg ', amqpMsg)
+    console.log('amqpMsg.properties.headers ', amqpMsg.properties.headers)
+    
     await this.createCustomerUseCase.execute(msg);
+
   }
 
   @RabbitRPC({

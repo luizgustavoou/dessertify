@@ -1,51 +1,62 @@
-import {
-  IProductProps,
-  IRawProduct,
-  ProductEntity,
-} from '@/domain/entities/product.entity';
 import { Entity } from '@/domain/entities/entity';
 import { UnprocessableEntityException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 
-export interface IBaseOrderItemProps {
-  id?: string;
-  quantity: number;
-  product: ProductEntity | IProductProps;
-}
-
-export interface IOrderItemProps extends IBaseOrderItemProps {
+export interface IOrderItemProps {
   orderId: string;
+  quantity: number;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 }
 
-export interface RawBaseOrderItem {
+export interface RawOrderItem {
   id: string;
-  product: IRawProduct;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
   quantity: number;
   orderId: string;
 }
 
-export interface RawOrderItem extends RawBaseOrderItem {
-  orderId: string;
-}
-
-export class OrderItemEntity extends Entity<IOrderItemProps> {
-  private _product: ProductEntity;
+export class OrderItemEntity extends Entity {
+  private _quantity: number;
+  private _product: {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  private _orderId: string;
   private _createdAt: Date;
   private _updatedAt: Date;
 
-  constructor({ id, ...props }: IOrderItemProps) {
+  constructor(props: IOrderItemProps, id: string) {
     if (props.quantity <= 0) {
       throw new UnprocessableEntityException(
         'Item quantity must be greater than 0',
       );
     }
 
-    super(props, id);
+    super(id);
+    this.quantity = props.quantity;
+    this.product = props.product;
+    this.orderId = props.orderId;
   }
 
   public static create(props: IOrderItemProps): OrderItemEntity {
-    const instance = new OrderItemEntity(props);
+    const id = uuidv4();
 
-    instance.product = props.product;
+    const instance = new OrderItemEntity(props, id);
 
     return instance;
   }
@@ -54,7 +65,7 @@ export class OrderItemEntity extends Entity<IOrderItemProps> {
     return {
       id: this.id,
       orderId: this.orderId,
-      product: this.product.raw(),
+      product: this.product,
       quantity: this.quantity,
     };
   }
@@ -63,23 +74,48 @@ export class OrderItemEntity extends Entity<IOrderItemProps> {
     return this._id;
   }
 
-  set product(product: IProductProps | ProductEntity) {
-    this._product =
-      product instanceof ProductEntity
-        ? product
-        : ProductEntity.create(product);
+  set product(product: {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }) {
+    this._product = product;
   }
 
-  get product(): ProductEntity {
+  set orderId(value: string) {
+    this._orderId = value;
+  }
+
+  set quantity(value: number) {
+    this._quantity = value;
+  }
+
+  set createdAt(value: Date) {
+    this._createdAt = value;
+  }
+
+  set updatedAt(value: Date) {
+    this._updatedAt = value;
+  }
+
+  get product(): {
+    id: string;
+    name: string;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+  } {
     return this._product;
   }
 
   get orderId(): string {
-    return this.props.orderId;
+    return this._orderId;
   }
 
   get quantity(): number {
-    return this.props.quantity;
+    return this._quantity;
   }
 
   get createdAt(): Date {

@@ -7,7 +7,6 @@ import {
   TFindManyOrdersParams,
   TFindOneOrderByIdParams,
 } from '@/domain/contracts/repositories/orders.repository';
-import { OrderFactory } from '@/infra/factories/order.factory';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -29,7 +28,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return order && OrderFactory.toDomain(order);
+    return order && new OrderEntity(order, order.id);
   }
 
   async findManyOrders(params: TFindManyOrdersParams): Promise<OrderEntity[]> {
@@ -48,7 +47,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return orders.map((order) => OrderFactory.toDomain(order));
+    return orders.map((order) => new OrderEntity(order, order.id));
   }
 
   async saveOrder(params: OrderEntity): Promise<OrderEntity> {
@@ -90,7 +89,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(order);
+    return new OrderEntity(order, order.id);
   }
 
   async deleteOrder(params: TDeleteOrderParams): Promise<OrderEntity | null> {
@@ -107,6 +106,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
     });
 
-    return OrderFactory.toDomain(orderDeleted);
+    return new OrderEntity(orderDeleted, orderDeleted.id);
   }
 }

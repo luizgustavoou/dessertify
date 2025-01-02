@@ -1,19 +1,15 @@
-import { v4 as uuidv4 } from 'uuid';
-
-const isEntity = <T>(v: Entity<T>): v is Entity<T> => {
+const isEntity = (v: Entity): v is Entity => {
   return v instanceof Entity;
 };
 
-export abstract class Entity<T> {
+export abstract class Entity {
   protected readonly _id: string;
-  protected props: T;
 
-  constructor(props: T, id?: string) {
-    this._id = id ? id : uuidv4();
-    this.props = props;
+  constructor(id: string) {
+    this._id = id;
   }
 
-  public equals(object?: Entity<T>): boolean {
+  public equals(object?: Entity): boolean {
     if (object == null || object == undefined) {
       return false;
     }
