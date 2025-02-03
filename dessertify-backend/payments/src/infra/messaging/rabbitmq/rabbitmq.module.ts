@@ -19,6 +19,10 @@ import { ConfigService } from '@nestjs/config';
             name: 'payments-topic-exchange',
             type: 'topic',
           },
+          {
+            name: "error-exchange",
+            "type": "fanout"
+          }
         ],
         uri: configService.get<string>('RABBITMQ_URL'),
         connectionInitOptions: { wait: false },
