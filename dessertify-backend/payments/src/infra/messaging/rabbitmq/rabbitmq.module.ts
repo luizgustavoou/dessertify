@@ -20,9 +20,31 @@ import { ConfigService } from '@nestjs/config';
             type: 'topic',
           },
           {
-            name: "error-exchange",
-            "type": "fanout"
-          }
+            name: 'error-exchange',
+            type: 'fanout',
+          },
+          {
+            name: 'wait-exchange',
+            type: 'fanout',
+          },
+          {
+            name: 'requeue-exchange',
+            type: 'fanout',
+          },
+        ],
+        queues: [
+          {
+            exchange: 'wait-exchange',
+            routingKey: '',
+            name: 'wait-queue',
+            options: {
+              deadLetterExchange: 'requeue-exchange',
+              deadLetterRoutingKey: '',
+              // arguments: {
+              //   "x-message-ttl" : 7000
+              // }
+            },
+          },
         ],
         uri: configService.get<string>('RABBITMQ_URL'),
         connectionInitOptions: { wait: false },
