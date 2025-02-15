@@ -37,6 +37,10 @@ import {
   FindManyProductsUseCaseImpl,
 } from '@/application/usecases/find-many-products.usecase';
 import { ProductsController } from '@/presentation/controllers/products.controller';
+import {
+  CreateProductUseCase,
+  CreateProductUseCaseImpl,
+} from '@/application/usecases/create-product.usecase';
 
 @Module({
   imports: [
@@ -86,6 +90,10 @@ import { ProductsController } from '@/presentation/controllers/products.controll
     {
       provide: FindManyProductsUseCase,
       useClass: FindManyProductsUseCaseImpl,
+    },
+    {
+      provide: CreateProductUseCase,
+      useClass: CreateProductUseCaseImpl,
     },
   ],
 })

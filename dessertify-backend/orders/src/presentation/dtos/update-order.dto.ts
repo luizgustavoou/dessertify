@@ -1,11 +1,9 @@
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsUUID,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 
