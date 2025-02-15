@@ -46,13 +46,24 @@ export class StripeService {
 
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: params.amount,
-      confirm: true,
+      // confirm: true,
       payment_method: 'pm_card_visa',
       payment_method_types: ['card'],
       currency: 'brl',
       metadata: {
         order_id: params.orderId,
       },
+    });
+
+    return paymentIntent;
+  }
+
+  public async createPaymentIntentWithPaymentMethod(paymentMethodId: string) {
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount: 2000,
+      currency: 'brl',
+      payment_method: paymentMethodId,
+      confirm: true,
     });
 
     return paymentIntent;
@@ -68,6 +79,11 @@ export class StripeService {
       },
     );
 
+    await this.stripe.customers.update(params.stripeCustomerId, {
+      invoice_settings: {
+        default_payment_method: params.paymentMethodId,
+      },
+    });
     return paymentMethodAtached;
   }
 

@@ -14,7 +14,7 @@ export class ProductsApiImpl implements ProductsApi {
   public getProducts(): Observable<Product[]> {
     const products$ = this.httpClient
       .get<Product[]>('/assets/data.json')
-      .pipe(delay(700));
+      // .pipe(delay(20));
 
     return products$;
   }

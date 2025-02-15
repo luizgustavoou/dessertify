@@ -14,6 +14,7 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {
     MatSnackBarLabel,
     MatSnackBarActions,
     MatSnackBarAction,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

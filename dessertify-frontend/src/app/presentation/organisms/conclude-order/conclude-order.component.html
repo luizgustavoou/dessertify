@@ -1,44 +1,82 @@
 <div class="p-8 h-full flex flex-col">
-  <header class="mb-3">
-    <mat-icon aria-hidden="false" aria-label="Check order" fontIcon="check_circle"
-      class="text-green-500 scale-[1.75] mb-7"></mat-icon>
+  <section *ngIf="stage == 0" class="h-full flex flex-col">
+    <header class="mb-3">
+      <mat-icon aria-hidden="false" aria-label="Check order" fontIcon="check_circle"
+        class="text-green-500 scale-[1.75] mb-7"></mat-icon>
 
-    <h2 class="font-bold text-2xl text-red-800">Order Confirmed</h2>
-    <p class="text-sm text-gray-500">We hope you enjoy your food!</p>
-  </header>
+      <h2 class="font-bold text-2xl text-red-800">Order Confirmed</h2>
+      <p class="text-sm text-gray-500">We hope you enjoy your food!</p>
+    </header>
 
-  <mat-dialog-content class="flex-1 p-8 space-y-4">
-    <ng-content *ngFor="let product of (cartProducts$ | async)">
-      <div class="flex items-center gap-3">
-        <img [src]="product.image.thumbnail" [alt]="product.name" class="max-w-14 w-full rounded-lg" />
+    <mat-dialog-content class="flex-1 p-8 space-y-4">
+      <ng-content *ngFor="let product of (cartProducts$ | async)">
+        <div class="flex items-center gap-3">
+          <img [src]="product.image.thumbnail" [alt]="product.name" class="max-w-14 w-full rounded-lg" />
 
-        <div class="space-y-1">
-          <p class="font-bold">{{ product.name }}</p>
-          <p class="text-red font-bold">
-            <span class="text-sm mr-3 text-primary ">{{ product.quantity}}x</span>
-            <span class="text-xs mr-1 text-gray-400">&#64;</span>
-            <span class="text-sm text-gray-400">{{ product.price | currency }}</span>
-          </p>
+          <div class="space-y-1">
+            <p class="font-bold">{{ product.name }}</p>
+            <p class="text-red font-bold">
+              <span class="text-sm mr-3 text-primary ">{{ product.quantity}}x</span>
+              <span class="text-xs mr-1 text-gray-400">&#64;</span>
+              <span class="text-sm text-gray-400">{{ product.price | currency }}</span>
+            </p>
+          </div>
+
+          <p class="ms-auto font-bold">{{ product.price * product.quantity | currency }}</p>
         </div>
 
-        <p class="ms-auto font-bold">{{ product.price * product.quantity | currency }}</p>
-      </div>
+
+        <app-separator />
+      </ng-content>
+
+      <section class="flex justify-between items-center">
+        <p>Order Total</p>
+        <p class="text-xl font-bold text-rose-900">{{ getTotal() | currency }}</p>
+      </section>
+    </mat-dialog-content>
 
 
-      <app-separator />
-    </ng-content>
+    <!-- <mat-dialog-actions [align]="'center'"> -->
+    <button mat-flat-button class="w-full mb-2 mt-auto" (click)="continue()" [disabled]="loadingContinue()">
+      <mat-progress-spinner *ngIf="loadingContinue()" mode="indeterminate" diameter="20"></mat-progress-spinner>
+      <span *ngIf="!loadingContinue()">Continue</span>
+    </button>
+    <!-- </mat-dialog-actions> -->
+  </section>
 
-    <section class="flex justify-between items-center">
-      <p>Order Total</p>
-      <p class="text-xl font-bold text-rose-900">{{ getTotal() | currency }}</p>
-    </section>
-  </mat-dialog-content>
+  <section *ngIf="stage == 1" class="flex flex-col h-full">
+    <div [formGroup]="paymentElementForm" class="flex flex-col h-full">
+      <!-- <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="name" formControlName="name" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="Email" type="email" formControlName="email" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="Address" formControlName="address" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="ZIP Code" formControlName="zipcode" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="city" formControlName="city" />
+      </mat-form-field> -->
 
 
-  <mat-dialog-actions [align]="'center'">
-    <button mat-flat-button class="w-full mb-2" (click)="concludeOrder()">Start new order</button>
-  </mat-dialog-actions>
+      <ngx-stripe-elements *ngIf="elementsOptions.clientSecret" [stripe]="stripe" [elementsOptions]="elementsOptions">
+        <ngx-stripe-payment />
+      </ngx-stripe-elements>
+
+
+
+      <button class="w-full mt-auto" mat-flat-button (click)="pay()">
+        Pay
+      </button>
+    </div>
+  </section>
 </div>
+
+
 
 
 <!-- <ng-template let-snackBarRef="snackBarRef" #templateSnackBar>
@@ -50,5 +88,3 @@
   </span>
 
 </ng-template> -->
-
-

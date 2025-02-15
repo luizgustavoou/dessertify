@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Observable, lastValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
@@ -33,13 +33,13 @@ export class CartComponent {
 
   public dialog = inject(MatDialog);
 
-  openDialog() {
-    const products = lastValueFrom(this.cartProducts$);
+  async openDialog() {
+    // const products = await firstValueFrom(this.cartProducts$);
 
     this.dialog.open(ConcludeOrderComponent, {
-      data: {
-        products,
-      },
+      // data: {
+      //   products,
+      // },
       width: '600px',
       maxWidth: '100vw',
       height: '600px',

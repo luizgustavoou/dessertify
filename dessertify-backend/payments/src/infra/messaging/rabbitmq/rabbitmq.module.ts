@@ -40,9 +40,6 @@ import { ConfigService } from '@nestjs/config';
             options: {
               deadLetterExchange: 'requeue-exchange',
               deadLetterRoutingKey: '',
-              // arguments: {
-              //   "x-message-ttl" : 7000
-              // }
             },
           },
         ],

@@ -57,8 +57,8 @@ export class PaymentsController {
     // console.log('amqpMsg ', amqpMsg);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      throw new Error('Error on customerCreatedEventHandler');
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      // throw new Error('Error on customerCreatedEventHandler');
       await this.createCustomerUseCase.execute(msg);
     } catch (error) {
       return new Nack(false);
