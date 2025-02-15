@@ -32,6 +32,11 @@ import {
   MarkOrderAsPaidUseCase,
   MarkOrderAsPaidUseCaseImpl,
 } from '@/application/usecases/mark-order-as-paid.usecase';
+import {
+  FindManyProductsUseCase,
+  FindManyProductsUseCaseImpl,
+} from '@/application/usecases/find-many-products.usecase';
+import { ProductsController } from '@/presentation/controllers/products.controller';
 
 @Module({
   imports: [
@@ -46,7 +51,7 @@ import {
     }),
     PrismaModule,
   ],
-  controllers: [OrdersController],
+  controllers: [OrdersController, ProductsController],
   providers: [
     OrdersController,
     AppService,
@@ -77,6 +82,10 @@ import {
     {
       provide: MarkOrderAsPaidUseCase,
       useClass: MarkOrderAsPaidUseCaseImpl,
+    },
+    {
+      provide: FindManyProductsUseCase,
+      useClass: FindManyProductsUseCaseImpl,
     },
   ],
 })

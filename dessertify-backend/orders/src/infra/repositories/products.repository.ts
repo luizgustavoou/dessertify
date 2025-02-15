@@ -2,7 +2,6 @@ import { PrismaService } from '@/infra/database/prisma.service';
 
 import {
   ProductsRepository,
-  TDeleteProductParams,
   TFindManyProductsParams,
   TFindOneProductByIdParams,
 } from '@/domain/contracts/repositories/products.repository';
@@ -25,29 +24,33 @@ export class PrismaProductsRepository implements ProductsRepository {
     return product && new ProductEntity(product, product.id);
   }
 
-  findManyProducts(params: TFindManyProductsParams): Promise<ProductEntity[]> {
-    throw new Error('Method not implemented.');
+  async findManyProducts(
+    params: TFindManyProductsParams,
+  ): Promise<ProductEntity[]> {
+    const products = await this.prismaService.product.findMany({
+      skip: params.skip,
+      take: params.take,
+    });
+
+    console.log('products ', products);
+    return products.map((product) => new ProductEntity(product, product.id));
   }
 
-  async saveProduct(params: ProductEntity): Promise<ProductEntity> {
-    const product = await this.prismaService.product.upsert({
+  async saveProduct(product: ProductEntity): Promise<ProductEntity> {
+    const productUpserted = await this.prismaService.product.upsert({
       where: {
-        id: params.id,
+        id: product.id,
       },
       update: {
-        name: params.name,
-        price: params.price,
+        name: product.name,
+        price: product.price,
       },
       create: {
-        name: params.name,
-        price: params.price,
+        name: product.name,
+        price: product.price,
       },
     });
 
-    return new ProductEntity(product, product.id);
-  }
-
-  deleteProduct(params: TDeleteProductParams): Promise<ProductEntity | null> {
-    throw new Error('Method not implemented.');
+    return new ProductEntity(productUpserted, productUpserted.id);
   }
 }

@@ -37,6 +37,10 @@ export class ProductEntity extends Entity {
     }
 
     super(id);
+    this.name = props.name;
+    this.price = props.price;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
   }
 
   public static create(
@@ -80,5 +84,21 @@ export class ProductEntity extends Entity {
 
   get updatedAt(): Date {
     return this._updatedAt;
+  }
+
+  set name(name: string) {
+    this._name = name;
+  }
+
+  set price(price: number) {
+    this._price = price;
+  }
+
+  set createdAt(createdAt: Date) {
+    this._createdAt = createdAt;
+  }
+
+  set updatedAt(updatedAt: Date) {
+    this._updatedAt = updatedAt;
   }
 }
