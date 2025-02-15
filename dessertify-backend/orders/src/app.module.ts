@@ -41,6 +41,10 @@ import {
   CreateProductUseCase,
   CreateProductUseCaseImpl,
 } from '@/application/usecases/create-product.usecase';
+import {
+  UpdateProductUseCase,
+  UpdateProductUseCaseImpl,
+} from '@/application/usecases/update-product.usecase';
 
 @Module({
   imports: [
@@ -94,6 +98,10 @@ import {
     {
       provide: CreateProductUseCase,
       useClass: CreateProductUseCaseImpl,
+    },
+    {
+      provide: UpdateProductUseCase,
+      useClass: UpdateProductUseCaseImpl,
     },
   ],
 })

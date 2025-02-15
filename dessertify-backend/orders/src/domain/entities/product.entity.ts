@@ -25,17 +25,6 @@ export class ProductEntity extends Entity {
   private _updatedAt: Date;
 
   constructor(props: IProductProps, id: string) {
-    if (props.name.length < 3) {
-      throw new UnprocessableEntityException(
-        'Product name must have at least 3 characters',
-      );
-    }
-    if (props.price <= 0) {
-      throw new UnprocessableEntityException(
-        'Product price must be greater than 0',
-      );
-    }
-
     super(id);
     this.name = props.name;
     this.price = props.price;
@@ -54,6 +43,13 @@ export class ProductEntity extends Entity {
     const instance = new ProductEntity({ ...props, createdAt, updatedAt }, id);
 
     return instance;
+  }
+
+  public update(props: Partial<IProductProps>): void {
+    if (props.name) this.name = props.name;
+    if (props.price) this.price = props.price;
+    
+    this.updatedAt = new Date();
   }
 
   public raw(): IRawProduct {
@@ -87,10 +83,22 @@ export class ProductEntity extends Entity {
   }
 
   set name(name: string) {
+    if (name.length < 3) {
+      throw new UnprocessableEntityException(
+        'Product name must have at least 3 characters',
+      );
+    }
+
     this._name = name;
   }
 
   set price(price: number) {
+    if (price <= 0) {
+      throw new UnprocessableEntityException(
+        'Product price must be greater than 0',
+      );
+    }
+
     this._price = price;
   }
 
