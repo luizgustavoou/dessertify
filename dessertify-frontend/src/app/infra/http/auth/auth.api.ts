@@ -8,7 +8,7 @@ export type SigninParams = {
 };
 
 export type SigninResponse = {
-  token: string;
+  access_token: string;
 };
 
 export abstract class AuthApi {
@@ -22,8 +22,6 @@ export class AuthApiImpl implements AuthApi {
   constructor(private httpClient: HttpClient) {}
 
   public signin(params: SigninParams): Observable<SigninResponse> {
-    console.log('[SIGNIN API!]')
-
     const res$ = this.httpClient.post<SigninResponse>(
       'http://localhost:3001/auth/signin',
       params

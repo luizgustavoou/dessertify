@@ -32,7 +32,6 @@ export class PrismaProductsRepository implements ProductsRepository {
       take: params.take,
     });
 
-    console.log('products ', products);
     return products.map((product) => new ProductEntity(product, product.id));
   }
 

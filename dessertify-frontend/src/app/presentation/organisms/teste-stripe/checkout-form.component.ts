@@ -115,7 +115,6 @@ export class CheckoutFormComponent implements OnInit {
       })
       .subscribe((result) => {
         this.paying.set(false);
-        console.log('Result', result);
         if (result.error) {
           // Show error to your customer (e.g., insufficient funds)
           alert('Error: ' + result.error.message);
@@ -130,7 +129,6 @@ export class CheckoutFormComponent implements OnInit {
   }
 
   collapse() {
-    console.log('colapsei!')
     this.paymentElement.collapse();
   }
 }

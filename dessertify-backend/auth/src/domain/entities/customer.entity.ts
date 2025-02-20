@@ -49,8 +49,6 @@ export class CustomerEntity extends Entity<ICustomerProps> {
       hashValue: this.props.password,
     });
 
-    console.log('compare ', compare);
-
     return compare;
   }
 

@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  GuardResult,
-  MaybeAsync,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { isAuthenticated } from '@/application/state/selectors/auth.selector';
 import { map, take } from 'rxjs';

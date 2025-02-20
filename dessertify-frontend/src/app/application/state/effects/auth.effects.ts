@@ -21,7 +21,7 @@ export class AuthEffects {
       mergeMap(({ email, password }) => {
         return this.authApi.signin({ email, password }).pipe(
           map((res) => {
-            return signinSuccess({ token: res.token });
+            return signinSuccess({ token: res.access_token });
           }),
           catchError((error) => {
             return of(

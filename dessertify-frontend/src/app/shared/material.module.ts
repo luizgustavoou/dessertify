@@ -12,9 +12,9 @@ import {
   MatSnackBarAction,
   MatSnackBarActions,
   MatSnackBarLabel,
-  MatSnackBarRef,
 } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
