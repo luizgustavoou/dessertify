@@ -37,7 +37,9 @@ export class DefaultSigninUseCaseImpl implements DefaultSigninUseCase {
     private readonly hashProvider: HashProvider,
   ) {}
 
-  async execute(params: TDefaultSigninUseCaseParams): Promise<TDefaultSigninUseCaseResponse> {
+  async execute(
+    params: TDefaultSigninUseCaseParams,
+  ): Promise<TDefaultSigninUseCaseResponse> {
     const customer = await this.checkCredentials(params);
 
     const payload: ITokenPayload = {
@@ -65,7 +67,9 @@ export class DefaultSigninUseCaseImpl implements DefaultSigninUseCase {
       throw new NotFoundException('Customer not found');
     }
 
-    if (!customer.isPasswordValid(params.password, this.hashProvider)) {
+    const isMatch = await customer.isPasswordValid(params.password, this.hashProvider)
+
+    if (!isMatch) {
       throw new UnauthorizedException('Invalid password');
     }
 

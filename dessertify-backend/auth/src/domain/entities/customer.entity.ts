@@ -44,12 +44,12 @@ export class CustomerEntity extends Entity<ICustomerProps> {
     password: string,
     hashProvider: HashProvider,
   ): Promise<boolean> {
-    const hashPassword = await hashProvider.hash({ content: password });
-
     const compare = await hashProvider.compare({
-      value: this.props.password,
-      hashValue: hashPassword,
+      value: password,
+      hashValue: this.props.password,
     });
+
+    console.log('compare ', compare);
 
     return compare;
   }
