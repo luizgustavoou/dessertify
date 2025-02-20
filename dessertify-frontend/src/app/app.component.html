@@ -1,13 +1,7 @@
-<!-- <ngstr-checkout-form>
+<nav>
+  <a routerLink="/signin">Signin</a>
+  <a routerLink="/dashboard" *ngIf="isLoggedIn$ | async">Dashboard</a>
+  <button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout</button>
+</nav>
 
-</ngstr-checkout-form> -->
-
-<div class="min-h-screen flex gap-7 p-14 bg-rose-100">
-  <section class="flex-1">
-    <app-desserts-list></app-desserts-list>
-  </section>
-
-  <aside class="min-w-[20%] max-h-[600px]">
-    <app-cart></app-cart>
-  </aside>
-</div>
+<router-outlet></router-outlet>

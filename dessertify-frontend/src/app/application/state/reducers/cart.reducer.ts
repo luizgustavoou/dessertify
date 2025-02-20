@@ -4,7 +4,7 @@ import { ICartState } from '@/application/state/cart.state';
 import { Product } from '@/domain/models/products';
 
 
-export const initialState: ICartState = {
+const initialState: ICartState = {
   products: [],
 };
 

@@ -22,7 +22,6 @@ export class OrdersApiImpl implements OrdersApi {
   constructor(private httpClient: HttpClient) {}
 
   public createOrder(params: CreateOrderProps): Observable<Order> {
-    console.log('VOU CHAMAR!!!!')
     const order$ = this.httpClient.post<Order>('http://localhost:3003', params);
 
     return order$;
