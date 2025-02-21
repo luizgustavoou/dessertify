@@ -18,8 +18,14 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'app-signin',
   template: `
     <div class="flex justify-center items-center min-h-screen p-6 bg-rose-100">
-      <div class="rounded-lg p-8 bg-rose-200/70 shadow-2xl flex flex-col justify-center items-center max-w-lg w-full">
-          <img src="./assets/images/logo-1.png" alt="logo" class="max-w-full w-72" />
+      <div
+        class="rounded-lg p-8 bg-rose-200/70 shadow-2xl flex flex-col justify-center items-center max-w-lg w-full"
+      >
+        <img
+          src="./assets/images/logo-1.png"
+          alt="logo"
+          class="max-w-full w-72"
+        />
 
         <form
           [formGroup]="signinForm"
@@ -39,7 +45,10 @@ import { MatInputModule } from '@angular/material/input';
             />
           </mat-form-field>
 
-          <button mat-raised-button color="primary" class="w-full py-3 text-lg">Sign In</button>
+          <button mat-raised-button color="primary" class="w-full py-3 text-lg">
+            Signin
+            <mat-icon iconPositionEnd>login</mat-icon>
+          </button>
         </form>
       </div>
     </div>
@@ -57,7 +66,10 @@ export class SigninComponent {
   fb = inject(FormBuilder);
 
   signinForm = this.fb.group({
-    email: ['luizgustavooumbelino@gmail.com', [Validators.email, Validators.required]],
+    email: [
+      'luizgustavooumbelino@gmail.com',
+      [Validators.email, Validators.required],
+    ],
     password: ['123456', [Validators.required]],
   });
 

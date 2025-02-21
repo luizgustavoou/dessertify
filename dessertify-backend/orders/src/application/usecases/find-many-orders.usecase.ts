@@ -13,7 +13,7 @@ export class FindManyOrdersUseCaseImpl implements FindManyOrdersUseCase {
 
   async execute(params: FindManyOrdersQueryDto): Promise<IRawOrder[]> {
     const orders = await this.ordersRepository.findManyOrders(params);
-
+    
     return orders.map((order) => order.raw());
   }
 }

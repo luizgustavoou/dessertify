@@ -16,6 +16,7 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 export interface IOrderProps {
   customerId: string;
   items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[];
+  paid: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,11 +27,13 @@ export interface IRawOrder {
   items: Omit<IRawOrderItem, 'orderId'>[];
   total: number;
   status: OrderStatus;
+  paid: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export class OrderEntity extends Entity {
+  private _paid: boolean;
   private _items: Omit<IRawOrderItem, 'orderId'>[];
   private _customerId: string;
   private _status: OrderStatus;
@@ -51,6 +54,7 @@ export class OrderEntity extends Entity {
     this._status = OrderStatus.WAITING_PAYMENT;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
+    this._paid = props.paid;
   }
 
   public static create(
@@ -75,15 +79,17 @@ export class OrderEntity extends Entity {
       updatedAt: this.updatedAt,
       total: this.total,
       status: this.status,
+      paid: this.paid,
     };
   }
 
-  public paid(): void {
-    if (this.status != OrderStatus.WAITING_PAYMENT) {
+  public pay(): void {
+    if (this.paid) {
       throw new UnprocessableEntityException('Order is already paid');
     }
 
     this._status = OrderStatus.PENDING;
+    this._paid = true;
   }
 
   get id(): string {
@@ -96,6 +102,10 @@ export class OrderEntity extends Entity {
 
   get items(): Omit<IRawOrderItem, 'orderId'>[] {
     return this._items;
+  }
+
+  get paid(): boolean {
+    return this._paid;
   }
 
   get status(): OrderStatus {

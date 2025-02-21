@@ -57,6 +57,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
       },
       update: {
         customerId: params.customerId,
+        paid: params.paid,
         status: params.status as any,
         items: {
           deleteMany: {},
