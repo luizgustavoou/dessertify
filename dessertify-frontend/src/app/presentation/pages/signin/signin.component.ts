@@ -12,35 +12,36 @@ import { CommonModule } from '@angular/common';
 import { selectToken } from '@/application/state/selectors/auth.selector';
 import { MaterialModule } from '@/shared/material.module';
 import { MatInputModule } from '@angular/material/input';
-// import { selectAuthError } from '@/application/state/selectors/auth.selector';
 
 @Component({
   standalone: true,
   selector: 'app-signin',
   template: `
-    <div
-      class="flex justify-center items-center min-h-screen gap-7 p-14 bg-rose-100"
-    >
-      <form
-        [formGroup]="signinForm"
-        class="flex flex-col gap-7 min-w-[650px]"
-        (ngSubmit)="onSubmit()"
-      >
-        <mat-form-field appearance="fill">
-          <input matInput placeholder="Email" formControlName="email" />
-        </mat-form-field>
+    <div class="flex justify-center items-center min-h-screen p-6 bg-rose-100">
+      <div class="rounded-lg p-8 bg-rose-200/70 shadow-2xl flex flex-col justify-center items-center max-w-lg w-full">
+          <img src="./assets/images/logo-1.png" alt="logo" class="max-w-full w-72" />
 
-        <mat-form-field appearance="fill">
-          <input
-            matInput
-            placeholder="Password"
-            formControlName="password"
-            type="password"
-          />
-        </mat-form-field>
+        <form
+          [formGroup]="signinForm"
+          class="flex flex-col gap-6 w-full"
+          (ngSubmit)="onSubmit()"
+        >
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput placeholder="Email" formControlName="email" />
+          </mat-form-field>
 
-        <button mat-raised-button>Signin</button>
-      </form>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              placeholder="Password"
+              formControlName="password"
+              type="password"
+            />
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="w-full py-3 text-lg">Sign In</button>
+        </form>
+      </div>
     </div>
   `,
   imports: [
@@ -56,14 +57,13 @@ export class SigninComponent {
   fb = inject(FormBuilder);
 
   signinForm = this.fb.group({
-    email: ['luizgustavooumbelino@gmail.com', [Validators.email]],
-    password: ['', [Validators.required]],
+    email: ['luizgustavooumbelino@gmail.com', [Validators.email, Validators.required]],
+    password: ['123456', [Validators.required]],
   });
 
   token$ = this.store.select(selectToken);
 
   onSubmit() {
-    console.log(this.signinForm)
     if (this.signinForm.invalid) {
       return;
     }
