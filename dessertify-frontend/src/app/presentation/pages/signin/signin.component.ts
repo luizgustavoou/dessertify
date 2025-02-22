@@ -9,7 +9,10 @@ import {
 } from '@angular/forms';
 import { AppState } from '@/application/state/app.state';
 import { CommonModule } from '@angular/common';
-import { selectToken } from '@/application/state/selectors/auth.selector';
+import {
+  isLoading,
+  selectToken,
+} from '@/application/state/selectors/auth.selector';
 import { MaterialModule } from '@/shared/material.module';
 import { MatInputModule } from '@angular/material/input';
 
@@ -64,6 +67,8 @@ import { MatInputModule } from '@angular/material/input';
 export class SigninComponent {
   store = inject(Store<AppState>);
   fb = inject(FormBuilder);
+
+  loading$ = this.store.select(isLoading);
 
   signinForm = this.fb.group({
     email: [

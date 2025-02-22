@@ -2,6 +2,7 @@ import { IAuthState } from '@/application/state/auth.state';
 import { createReducer, on } from '@ngrx/store';
 import {
   logout,
+  signin,
   signinFailure,
   signinSuccess,
 } from '@/application/state/actions/auth.action';
@@ -9,14 +10,25 @@ import {
 const initialState: IAuthState = {
   token: null,
   error: null,
+  loading: false,
 };
 
 export const authReducer = createReducer(
   initialState,
+  on(signin, (state, {}) => ({
+    ...state,
+    loading: false,
+  })),
   on(signinSuccess, (state, { token }) => ({
     ...state,
+    error: null,
+    loading: false,
     token,
   })),
-  on(signinFailure, (state, { error }) => ({ ...state, error })),
+  on(signinFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
   on(logout, () => initialState)
 );

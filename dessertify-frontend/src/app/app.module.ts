@@ -23,6 +23,7 @@ import { authReducer } from '@/application/state/reducers/auth.reducer';
 import { AuthGuard } from '@/application/guards/auth.guard';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '@/application/state/effects/auth.effects';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,9 +37,8 @@ import { AuthEffects } from '@/application/state/effects/auth.effects';
     DessertsListComponent,
     StoreModule.forRoot<AppState>({ cart: cartReducer, auth: authReducer }, {}),
     EffectsModule.forRoot([AuthEffects]),
-    NgxStripeModule.forRoot(
-      'pk_test_51Q73ToCkffGxKcXJQehaae3GKGFgro8XeDLCFcWsPPfJX5Onx4bfy2UG3pP3sIpkcHQ2cgAbyZArcAKcpNYCzRBI00kkwY57UQ'
-    ),
+
+    NgxStripeModule.forRoot(environment.STRIPE_PUBLISHABLE_KEY),
     CheckoutFormComponent,
   ],
   providers: [

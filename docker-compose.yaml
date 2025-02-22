@@ -4,9 +4,7 @@ services:
       context: ./dessertify-frontend
       dockerfile: Dockerfile
       target: development
-    command: ng serve --host 0.0.0.0
-    env_file:
-      - ./dessertify-frontend/.env
+    command: npm run start:dev
     ports:
       - '4200:4200'
     volumes:
