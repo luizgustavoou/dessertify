@@ -8,13 +8,28 @@ datasource db {
 }
 
 model Order {
-  id         String      @id @default(uuid())
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  status     OrderStatus @default(WAITING_PAYMENT)
-  items      OrderItem[]
-  customerId String
-  paid       Boolean   @default(false)
+  id                String          @id @default(uuid())
+  status            OrderStatus     @default(WAITING_PAYMENT)
+  deliveryAddress   DeliveryAddress @relation(fields: [deliveryAddressId], references: [id])
+  deliveryAddressId String          @unique
+  items             OrderItem[]
+  customerId        String
+  paid              Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model DeliveryAddress {
+  id        String   @id @default(uuid())
+  order     Order?
+  street    String
+  country   String
+  state     String
+  city      String
+  zipcode   String
+  number    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model OrderItem {

@@ -19,14 +19,11 @@ export class MarkOrderAsPaidUseCaseImpl implements MarkOrderAsPaidUseCase {
     const order = await this.orderRepository.findOneById({ id: orderId });
 
 
-    console.log('order ', order)
     if (!order) {
       throw new NotFoundException('Order not found');
     }
 
     order.pay();
-
-    console.log('order updated ', order)
 
     await this.orderRepository.saveOrder(order);
   }

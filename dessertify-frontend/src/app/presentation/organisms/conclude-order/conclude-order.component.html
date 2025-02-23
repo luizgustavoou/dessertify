@@ -69,8 +69,16 @@
 
 
 
-      <button class="w-full mt-auto" mat-flat-button (click)="pay()">
-        Pay
+      <button mat-raised-button class="w-full mt-auto" mat-flat-button (click)="pay()" [disabled]="paying()">
+        <div class="flex">
+
+          <span *ngIf="paying(); else defaultLabel">Paying...</span>
+          <ng-template #defaultLabel>
+            Pay
+          </ng-template>
+
+          <mat-progress-spinner *ngIf="paying()" mode="indeterminate" diameter="20"></mat-progress-spinner>
+        </div>
       </button>
     </div>
   </section>

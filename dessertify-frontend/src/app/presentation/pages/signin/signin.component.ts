@@ -48,9 +48,29 @@ import { MatInputModule } from '@angular/material/input';
             />
           </mat-form-field>
 
-          <button mat-raised-button color="primary" class="w-full py-3 text-lg">
-            Signin
+          <!-- <button mat-raised-button color="primary" class="w-full py-3 text-lg" disabled="{{ loading$ | async }}">
+
+            <span *ngIf="loading$ | async; else teste">Signin</span>
+            <span #teste>Signing in...</span>
             <mat-icon iconPositionEnd>login</mat-icon>
+          </button> -->
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-full py-3 text-lg"
+            [disabled]="loading$ | async"
+          >
+            <mat-progress-spinner
+              *ngIf="loading$ | async"
+              mode="indeterminate"
+              diameter="20"
+            ></mat-progress-spinner>
+
+            <div class="flex justify-center items-center space-x-2" *ngIf="!(loading$ | async)">
+              <span>Signin</span>
+              <mat-icon iconPositionEnd>login</mat-icon>
+            </div>
           </button>
         </form>
       </div>

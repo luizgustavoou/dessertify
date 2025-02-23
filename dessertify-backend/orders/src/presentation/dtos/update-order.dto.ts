@@ -1,7 +1,11 @@
 import { Type } from 'class-transformer';
+import { DeliveryAddressDto } from '@/presentation/dtos/delivery-address.dto';
 import {
   ArrayMinSize,
+  IsDefined,
+  IsNotEmptyObject,
   IsNumber,
+  IsObject,
   IsOptional,
   IsUUID,
   ValidateNested,
@@ -25,4 +29,12 @@ export class UpdateOrderDto {
   @Type(() => ItemDto)
   @ArrayMinSize(1)
   items?: ItemDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => DeliveryAddressDto)
+  deliveryAddress?: DeliveryAddressDto;
 }

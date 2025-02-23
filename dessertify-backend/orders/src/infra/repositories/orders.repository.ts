@@ -25,6 +25,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             product: true,
           },
         },
+        deliveryAddress: true,
       },
     });
 
@@ -44,6 +45,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             product: true,
           },
         },
+        deliveryAddress: true,
       },
     });
 
@@ -59,6 +61,16 @@ export class PrismaOrdersRepository implements OrdersRepository {
         customerId: params.customerId,
         paid: params.paid,
         status: params.status as any,
+        deliveryAddress: {
+          update: {
+            country: params.deliveryAddress.country,
+            state: params.deliveryAddress.state,
+            city: params.deliveryAddress.city,
+            street: params.deliveryAddress.street,
+            zipcode: params.deliveryAddress.zipcode,
+            number: params.deliveryAddress.number,
+          },
+        },
         items: {
           deleteMany: {},
           createMany: {
@@ -72,6 +84,16 @@ export class PrismaOrdersRepository implements OrdersRepository {
       create: {
         customerId: params.customerId,
         status: params.status as any,
+        deliveryAddress: {
+          create: {
+            country: params.deliveryAddress.country,
+            state: params.deliveryAddress.state,
+            city: params.deliveryAddress.city,
+            street: params.deliveryAddress.street,
+            zipcode: params.deliveryAddress.zipcode,
+            number: params.deliveryAddress.number,
+          },
+        },
         items: {
           createMany: {
             data: params.items.map((item) => ({
@@ -87,6 +109,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             product: true,
           },
         },
+        deliveryAddress: true,
       },
     });
 
@@ -104,6 +127,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             product: true,
           },
         },
+        deliveryAddress: true,
       },
     });
 

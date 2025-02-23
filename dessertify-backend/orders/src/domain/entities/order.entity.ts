@@ -2,6 +2,10 @@ import { Entity } from '@/domain/entities/entity';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { IRawOrderItem } from './order-item.entity';
+import {
+  DeliveryAddress,
+  IDeliveryAddressProps,
+} from '@/domain/entities/delivery-address.value-object';
 
 export const OrderStatus = {
   WAITING_PAYMENT: 'WAITING_PAYMENT',
@@ -16,6 +20,7 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 export interface IOrderProps {
   customerId: string;
   items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[];
+  deliveryAddress: IDeliveryAddressProps;
   paid: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -28,6 +33,7 @@ export interface IRawOrder {
   total: number;
   status: OrderStatus;
   paid: boolean;
+  deliveryAddress: IDeliveryAddressProps;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +45,7 @@ export class OrderEntity extends Entity {
   private _status: OrderStatus;
   private _createdAt: Date;
   private _updatedAt: Date;
+  private _deliveryAddress: DeliveryAddress;
 
   constructor(props: IOrderProps, id: string) {
     if (props.items.length === 0) {
@@ -55,6 +62,7 @@ export class OrderEntity extends Entity {
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
     this._paid = props.paid;
+    this._deliveryAddress = new DeliveryAddress(props.deliveryAddress);
   }
 
   public static create(
@@ -80,6 +88,7 @@ export class OrderEntity extends Entity {
       total: this.total,
       status: this.status,
       paid: this.paid,
+      deliveryAddress: this.deliveryAddress.raw(),
     };
   }
 
@@ -127,6 +136,10 @@ export class OrderEntity extends Entity {
     );
   }
 
+  get deliveryAddress(): DeliveryAddress {
+    return this._deliveryAddress;
+  }
+
   set items(items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[]) {
     this._items = [];
 
@@ -149,5 +162,9 @@ export class OrderEntity extends Entity {
 
   set updatedAt(updatedAt: Date) {
     this._updatedAt = updatedAt;
+  }
+
+  set deliveryAddress(deliveryAddress: DeliveryAddress) {
+    this._deliveryAddress = deliveryAddress;
   }
 }

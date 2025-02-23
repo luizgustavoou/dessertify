@@ -8,6 +8,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersRepository } from '@/domain/contracts/repositories/orders.repository';
 import { ProductsRepository } from '@/domain/contracts/repositories/products.repository';
 import { UpdateOrderDto } from '@/presentation/dtos/update-order.dto';
+import { DeliveryAddress } from '../entities/delivery-address.value-object';
 
 export abstract class OrderService {
   abstract createOrder(params: CreateOrderDto): Promise<IRawOrder>;
@@ -32,6 +33,15 @@ export class OrderServiceImpl implements OrderService {
 
     if (order.customerId) {
       order.customerId = params.customerId;
+    }
+
+    if (params.deliveryAddress) {
+      const newDeliveryAddress = new DeliveryAddress({
+        ...order.deliveryAddress.raw(),
+        ...params.deliveryAddress,
+      });
+
+      order.deliveryAddress = newDeliveryAddress;
     }
 
     const itemsWithDomainProduct = await Promise.all(
@@ -90,6 +100,7 @@ export class OrderServiceImpl implements OrderService {
         createdAt: new Date(),
         updatedAt: new Date(),
       })),
+      deliveryAddress: params.deliveryAddress,
     });
 
     const savedOrder = await this.ordersRepository.saveOrder(order);

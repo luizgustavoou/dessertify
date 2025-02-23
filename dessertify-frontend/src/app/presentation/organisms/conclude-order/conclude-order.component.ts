@@ -57,6 +57,7 @@ import {
 })
 export class ConcludeOrderComponent {
   loadingContinue = signal(false);
+
   stage = 0;
 
   private _snackBar = inject(MatSnackBar);
@@ -89,10 +90,10 @@ export class ConcludeOrderComponent {
 
     this.ordersApi
       .createOrder({
-        customerId: '655901ef-acc4-48c3-aaf2-ff3618aa82d5',
+        customerId: '5ba0b782-a2a2-4757-b3d6-64be6f2b22ee',
         items: [
           {
-            productId: '99a33a04-dc04-4c63-a213-e80929514e3c',
+            productId: 'dd013896-8531-4c30-9ebd-097133145c99',
             quantity: 1,
           },
         ],
@@ -107,7 +108,7 @@ export class ConcludeOrderComponent {
         },
         complete: () => {
           this.loadingContinue.set(false);
-        }
+        },
       });
   }
 
@@ -184,7 +185,6 @@ export class ConcludeOrderComponent {
       })
       .subscribe((result) => {
         this.paying.set(false);
-        console.log('Result', result);
         if (result.error) {
           // Show error to your customer (e.g., insufficient funds)
           alert('Error: ' + result.error.message);
