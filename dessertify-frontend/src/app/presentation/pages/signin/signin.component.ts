@@ -37,6 +37,10 @@ import { MatInputModule } from '@angular/material/input';
         >
           <mat-form-field appearance="outline" class="w-full">
             <input matInput placeholder="Email" formControlName="email" />
+
+            @if(signinForm.controls.email.errors?.['required']) {
+            <mat-error>Email is required</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-full">
@@ -46,6 +50,10 @@ import { MatInputModule } from '@angular/material/input';
               formControlName="password"
               type="password"
             />
+
+            @if(signinForm.controls.password.errors?.['required']) {
+            <mat-error>Password is required</mat-error>
+            }
           </mat-form-field>
 
           <!-- <button mat-raised-button color="primary" class="w-full py-3 text-lg" disabled="{{ loading$ | async }}">
@@ -67,7 +75,10 @@ import { MatInputModule } from '@angular/material/input';
               diameter="20"
             ></mat-progress-spinner>
 
-            <div class="flex justify-center items-center space-x-2" *ngIf="!(loading$ | async)">
+            <div
+              class="flex justify-center items-center space-x-2"
+              *ngIf="!(loading$ | async)"
+            >
               <span>Signin</span>
               <mat-icon iconPositionEnd>login</mat-icon>
             </div>
@@ -93,9 +104,9 @@ export class SigninComponent {
   signinForm = this.fb.group({
     email: [
       'luizgustavooumbelino@gmail.com',
-      [Validators.email, Validators.required],
+      [Validators.required, Validators.email],
     ],
-    password: ['123456', [Validators.required]],
+    password: ['123123', [Validators.required]],
   });
 
   token$ = this.store.select(selectToken);

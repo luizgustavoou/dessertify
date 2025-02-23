@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ConcludeOrderComponent } from '../conclude-order/conclude-order.component';
+import { OrderCheckoutComponent } from '@/presentation/organisms/order-checkout/order-checkout.component';
 import { MaterialModule } from '@/shared/material.module';
 import { SeparatorComponent } from '@/presentation/atoms/separator/separator.component';
 import { CartProduct, Product } from '@/domain/models/products';
@@ -36,7 +36,7 @@ export class CartComponent {
   async openDialog() {
     // const products = await firstValueFrom(this.cartProducts$);
 
-    this.dialog.open(ConcludeOrderComponent, {
+    this.dialog.open(OrderCheckoutComponent, {
       // data: {
       //   products,
       // },

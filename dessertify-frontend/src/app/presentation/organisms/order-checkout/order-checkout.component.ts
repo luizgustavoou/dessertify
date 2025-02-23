@@ -37,25 +37,28 @@ import {
   StripeElementsOptions,
   StripePaymentElementOptions,
 } from '@stripe/stripe-js';
+import { OrderReviewComponent } from '../order-review/order-review.component';
+import { AddressFormComponent } from '../addres-form-component/addres-form.component';
 
 @Component({
-  selector: 'app-conclude-order',
+  selector: 'app-order-checkout',
   standalone: true,
   imports: [
     CommonModule,
     MaterialModule,
-    SeparatorComponent,
     ReactiveFormsModule,
     MatInputModule,
     StripeElementsDirective,
     StripePaymentElementComponent,
     CommonModule,
     MaterialModule,
+    OrderReviewComponent,
+    AddressFormComponent,
   ],
-  templateUrl: './conclude-order.component.html',
-  styleUrl: './conclude-order.component.scss',
+  templateUrl: './order-checkout.component.html',
+  styleUrl: './order-checkout.component.scss',
 })
-export class ConcludeOrderComponent {
+export class OrderCheckoutComponent {
   loadingContinue = signal(false);
 
   stage = 0;
@@ -69,21 +72,16 @@ export class ConcludeOrderComponent {
     this._store.select(selectCartProducts);
 
   // public data: Order = inject(MAT_DIALOG_DATA);
-  public dialogRef = inject(MatDialogRef<ConcludeOrderComponent>);
+  public dialogRef = inject(MatDialogRef<OrderCheckoutComponent>);
 
   public dialog = inject(MatDialog);
 
-  openSnackBar(message: string) {
-    // this._snackBar.openFromComponent(PizzaPartyAnnotatedComponent, {
-    //   duration: 1000,
-    // });
-    // this._snackBar.openFromTemplate(this.template!, {});
-    this._snackBar.open(message, 'Close', {
-      duration: 3000,
-    });
+  public handleOrderReview() {
+    this.stage++;
   }
 
-  public continue() {
+  public handleAddressFormSubmit(formValue: any) {
+    console.log('formValue ', formValue);
     if (this.loadingContinue()) return;
 
     this.loadingContinue.set(true);
@@ -97,19 +95,42 @@ export class ConcludeOrderComponent {
             quantity: 1,
           },
         ],
+        deliveryAddress: {
+          country: formValue.country,
+          state: formValue.state,
+          city: formValue.city,
+          street: formValue.street,
+          number: formValue.number,
+          zipcode: formValue.zipcode,
+        },
       })
       .subscribe({
         next: (order) => {
           this.elementsOptions.clientSecret = order.clientSecret;
-          this.stage = 1;
+          this.stage = 2;
         },
         error: (error) => {
-          this.openSnackBar('Error creating order');
+          const message =
+            error.error.message instanceof Array
+              ? error.error.message[0]
+              : error.error.message;
+
+          this.openSnackBar(`Error creating order. Cause: ${message}`);
         },
         complete: () => {
           this.loadingContinue.set(false);
         },
       });
+  }
+
+  openSnackBar(message: string) {
+    // this._snackBar.openFromComponent(PizzaPartyAnnotatedComponent, {
+    //   duration: 1000,
+    // });
+    // this._snackBar.openFromTemplate(this.template!, {});
+    this._snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
   }
 
   getTotal(): number {

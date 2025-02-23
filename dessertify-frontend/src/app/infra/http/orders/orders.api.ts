@@ -11,6 +11,14 @@ export type CreateOrderProps = {
       quantity: number;
     }
   ];
+  deliveryAddress: {
+    street: string;
+    number: number;
+    city: string;
+    state: string;
+    country: string;
+    zipcode: string;
+  };
 };
 
 export abstract class OrdersApi {

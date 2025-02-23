@@ -1,0 +1,63 @@
+<form [formGroup]="form" class="flex flex-col h-full gap-2" (submit)="continue()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="Country..." formControlName="country" />
+
+    @if(form.controls.country.errors?.['required']) {
+    <mat-error>Country is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="State..." formControlName="state" />
+
+    @if(form.controls.state.errors?.['required']) {
+    <mat-error>State is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="city" formControlName="city" />
+
+    @if(form.controls.city.errors?.['required']) {
+    <mat-error>City is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="Street..." formControlName="street" />
+
+    @if(form.controls.street.errors?.['required']) {
+    <mat-error>Street is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="Number" formControlName="number" type="number" />
+
+    @if(form.controls.number.errors?.['required']) {
+    <mat-error>Number is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput placeholder="ZIP Code" formControlName="zipcode" />
+
+    @if(form.controls.zipcode.errors?.['required']) {
+    <mat-error>ZIP Code is required</mat-error>
+    }
+  </mat-form-field>
+
+
+  <button mat-flat-button class="w-full mt-auto" mat-flat-button type="submit">
+    <div class="flex">
+      Continue
+    </div>
+  </button>
+</form>
+
+
+
+<!-- <ng-template let-snackBarRef="snackBarRef" #templateSnackBar>
+  <span class="example-pizza-party">
+    Pizza party!!!
+  </span>
+  <span>
+    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
+  </span>
+
+</ng-template> -->

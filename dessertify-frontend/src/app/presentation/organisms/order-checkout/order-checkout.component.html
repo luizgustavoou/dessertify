@@ -1,0 +1,40 @@
+<div class="p-8 h-full flex flex-col">
+  <app-order-review *ngIf="stage == 0" (onNext)="handleOrderReview()" class="h-full"></app-order-review>
+
+  <app-address-form *ngIf="stage == 1" (onContinue)="handleAddressFormSubmit($event)"></app-address-form>
+
+  <section *ngIf="stage == 2" class="flex flex-col h-full">
+    <div [formGroup]="paymentElementForm" class="flex flex-col h-full">
+      <ngx-stripe-elements *ngIf="elementsOptions.clientSecret" [stripe]="stripe" [elementsOptions]="elementsOptions">
+        <ngx-stripe-payment />
+      </ngx-stripe-elements>
+
+
+
+      <button mat-raised-button class="w-full mt-auto" mat-flat-button (click)="pay()" [disabled]="paying()">
+        <div class="flex">
+
+          <span *ngIf="paying(); else defaultLabel">Paying...</span>
+          <ng-template #defaultLabel>
+            Pay
+          </ng-template>
+
+          <mat-progress-spinner *ngIf="paying()" mode="indeterminate" diameter="20"></mat-progress-spinner>
+        </div>
+      </button>
+    </div>
+  </section>
+</div>
+
+
+
+
+<!-- <ng-template let-snackBarRef="snackBarRef" #templateSnackBar>
+  <span class="example-pizza-party">
+    Pizza party!!!
+  </span>
+  <span>
+    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
+  </span>
+
+</ng-template> -->

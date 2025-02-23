@@ -15,7 +15,6 @@ import { StoreModule } from '@ngrx/store';
 import { AppState } from '@/application/state/app.state';
 import { cartReducer } from '@/application/state/reducers/cart.reducer';
 import { NgxStripeModule } from 'ngx-stripe';
-import { CheckoutFormComponent } from '@/presentation/organisms/teste-stripe/checkout-form.component';
 import { OrdersApi, OrdersApiImpl } from '@/infra/http/orders/orders.api';
 import { AuthApi, AuthApiImpl } from '@/infra/http/auth/auth.api';
 import { FormsModule } from '@angular/forms';
@@ -39,7 +38,6 @@ import { environment } from '../environments/environment';
     EffectsModule.forRoot([AuthEffects]),
 
     NgxStripeModule.forRoot(environment.STRIPE_PUBLISHABLE_KEY),
-    CheckoutFormComponent,
   ],
   providers: [
     provideHttpClient(),
