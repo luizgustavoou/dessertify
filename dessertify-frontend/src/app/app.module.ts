@@ -23,6 +23,7 @@ import { AuthGuard } from '@/application/guards/auth.guard';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '@/application/state/effects/auth.effects';
 import { environment } from '../environments/environment';
+import { BrazilApi, BrazilApiImpl } from '@/infra/http/brazil/brazil.api';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,6 +53,10 @@ import { environment } from '../environments/environment';
     {
       provide: AuthApi,
       useClass: AuthApiImpl,
+    },
+    {
+      provide: BrazilApi,
+      useClass: BrazilApiImpl,
     },
     provideAnimationsAsync(),
     AuthGuard,
