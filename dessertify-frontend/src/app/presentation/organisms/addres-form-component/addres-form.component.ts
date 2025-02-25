@@ -70,7 +70,7 @@ export class AddressFormComponent {
     city: ['', Validators.required],
     street: ['', Validators.required],
     number: ['', Validators.required],
-    zipcode: ['', Validators.required],
+    zipcode: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
   });
 
   openSnackBar(message: string) {

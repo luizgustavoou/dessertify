@@ -35,10 +35,14 @@
     }
   </mat-form-field>
   <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="ZIP Code" formControlName="zipcode" />
+    <input matInput placeholder="ZIP Code" formControlName="zipcode" pattern="^(\d{5})(-?\d{3})$" minlength="8"
+      maxlength="9" />
 
     @if(form.controls.zipcode.errors?.['required']) {
     <mat-error>ZIP Code is required</mat-error>
+    }
+    @if(form.controls.zipcode.errors?.['pattern']) {
+    <mat-error>ZIP Code is invalid. The field should follow the example: 59149356</mat-error>
     }
   </mat-form-field>
 
