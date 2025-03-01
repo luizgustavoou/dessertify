@@ -11,8 +11,15 @@ import { logout } from '@/application/state/actions/auth.action';
 export class AppComponent {
   isLoggedIn$: Observable<boolean>;
 
+  isMenuOpen = true;
+
   constructor(private store: Store) {
     this.isLoggedIn$ = this.store.select(isAuthenticated);
+  }
+
+  onToolbarMenuToggle() {
+    console.log('Toolbar menu toggle', this.isMenuOpen);
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   logout() {

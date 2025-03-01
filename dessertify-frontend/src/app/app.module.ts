@@ -24,6 +24,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '@/application/state/effects/auth.effects';
 import { environment } from '../environments/environment';
 import { BrazilApi, BrazilApiImpl } from '@/infra/http/brazil/brazil.api';
+import { MaterialModule } from '@/shared/material.module';
+import { SeparatorComponent } from '@/presentation/atoms/separator/separator.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,8 +39,9 @@ import { BrazilApi, BrazilApiImpl } from '@/infra/http/brazil/brazil.api';
     DessertsListComponent,
     StoreModule.forRoot<AppState>({ cart: cartReducer, auth: authReducer }, {}),
     EffectsModule.forRoot([AuthEffects]),
-
     NgxStripeModule.forRoot(environment.STRIPE_PUBLISHABLE_KEY),
+    MaterialModule,
+    SeparatorComponent
   ],
   providers: [
     provideHttpClient(),

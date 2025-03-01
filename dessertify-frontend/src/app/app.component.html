@@ -1,7 +1,54 @@
-<!-- <nav>
-  <a routerLink="/signin">Signin</a>
-  <a routerLink="/dashboard" *ngIf="isLoggedIn$ | async">Dashboard</a>
-  <button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout</button>
-</nav> -->
+@if (isLoggedIn$ | async ) {
+<mat-toolbar>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+    (click)="onToolbarMenuToggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Dessertify</span>
+  <span class="flex-1"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon matBadge="15">shopping_cart</mat-icon>
+  </button>
+</mat-toolbar>
 
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" [(opened)]="isMenuOpen">
+
+    <header class="flex items-center space-x-2 px-6 py-4">
+      <img class="object-fill" src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+        class="w-12 h-12 rounded-full">
+
+      <div>
+        <p class="font-bold">Luiz Gustavo</p>
+        <p class="text-sm text-gray-400">Cliente</p>
+      </div>
+    </header>
+
+    <ul class="p-3 space-y-2">
+      <li class="rounded-md cursor-pointer hover:bg-rose-100 px-3 py-3" [routerLink]="['/home']"
+        [routerLinkActive]="['font-bold', 'bg-rose-100']">
+        <a class="flex items-center space-x-3">
+          <mat-icon>home</mat-icon>
+          <span>Home</span>
+        </a>
+      </li>
+
+      <li class="cursor-pointer hover:bg-rose-100 px-3 py-3" [routerLink]="['/signin']"
+        [routerLinkActive]="['font-bold', 'bg-rose-100']">
+        <a class="flex items-center space-x-3">
+          <mat-icon>inventory_2</mat-icon>
+          <span>Orders</span>
+        </a>
+      </li>
+    </ul>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+}@else {
 <router-outlet></router-outlet>
+}

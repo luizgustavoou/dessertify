@@ -14,8 +14,12 @@ import {
   MatSnackBarLabel,
 } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatInputModule } from '@angular/material/input';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   imports: [
     MatDialogActions,
@@ -29,17 +33,21 @@ import { MatInputModule } from '@angular/material/input';
   exports: [
     MatIconModule,
     MatButtonModule,
-    MatButtonModule,
     MatDialogActions,
     MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
     MatDividerModule,
-    MatButtonModule,
     MatSnackBarLabel,
     MatSnackBarActions,
     MatSnackBarAction,
     MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatBadgeModule,
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatCardModule,
   ],
 })
 export class MaterialModule {}
