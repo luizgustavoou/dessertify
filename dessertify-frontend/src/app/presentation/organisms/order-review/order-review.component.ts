@@ -4,7 +4,6 @@ import {
   EventEmitter,
   inject,
   Output,
-  signal,
   TemplateRef,
   ViewChild,
 } from '@angular/core';

@@ -1,14 +1,26 @@
 @if (isLoggedIn$ | async ) {
 <mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
-    (click)="onToolbarMenuToggle()">
+  <button mat-icon-button aria-label="Menu" (click)="onToolbarMenuToggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <span>Dessertify</span>
   <span class="flex-1"></span>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+  <button mat-icon-button aria-label="Cart">
     <mat-icon matBadge="15">shopping_cart</mat-icon>
   </button>
+
+  @if(isDarkTheme()) {
+  <button mat-icon-button aria-label="Light Mode" (click)="toggleDarkMode()">
+    <mat-icon>light_mode</mat-icon>
+  </button>
+  }@else {
+  <button mat-icon-button aria-label="Dark Mode" (click)="toggleDarkMode()">
+    <mat-icon>dark_mode</mat-icon>
+  </button>
+  }
+
+
+
 </mat-toolbar>
 
 
@@ -26,16 +38,16 @@
     </header>
 
     <ul class="p-3 space-y-2">
-      <li class="rounded-md cursor-pointer hover:bg-[var(--mat-sys-primary-container)] px-3 py-3" [routerLink]="['/home']"
-        [routerLinkActive]="['font-bold', 'bg-[var(--mat-sys-secondary-container)]']">
+      <li class="rounded-md cursor-pointer hover:bg-[var(--mat-sys-primary-container)] px-3 py-3"
+        [routerLink]="['/home']" [routerLinkActive]="['font-bold', 'bg-[var(--mat-sys-secondary-container)]']">
         <a class="flex items-center space-x-3">
           <mat-icon>home</mat-icon>
           <span>Home</span>
         </a>
       </li>
 
-      <li class="cursor-pointer hover:bg-[var(--mat-sys-primary-container)] px-3 py-3" [routerLink]="['/signin']"
-        [routerLinkActive]="['font-bold', 'bg-[var(--mat-sys-secondary-container)]']">
+      <li class="rounded-md cursor-pointer hover:bg-[var(--mat-sys-primary-container)] px-3 py-3"
+        [routerLink]="['/signin']" [routerLinkActive]="['font-bold', 'bg-[var(--mat-sys-secondary-container)]']">
         <a class="flex items-center space-x-3">
           <mat-icon>inventory_2</mat-icon>
           <span>Orders</span>

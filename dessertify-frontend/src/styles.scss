@@ -4,7 +4,7 @@
 
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   @include mat.theme((
     color: (
       primary: my-theme.$primary-palette,
@@ -15,6 +15,10 @@ html {
   ));
 }
 
+.dark {
+  color-scheme: dark;
+}
+
 html,
 body {
   height: 100%;
@@ -22,6 +26,7 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-background);
 }
 
 .text-primary {

@@ -1,21 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { isAuthenticated } from '@/application/state/selectors/auth.selector';
 import { logout } from '@/application/state/actions/auth.action';
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss',
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+  standalone: false,
 })
 export class AppComponent {
   isLoggedIn$: Observable<boolean>;
 
-  isMenuOpen = true;
+  isMenuOpen = false;
+
+  public isDarkTheme = signal(this.getInitialTheme());
 
   constructor(private store: Store) {
     this.isLoggedIn$ = this.store.select(isAuthenticated);
+
+    effect(() => {
+      if(this.isDarkTheme()) {
+        document.body.classList.add('dark');
+      }else {
+        document.body.classList.remove('dark');
+      }
+    });
   }
 
   onToolbarMenuToggle() {
@@ -25,5 +35,15 @@ export class AppComponent {
 
   logout() {
     this.store.dispatch(logout());
+  }
+
+  toggleDarkMode() {
+    this.isDarkTheme.update((value) => !value);
+  }
+
+  private getInitialTheme(): boolean {
+    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    return theme
   }
 }
