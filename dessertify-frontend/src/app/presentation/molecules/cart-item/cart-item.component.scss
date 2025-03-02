@@ -1,11 +1,18 @@
-@use '@angular/material' as mat;
-
 .button-multi-actions {
-  font-feature-settings: inherit;
-  font-variation-settings: inherit;
-  margin: 0;
-  // cursor: pointer;
-  text-decoration: none;
+  color: var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary));
+  background-color: var(--mdc-filled-button-container-color, var(--mat-sys-primary));
+
+  transition: box-shadow 280mscubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--mdc-protected-button-container-elevation-shadow, var(--mat-sys-level1));
+  height: var(--mdc-protected-button-container-height, 40px);
+  font-family: var(--mdc-protected-button-label-text-font, var(--mat-sys-label-large-font));
+  font-size: var(--mdc-protected-button-label-text-size, var(--mat-sys-label-large-size));
+  letter-spacing: var(--mdc-protected-button-label-text-tracking, var(--mat-sys-label-large-tracking));
+  text-transform: var(--mdc-protected-button-label-text-transform);
+  font-weight: var(--mdc-protected-button-label-text-weight, var(--mat-sys-label-large-weight));
+  padding: 0 var(--mat-protected-button-horizontal-padding, 24px);
+
+
   user-select: none;
   position: relative;
   display: inline-flex;
@@ -13,26 +20,7 @@
   justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
-  border: none;
-  outline: none;
-  line-height: inherit;
-  -webkit-appearance: none;
-  appearance: none;
-  overflow: visible;
-  vertical-align: middle;
-  background: rgba(0,0,0,0);
-  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0 var(--mat-filled-button-horizontal-padding, 16px);
-  height: var(--mdc-filled-button-container-height);
-  font-family: var(--mdc-filled-button-label-text-font, var(--mat-app-label-large-font));
-  font-size: var(--mdc-filled-button-label-text-size, var(--mat-app-label-large-size));
-  letter-spacing: var(--mdc-filled-button-label-text-tracking, var(--mat-app-label-large-tracking));
-  text-transform: var(--mdc-filled-button-label-text-transform);
-  font-weight: var(--mdc-filled-button-label-text-weight, var(--mat-app-label-large-weight));
-  border-radius: var(--mdc-filled-button-container-shape, var(--mat-app-corner-full));
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  color: var(--mdc-filled-button-label-text-color, var(--mat-app-on-primary));
-  background-color: var(--mdc-filled-button-container-color, var(--mat-app-primary));
+  border-radius: var(--mdc-protected-button-container-shape, var(--mat-sys-corner-full));
 }
 
 
