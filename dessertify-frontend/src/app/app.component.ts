@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { isAuthenticated } from '@/application/state/selectors/auth.selector';
 import { logout } from '@/application/state/actions/auth.action';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    standalone: false
 })
 export class AppComponent {
   isLoggedIn$: Observable<boolean>;

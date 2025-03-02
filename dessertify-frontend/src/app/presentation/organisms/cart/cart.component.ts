@@ -16,8 +16,8 @@ import {
 import { clearProduct } from '@/application/state/actions/cart.action';
 
 @Component({
-  selector: 'app-cart',
   standalone: true,
+  selector: 'app-cart',
   imports: [CommonModule, MaterialModule, SeparatorComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',

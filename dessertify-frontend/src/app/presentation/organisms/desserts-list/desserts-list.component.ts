@@ -21,16 +21,16 @@ interface RequestState<T = unknown> {
 }
 
 @Component({
-  selector: 'app-desserts-list',
   standalone: true,
-  imports: [
-    MaterialModule,
-    CommonModule,
-    CartItemComponent,
-    CartItemSkeletonComponent,
-  ],
-  templateUrl: './desserts-list.component.html',
-  styleUrl: './desserts-list.component.scss',
+    selector: 'app-desserts-list',
+    imports: [
+        MaterialModule,
+        CommonModule,
+        CartItemComponent,
+        CartItemSkeletonComponent,
+    ],
+    templateUrl: './desserts-list.component.html',
+    styleUrl: './desserts-list.component.scss'
 })
 export class DessertsListComponent {
   cartProducts$: Observable<CartProduct[]>;

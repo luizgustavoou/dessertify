@@ -4,8 +4,8 @@ import { MaterialModule } from '@/shared/material.module';
 import { CartProduct, Product } from '@/domain/models/products';
 
 @Component({
-  selector: 'app-cart-item',
   standalone: true,
+  selector: 'app-cart-item',
   imports: [CommonModule, MaterialModule],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',

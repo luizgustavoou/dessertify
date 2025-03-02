@@ -5,9 +5,10 @@ import {
 } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'snack-bar-annotated-component-example-snack',
-  templateUrl: 'pizza-party-annotated.component.html',
-  styles: `
+  standalone: true,
+    selector: 'snack-bar-annotated-component-example-snack',
+    templateUrl: 'pizza-party-annotated.component.html',
+    styles: `
     :host {
       display: flex;
     }
@@ -16,8 +17,7 @@ import {
       color: hotpink;
     }
   `,
-  standalone: true,
-  imports: [MaterialModule],
+    imports: [MaterialModule]
 })
 export class PizzaPartyAnnotatedComponent {
   snackBarRef = inject(MatSnackBarRef);

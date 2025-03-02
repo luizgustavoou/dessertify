@@ -1,12 +1,5 @@
 @use '@angular/material' as mat;
 
-
-$theme: mat.define-theme();
-
-.tertiary-button {
-  // @include mat.button-color($theme, $color-variant: primary)
-}
-
 .button-multi-actions {
   font-feature-settings: inherit;
   font-variation-settings: inherit;

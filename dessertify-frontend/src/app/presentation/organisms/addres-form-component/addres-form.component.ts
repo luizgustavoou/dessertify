@@ -31,18 +31,17 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { BrazilApi } from '@/infra/http/brazil/brazil.api';
 @Component({
-  selector: 'app-address-form',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-    MaterialModule,
-  ],
-  templateUrl: './addres-form.component.html',
-  styleUrl: './addres-form.component.scss',
+    selector: 'app-address-form',
+    imports: [
+        CommonModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+        MaterialModule,
+    ],
+    templateUrl: './addres-form.component.html',
+    styleUrl: './addres-form.component.scss'
 })
 export class AddressFormComponent {
   @Output()

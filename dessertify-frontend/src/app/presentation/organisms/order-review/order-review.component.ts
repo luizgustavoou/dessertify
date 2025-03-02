@@ -22,19 +22,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-order-review',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    SeparatorComponent,
-    ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-    MaterialModule,
-  ],
-  templateUrl: './order-review.component.html',
-  styleUrl: './order-review.component.scss',
+    selector: 'app-order-review',
+    imports: [
+        CommonModule,
+        MaterialModule,
+        SeparatorComponent,
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+        MaterialModule,
+    ],
+    templateUrl: './order-review.component.html',
+    styleUrl: './order-review.component.scss'
 })
 export class OrderReviewComponent {
   @Output() public onNext = new EventEmitter<void>();

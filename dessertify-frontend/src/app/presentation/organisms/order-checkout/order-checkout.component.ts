@@ -41,22 +41,21 @@ import { OrderReviewComponent } from '../order-review/order-review.component';
 import { AddressFormComponent } from '../addres-form-component/addres-form.component';
 
 @Component({
-  selector: 'app-order-checkout',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    StripeElementsDirective,
-    StripePaymentElementComponent,
-    CommonModule,
-    MaterialModule,
-    OrderReviewComponent,
-    AddressFormComponent,
-  ],
-  templateUrl: './order-checkout.component.html',
-  styleUrl: './order-checkout.component.scss',
+    selector: 'app-order-checkout',
+    imports: [
+        CommonModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        StripeElementsDirective,
+        StripePaymentElementComponent,
+        CommonModule,
+        MaterialModule,
+        OrderReviewComponent,
+        AddressFormComponent,
+    ],
+    templateUrl: './order-checkout.component.html',
+    styleUrl: './order-checkout.component.scss'
 })
 export class OrderCheckoutComponent {
   loadingContinue = signal(false);
