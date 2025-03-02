@@ -1,5 +1,16 @@
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import url("app/styles/tailwind.scss");
 
-@import url('app/styles/tailwind.scss');
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.text-primary {
+  color: var(--mat-sys-primary)
+}

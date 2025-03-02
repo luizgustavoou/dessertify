@@ -4,3 +4,8 @@
 //   font-weight: bold;
 //   border-left: 4px solid #b91c1c; /* Borda na esquerda */
 // }
+
+.mat-toolbar {
+  color: var(--mat-sys-primary);
+  background: var(--mat-sys-primary-container);
+}
