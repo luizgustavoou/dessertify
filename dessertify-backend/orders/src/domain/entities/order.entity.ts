@@ -18,6 +18,7 @@ export const OrderStatus = {
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export interface IOrderProps {
+  number?: number;
   customerId: string;
   items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[];
   deliveryAddress: IDeliveryAddressProps;
@@ -28,6 +29,7 @@ export interface IOrderProps {
 
 export interface IRawOrder {
   id: string;
+  number: number;
   customerId: string;
   items: Omit<IRawOrderItem, 'orderId'>[];
   total: number;
@@ -39,6 +41,7 @@ export interface IRawOrder {
 }
 
 export class OrderEntity extends Entity {
+  private _number: number;
   private _paid: boolean;
   private _items: Omit<IRawOrderItem, 'orderId'>[];
   private _customerId: string;
@@ -55,7 +58,7 @@ export class OrderEntity extends Entity {
       );
     }
     super(id);
-
+    this._number = props.number;
     this.items = props.items;
     this.customerId = props.customerId;
     this._status = OrderStatus.WAITING_PAYMENT;
@@ -81,6 +84,7 @@ export class OrderEntity extends Entity {
   public raw(): IRawOrder {
     return {
       id: this.id,
+      number: this.number,
       customerId: this.customerId,
       items: this.items,
       createdAt: this.createdAt,
@@ -103,6 +107,10 @@ export class OrderEntity extends Entity {
 
   get id(): string {
     return this._id;
+  }
+
+  get number(): number {
+    return this._number;
   }
 
   get customerId(): string {

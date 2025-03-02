@@ -9,6 +9,7 @@ datasource db {
 
 model Order {
   id                String          @id @default(uuid())
+  number            Int             @unique @default(autoincrement())
   status            OrderStatus     @default(WAITING_PAYMENT)
   deliveryAddress   DeliveryAddress @relation(fields: [deliveryAddressId], references: [id])
   deliveryAddressId String          @unique
@@ -33,12 +34,12 @@ model DeliveryAddress {
 }
 
 model OrderItem {
-  id        String  @id @default(uuid())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int
+  id           String  @id @default(uuid())
+  order        Order   @relation(fields: [orderId], references: [id])
+  orderId      String
+  product      Product @relation(fields: [productId], references: [id])
+  productId    String
+  quantity     Int
   productPrice Float
 
   createdAt DateTime @default(now())

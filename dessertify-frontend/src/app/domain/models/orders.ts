@@ -1,6 +1,7 @@
 export interface Order {
-  paid: any;
   id: string;
+  number: number;
+  paid: boolean;
   customerId: string;
   items: [
     {
