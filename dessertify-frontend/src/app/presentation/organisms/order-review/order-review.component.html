@@ -1,10 +1,12 @@
 <section class="h-full flex flex-col">
   <header class="mb-3">
-    <mat-icon aria-hidden="false" aria-label="Check order" fontIcon="check_circle"
+    <mat-icon aria-hidden="false" aria-label="Review order" fontIcon="playlist_add_check"
       class="text-green-500 scale-[1.75] mb-7"></mat-icon>
 
-    <h2 class="font-bold text-2xl text-red-800">Order Confirmed</h2>
-    <p class="text-sm text-gray-500">We hope you enjoy your food!</p>
+    <h2 class="font-bold text-2xl text-gray-800">Review Your Order Before Delivery</h2>
+    <p class="text-sm text-gray-500">
+      Please check your order details before proceeding to the delivery information.
+    </p>
   </header>
 
   <mat-dialog-content class="flex-1 p-8 space-y-4">
@@ -15,7 +17,7 @@
         <div class="space-y-1">
           <p class="font-bold">{{ product.name }}</p>
           <p class="text-red font-bold">
-            <span class="text-sm mr-3 text-primary ">{{ product.quantity}}x</span>
+            <span class="text-sm mr-3 text-primary ">{{ product.quantity }}x</span>
             <span class="text-xs mr-1 text-gray-400">&#64;</span>
             <span class="text-sm text-gray-400">{{ product.price | currency }}</span>
           </p>
@@ -24,36 +26,16 @@
         <p class="ms-auto font-bold">{{ product.price * product.quantity | currency }}</p>
       </div>
 
-
       <app-separator />
     </ng-content>
 
     <section class="flex justify-between items-center">
-      <p>Order Total</p>
+      <p>Total</p>
       <p class="text-xl font-bold text-rose-900">{{ getTotal() | currency }}</p>
     </section>
   </mat-dialog-content>
 
-
-  <!-- <mat-dialog-actions [align]="'center'"> -->
   <button mat-flat-button class="w-full mb-2 mt-auto" (click)="continue()">
-    <!-- <mat-progress-spinner *ngIf="loadingContinue()" mode="indeterminate" diameter="20"></mat-progress-spinner> -->
     <span>Continue</span>
   </button>
-  <!-- </mat-dialog-actions> -->
 </section>
-
-
-
-
-
-
-<!-- <ng-template let-snackBarRef="snackBarRef" #templateSnackBar>
-  <span class="example-pizza-party">
-    Pizza party!!!
-  </span>
-  <span>
-    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
-  </span>
-
-</ng-template> -->
