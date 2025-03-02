@@ -7,6 +7,7 @@ export interface IOrderItemProps {
   orderId: string;
   quantity: number;
   product: IRawProduct;
+  productPrice: number;
 }
 
 export interface IRawOrderItem {
@@ -14,6 +15,7 @@ export interface IRawOrderItem {
   product: IRawProduct;
   quantity: number;
   orderId: string;
+  productPrice: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,6 +24,7 @@ export class OrderItemEntity extends Entity {
   private _quantity: number;
   private _product: IRawProduct;
   private _orderId: string;
+  private _productPrice: number;
   private _createdAt: Date;
   private _updatedAt: Date;
 
@@ -52,6 +55,7 @@ export class OrderItemEntity extends Entity {
       orderId: this.orderId,
       product: this.product,
       quantity: this.quantity,
+      productPrice: this.productPrice,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -77,6 +81,10 @@ export class OrderItemEntity extends Entity {
 
   set quantity(value: number) {
     this._quantity = value;
+  }
+
+  set productPrice(value: number) {
+    this._productPrice = value;
   }
 
   set createdAt(value: Date) {
@@ -105,6 +113,10 @@ export class OrderItemEntity extends Entity {
     return this._quantity;
   }
 
+  get productPrice(): number {
+    return this._productPrice;
+  }
+
   get createdAt(): Date {
     return this._createdAt;
   }
@@ -112,4 +124,6 @@ export class OrderItemEntity extends Entity {
   get updatedAt(): Date {
     return this._updatedAt;
   }
+
+
 }

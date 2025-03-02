@@ -131,7 +131,7 @@ export class OrderEntity extends Entity {
 
   get total(): number {
     return this.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
+      (acc, item) => acc + item.quantity * item.productPrice,
       0,
     );
   }
@@ -147,6 +147,7 @@ export class OrderEntity extends Entity {
       id: item.id || uuidv4(),
       quantity: item.quantity,
       product: item.product,
+      productPrice: item.productPrice,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     }));

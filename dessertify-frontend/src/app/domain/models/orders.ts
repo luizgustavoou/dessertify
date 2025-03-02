@@ -12,6 +12,7 @@ export interface Order {
         createdAt: string;
         updatedAt: string;
       };
+      productPrice: number;
       createdAt: string;
       updatedAt: string;
     }

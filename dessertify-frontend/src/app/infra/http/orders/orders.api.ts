@@ -34,4 +34,10 @@ export class OrdersApiImpl implements OrdersApi {
 
     return order$;
   }
+
+  public getOrders() {
+    const order$ = this.httpClient.get<Order[]>('http://localhost:3003');
+
+    return order$;
+  }
 }

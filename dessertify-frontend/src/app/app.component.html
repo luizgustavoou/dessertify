@@ -6,7 +6,7 @@
   <span>Dessertify</span>
   <span class="flex-1"></span>
   <button mat-icon-button aria-label="Cart">
-    <mat-icon matBadge="15">shopping_cart</mat-icon>
+    <mat-icon [matBadge]="cartProductsLength$ | async">shopping_cart</mat-icon>
   </button>
 
   @if(isDarkTheme()) {
@@ -18,9 +18,6 @@
     <mat-icon>dark_mode</mat-icon>
   </button>
   }
-
-
-
 </mat-toolbar>
 
 

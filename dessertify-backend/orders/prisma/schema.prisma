@@ -39,6 +39,7 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   productId String
   quantity  Int
+  productPrice Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

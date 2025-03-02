@@ -77,6 +77,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             data: params.items.map((item) => ({
               productId: item.product.id,
               quantity: item.quantity,
+              productPrice: item.productPrice
             })),
           },
         },
@@ -99,6 +100,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             data: params.items.map((item) => ({
               productId: item.product.id,
               quantity: item.quantity,
+              productPrice: item.productPrice
             })),
           },
         },
