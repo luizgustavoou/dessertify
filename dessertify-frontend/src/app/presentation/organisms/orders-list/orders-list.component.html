@@ -1,0 +1,46 @@
+<h2 class="font-bold text-[var(--mat-sys-on-surface)] text-3xl mb-8" #h2>Desserts</h2>
+
+<ng-template>
+  <p>This is a template fragment</p>
+</ng-template>
+
+<ng-content *ngIf="orders$ | async as request;">
+
+  <ng-content *ngIf="!request.loading; else loadingState">
+    <ul class="flex flex-wrap gap-7">
+      <li *ngFor="let order of request.data">
+        <div
+          class="flex flex-col space-y-5 rounded-md p-5 border border-[var(--mat-sys-outline-variant)] w-[400px] example-card"
+          appearance="outlined">
+          <header>
+            <div class="flex justify-between items-center">
+              <h1 class="text-xl">
+                Order #71
+              </h1>
+
+              <mat-icon *ngIf="order.paid" class="text-green-500">check_circle</mat-icon>
+              <mat-icon *ngIf="!order.paid" class="text-red-500">error</mat-icon>
+            </div>
+
+            <div class="text-sm">On {{ order.createdAt | date : "yyyy/MM/dd 'at' HH:mm" }}</div>
+          </header>
+
+          <div>
+            <p *ngFor="let item of order.items">
+              {{ item.quantity }}x {{ item.product.name }}
+            </p>
+          </div>
+
+          <div class="!flex !flex-col space-y-2">
+            <button mat-flat-button color="primary" class="w-full">Repeat order</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </ng-content>
+
+  <ng-template #loadingState>
+    <app-cart-item-skeleton></app-cart-item-skeleton>
+  </ng-template>
+
+</ng-content>

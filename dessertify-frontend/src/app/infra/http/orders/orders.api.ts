@@ -23,6 +23,7 @@ export type CreateOrderProps = {
 
 export abstract class OrdersApi {
   abstract createOrder(params: CreateOrderProps): Observable<Order>;
+  abstract getOrders(): Observable<Order[]>;
 }
 
 @Injectable()

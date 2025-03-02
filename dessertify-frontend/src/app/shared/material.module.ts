@@ -20,6 +20,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+
 @NgModule({
   imports: [
     MatDialogActions,
@@ -48,6 +50,7 @@ import { MatCardModule } from '@angular/material/card';
     MatCheckboxModule,
     MatListModule,
     MatCardModule,
+    MatChipsModule,
   ],
 })
 export class MaterialModule {}

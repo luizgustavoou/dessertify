@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { delay, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Product } from '@/domain/models/products';
 
 export abstract class ProductsApi {
@@ -9,12 +9,11 @@ export abstract class ProductsApi {
 
 @Injectable()
 export class ProductsApiImpl implements ProductsApi {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
 
   public getProducts(): Observable<Product[]> {
-    const products$ = this.httpClient
-      .get<Product[]>('/assets/data.json')
-      .pipe(delay(4000));
+    const products$ = this.httpClient.get<Product[]>('/assets/data.json');
+    // .pipe(delay(4000));
 
     return products$;
   }
