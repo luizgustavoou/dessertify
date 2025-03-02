@@ -1,17 +1,15 @@
-
 @import url("app/styles/tailwind.scss");
-@import './app/themes/burnt-orangetheme.css';
+@import "./app/themes/burnt-orangetheme.css";
 
-
-// html,
-// body {
-//   height: 100%;
-// }
-// body {
-//   margin: 0;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
-// }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .text-primary {
-  color: var(--mat-sys-primary)
+  color: var(--mat-sys-primary);
 }
