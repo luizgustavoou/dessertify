@@ -32,6 +32,8 @@
           </div>
 
           <div class="!flex !flex-col space-y-2">
+            <button *ngIf="!order.paid" mat-flat-button color="success" class="w-full" (click)="pay(order)">Pay</button>
+
             <button mat-flat-button color="primary" class="w-full">Repeat order</button>
           </div>
         </div>
@@ -44,3 +46,11 @@
   </ng-template>
 
 </ng-content>
+
+
+<ng-template let-data #paymentForm>
+  <div class="p-8 h-full">
+    <app-payment-form class="h-full" [clientSecret]="data.order.clientSecret" (onContinue)="handlePaid(data.order)"></app-payment-form>
+
+  </div>
+</ng-template>

@@ -61,6 +61,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
         customerId: params.customerId,
         paid: params.paid,
         status: params.status as any,
+        clientSecret: params.clientSecret,
         deliveryAddress: {
           update: {
             country: params.deliveryAddress.country,
@@ -77,14 +78,16 @@ export class PrismaOrdersRepository implements OrdersRepository {
             data: params.items.map((item) => ({
               productId: item.product.id,
               quantity: item.quantity,
-              productPrice: item.productPrice
+              productPrice: item.productPrice,
             })),
           },
         },
       },
       create: {
+        id: params.id,
         customerId: params.customerId,
         status: params.status as any,
+        clientSecret: params.clientSecret,
         deliveryAddress: {
           create: {
             country: params.deliveryAddress.country,
@@ -100,7 +103,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
             data: params.items.map((item) => ({
               productId: item.product.id,
               quantity: item.quantity,
-              productPrice: item.productPrice
+              productPrice: item.productPrice,
             })),
           },
         },

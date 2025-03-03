@@ -8,6 +8,7 @@ export class PaymentsIntentsStripeWebhook {
   @Post('succeeded')
   paymentsIntent(@Body() body: any) {
     console.log('[PAYMENTS INTENTS STRIPE WEBHOOK - Succeeded]');
+    console.log('body?.data?.object?.metadata ', body?.data?.object?.metadata)
 
     const orderPaidEvent = new OrderPaidEvent(
       body?.data?.object?.metadata?.order_id,

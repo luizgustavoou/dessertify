@@ -1,18 +1,19 @@
-@use '@angular/material' as mat;
-@use './styles/burnt-orange-test_theme-colors.scss' as my-theme;
+@use "@angular/material" as mat;
+@use "./styles/burnt-orange-test_theme-colors.scss" as my-theme;
 @import url("app/styles/tailwind.scss");
-
 
 html {
   color-scheme: light;
-  @include mat.theme((
-    color: (
-      primary: my-theme.$primary-palette,
-      tertiary: my-theme.$tertiary-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 .dark {
@@ -30,5 +31,5 @@ body {
 }
 
 .text-primary {
-  color: var(--mat-sys-primary)
+  color: var(--mat-sys-primary);
 }

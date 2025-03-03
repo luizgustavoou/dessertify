@@ -18,7 +18,7 @@ export class MarkOrderAsPaidUseCaseImpl implements MarkOrderAsPaidUseCase {
   }: MarkOrderAsPaidUseCaseParams): Promise<void> {
     const order = await this.orderRepository.findOneById({ id: orderId });
 
-
+    
     if (!order) {
       throw new NotFoundException('Order not found');
     }

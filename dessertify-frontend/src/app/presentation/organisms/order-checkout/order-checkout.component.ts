@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   inject,
-  Inject,
   signal,
   TemplateRef,
   ViewChild,
@@ -10,60 +9,46 @@ import {
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import {
-  MatSnackBar,
-  MatSnackBarAction,
-  MatSnackBarActions,
-  MatSnackBarLabel,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
-import { CartProduct, Product } from '@/domain/models/products';
-import { SeparatorComponent } from '@/presentation/atoms/separator/separator.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CartProduct } from '@/domain/models/products';
 import { MaterialModule } from '@/shared/material.module';
 import { AppState } from '@/application/state/app.state';
 import { selectCartProducts } from '@/application/state/selectors/cart.selector';
-import { clear } from '@/application/state/actions/cart.action';
 
 import { PizzaPartyAnnotatedComponent } from '@/presentation/molecules/pizza-party-annotated/pizza-party-annotated.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import {
-  injectStripe,
-  StripeElementsDirective,
-  StripePaymentElementComponent,
-} from 'ngx-stripe';
 import { OrdersApi } from '@/infra/http/orders/orders.api';
-import {
-  StripeElementsOptions,
-  StripePaymentElementOptions,
-} from '@stripe/stripe-js';
 import { OrderReviewComponent } from '../order-review/order-review.component';
 import { AddressFormComponent } from '../addres-form-component/addres-form.component';
+import { PaymentFormComponent } from '../payment-form/payment-form.component';
 
 @Component({
-    selector: 'app-order-checkout',
-    imports: [
-        CommonModule,
-        MaterialModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        StripeElementsDirective,
-        StripePaymentElementComponent,
-        CommonModule,
-        MaterialModule,
-        OrderReviewComponent,
-        AddressFormComponent,
-    ],
-    templateUrl: './order-checkout.component.html',
-    styleUrl: './order-checkout.component.scss'
+  selector: 'app-order-checkout',
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    CommonModule,
+    MaterialModule,
+    OrderReviewComponent,
+    AddressFormComponent,
+    PaymentFormComponent,
+  ],
+  templateUrl: './order-checkout.component.html',
+  styleUrl: './order-checkout.component.scss',
 })
 export class OrderCheckoutComponent {
+  clientSecret: string | null = null;
   loadingContinue = signal(false);
 
   stage = 0;
 
   private _snackBar = inject(MatSnackBar);
   private _store = inject(Store<AppState>);
+  private readonly ordersApi = inject(OrdersApi);
+
 
   @ViewChild('templateSnackBar') template: TemplateRef<unknown> | undefined;
 
@@ -80,7 +65,6 @@ export class OrderCheckoutComponent {
   }
 
   public handleAddressFormSubmit(formValue: any) {
-    console.log('formValue ', formValue);
     if (this.loadingContinue()) return;
 
     this.loadingContinue.set(true);
@@ -105,7 +89,7 @@ export class OrderCheckoutComponent {
       })
       .subscribe({
         next: (order) => {
-          this.elementsOptions.clientSecret = order.clientSecret;
+          this.clientSecret = order.clientSecret;
           this.stage = 2;
         },
         error: (error) => {
@@ -120,6 +104,10 @@ export class OrderCheckoutComponent {
           this.loadingContinue.set(false);
         },
       });
+  }
+
+  public handlePaymentFormSubmit() {
+    this.dialogRef.close();
   }
 
   openSnackBar(message: string) {
@@ -143,79 +131,4 @@ export class OrderCheckoutComponent {
     return total;
   }
 
-  private readonly ordersApi = inject(OrdersApi);
-
-  @ViewChild(StripePaymentElementComponent)
-  paymentElement!: StripePaymentElementComponent;
-
-  stripe = injectStripe();
-
-  private readonly fb = inject(FormBuilder);
-
-  paying = signal(false);
-
-  paymentElementForm = this.fb.group({
-    // name: ['Luiz', [Validators.required]],
-    // email: ['luizgustavooumbelino@gmail.com', [Validators.email]],
-    // address: [''],
-    // zipcode: [''],
-    // city: [''],
-  });
-
-  elementsOptions: StripeElementsOptions = {
-    locale: 'en',
-    appearance: {
-      theme: 'flat',
-    },
-  };
-
-  paymentElementOptions: StripePaymentElementOptions = {
-    layout: {
-      type: 'tabs',
-      defaultCollapsed: false,
-      radios: false,
-      spacedAccordionItems: false,
-    },
-  };
-
-  pay() {
-    if (this.paying() || this.paymentElementForm.invalid) return;
-    this.paying.set(true);
-
-    // const { name, email, address, zipcode, city } =
-    // this.paymentElementForm.getRawValue();
-
-    this.stripe
-      .confirmPayment({
-        elements: this.paymentElement.elements,
-        confirmParams: {
-          // payment_method_data: {
-          //   billing_details: {
-          //     name: name as string,
-          //     email: email as string,
-          //     address: {
-          //       line1: address as string,
-          //       postal_code: zipcode as string,
-          //       city: city as string,
-          //     },
-          //   },
-          // },
-        },
-        redirect: 'if_required',
-      })
-      .subscribe((result) => {
-        this.paying.set(false);
-        if (result.error) {
-          // Show error to your customer (e.g., insufficient funds)
-          alert('Error: ' + result.error.message);
-        } else {
-          // The payment has been processed!
-          if (result.paymentIntent.status === 'succeeded') {
-            this._store.dispatch(clear());
-            this.openSnackBar('Dessert order completed successfully!');
-            this.dialogRef.close();
-          }
-        }
-      });
-  }
 }

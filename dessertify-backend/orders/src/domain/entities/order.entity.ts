@@ -23,6 +23,7 @@ export interface IOrderProps {
   items: Optional<Omit<IRawOrderItem, 'orderId'>, 'id'>[];
   deliveryAddress: IDeliveryAddressProps;
   paid: boolean;
+  clientSecret?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +37,7 @@ export interface IRawOrder {
   status: OrderStatus;
   paid: boolean;
   deliveryAddress: IDeliveryAddressProps;
+  clientSecret?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,6 +51,7 @@ export class OrderEntity extends Entity {
   private _createdAt: Date;
   private _updatedAt: Date;
   private _deliveryAddress: DeliveryAddress;
+  private _clientSecret?: string | null;
 
   constructor(props: IOrderProps, id: string) {
     if (props.items.length === 0) {
@@ -65,6 +68,7 @@ export class OrderEntity extends Entity {
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
     this._paid = props.paid;
+    this.clientSecret = props.clientSecret;
     this._deliveryAddress = new DeliveryAddress(props.deliveryAddress);
   }
 
@@ -92,6 +96,7 @@ export class OrderEntity extends Entity {
       total: this.total,
       status: this.status,
       paid: this.paid,
+      clientSecret: this.clientSecret,
       deliveryAddress: this.deliveryAddress.raw(),
     };
   }
@@ -129,6 +134,10 @@ export class OrderEntity extends Entity {
     return this._status;
   }
 
+  get clientSecret(): string | null | undefined {
+    return this._clientSecret;
+  }
+
   get createdAt(): Date {
     return this._createdAt;
   }
@@ -163,6 +172,10 @@ export class OrderEntity extends Entity {
 
   set customerId(customerId: string) {
     this._customerId = customerId;
+  }
+
+  set clientSecret(clientSecret: string | null | undefined) {
+    this._clientSecret = clientSecret;
   }
 
   set createdAt(createdAt: Date) {
