@@ -1,41 +1,27 @@
 <form [formGroup]="form" class="flex flex-col h-full gap-2" (submit)="continue()">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="Country..." formControlName="country" />
-
-    @if(form.controls.country.errors?.['required']) {
-    <mat-error>Country is required</mat-error>
-    }
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="State..." formControlName="state" />
-
-    @if(form.controls.state.errors?.['required']) {
-    <mat-error>State is required</mat-error>
-    }
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="city" formControlName="city" />
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: RN" formControlName="city" />
 
     @if(form.controls.city.errors?.['required']) {
     <mat-error>City is required</mat-error>
     }
   </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="Street..." formControlName="street" />
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: Rua Sao Paulo" formControlName="street" />
 
     @if(form.controls.street.errors?.['required']) {
     <mat-error>Street is required</mat-error>
     }
   </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="Number" formControlName="number" type="number" />
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: 232" formControlName="number" type="number" />
 
     @if(form.controls.number.errors?.['required']) {
     <mat-error>Number is required</mat-error>
     }
   </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <input matInput placeholder="ZIP Code" formControlName="zipcode" pattern="^(\d{5})(-?\d{3})$" minlength="8"
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: 59149275" formControlName="zipcode" pattern="^(\d{5})(-?\d{3})$" minlength="8"
       maxlength="9" />
 
     @if(form.controls.zipcode.errors?.['required']) {
@@ -44,6 +30,21 @@
     @if(form.controls.zipcode.errors?.['pattern']) {
     <mat-error>ZIP Code is invalid. The field should follow the example: 59149356</mat-error>
     }
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: Emaús" formControlName="neighborhood" />
+
+    @if(form.controls.street.errors?.['neighborhood']) {
+    <mat-error>Neighbourhood is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: House, apartment, Room X..." formControlName="complement" />
+
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <input matInput placeholder="Ex.: In front of the..." formControlName="reference" />
   </mat-form-field>
 
 

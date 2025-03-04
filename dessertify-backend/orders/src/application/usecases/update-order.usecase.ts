@@ -18,12 +18,13 @@ export type TUpdateOrderUseCaseParams = {
     quantity: number;
   }[];
   deliveryAddress?: {
+    zipcode: string;
+    city: string;
     street: string;
     number: number;
-    city: string;
-    state: string;
-    country: string;
-    zipcode: string;
+    neighborhood: string;
+    complement: string;
+    reference: string;
   };
 };
 

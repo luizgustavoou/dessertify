@@ -64,12 +64,13 @@ export class PrismaOrdersRepository implements OrdersRepository {
         clientSecret: params.clientSecret,
         deliveryAddress: {
           update: {
-            country: params.deliveryAddress.country,
-            state: params.deliveryAddress.state,
+            zipcode: params.deliveryAddress.zipcode,
             city: params.deliveryAddress.city,
             street: params.deliveryAddress.street,
-            zipcode: params.deliveryAddress.zipcode,
             number: params.deliveryAddress.number,
+            neighborhood: params.deliveryAddress.neighborhood,
+            complement: params.deliveryAddress.complement,
+            reference: params.deliveryAddress.reference,
           },
         },
         items: {
@@ -90,12 +91,13 @@ export class PrismaOrdersRepository implements OrdersRepository {
         clientSecret: params.clientSecret,
         deliveryAddress: {
           create: {
-            country: params.deliveryAddress.country,
-            state: params.deliveryAddress.state,
+            zipcode: params.deliveryAddress.zipcode,
             city: params.deliveryAddress.city,
             street: params.deliveryAddress.street,
-            zipcode: params.deliveryAddress.zipcode,
             number: params.deliveryAddress.number,
+            neighborhood: params.deliveryAddress.neighborhood,
+            complement: params.deliveryAddress.complement,
+            reference: params.deliveryAddress.reference,
           },
         },
         items: {

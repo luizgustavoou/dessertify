@@ -31,17 +31,17 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { BrazilApi } from '@/infra/http/brazil/brazil.api';
 @Component({
-    selector: 'app-address-form',
-    imports: [
-        CommonModule,
-        MaterialModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        CommonModule,
-        MaterialModule,
-    ],
-    templateUrl: './addres-form.component.html',
-    styleUrl: './addres-form.component.scss'
+  selector: 'app-address-form',
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    CommonModule,
+    MaterialModule,
+  ],
+  templateUrl: './addres-form.component.html',
+  styleUrl: './addres-form.component.scss',
 })
 export class AddressFormComponent {
   @Output()
@@ -64,12 +64,13 @@ export class AddressFormComponent {
   public dialog = inject(MatDialog);
 
   form = this.fb.group({
-    country: ['', Validators.required],
-    state: ['', Validators.required],
+    zipcode: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
     city: ['', Validators.required],
     street: ['', Validators.required],
     number: ['', Validators.required],
-    zipcode: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
+    neighborhood: ['', Validators.required],
+    complement: [''],
+    reference: [''],
   });
 
   openSnackBar(message: string) {
@@ -112,10 +113,10 @@ export class AddressFormComponent {
           return;
         }
         this.form.patchValue({
-          country: 'Brasil',
-          state: value.uf,
           city: value.localidade,
           street: value.logradouro,
+          neighborhood: value.bairro,
+          complement: value.complemento,
         });
       });
   }

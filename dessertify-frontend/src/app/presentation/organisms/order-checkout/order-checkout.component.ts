@@ -49,7 +49,6 @@ export class OrderCheckoutComponent {
   private _store = inject(Store<AppState>);
   private readonly ordersApi = inject(OrdersApi);
 
-
   @ViewChild('templateSnackBar') template: TemplateRef<unknown> | undefined;
 
   cartProducts$: Observable<CartProduct[]> =
@@ -79,12 +78,13 @@ export class OrderCheckoutComponent {
           },
         ],
         deliveryAddress: {
-          country: formValue.country,
-          state: formValue.state,
+          zipcode: formValue.zipcode,
           city: formValue.city,
           street: formValue.street,
           number: formValue.number,
-          zipcode: formValue.zipcode,
+          neighborhood: formValue.neighborhood,
+          complement: formValue.complement,
+          reference: formValue.reference,
         },
       })
       .subscribe({
@@ -130,5 +130,4 @@ export class OrderCheckoutComponent {
     });
     return total;
   }
-
 }

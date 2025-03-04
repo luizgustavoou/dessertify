@@ -1,29 +1,32 @@
 export interface IDeliveryAddressProps {
+  zipcode: string;
+  city: string;
   street: string;
   number: number;
-  city: string;
-  state: string;
-  country: string;
-  zipcode: string;
+  neighborhood: string;
+  complement: string;
+  reference: string;
 }
 
 export interface IRawDeliveryAddress extends IDeliveryAddressProps {}
 
 export class DeliveryAddress {
+  private _zipcode: string;
+  private _city: string;
   private _street: string;
   private _number: number;
-  private _city: string;
-  private _state: string;
-  private _country: string;
-  private _zipcode: string;
+  private _neighborhood: string;
+  private _complement: string;
+  private _reference: string;
 
   constructor(props: IDeliveryAddressProps) {
+    this._zipcode = props.zipcode;
+    this._city = props.city;
     this._street = props.street;
     this._number = props.number;
-    this._city = props.city;
-    this._state = props.state;
-    this._country = props.country;
-    this._zipcode = props.zipcode;
+    this._neighborhood = props.neighborhood;
+    this._complement = props.complement;
+    this._reference = props.reference;
   }
 
   get street(): string {
@@ -38,16 +41,20 @@ export class DeliveryAddress {
     return this._city;
   }
 
-  get state(): string {
-    return this._state;
-  }
-
-  get country(): string {
-    return this._country;
-  }
-
   get zipcode(): string {
     return this._zipcode;
+  }
+
+  get neighborhood(): string {
+    return this._neighborhood;
+  }
+
+  get complement(): string {
+    return this._complement;
+  }
+
+  get reference(): string {
+    return this._reference;
   }
 
   public raw(): IDeliveryAddressProps {
@@ -55,9 +62,10 @@ export class DeliveryAddress {
       street: this.street,
       number: this.number,
       city: this.city,
-      state: this.state,
-      country: this.country,
       zipcode: this.zipcode,
+      neighborhood: this.neighborhood,
+      complement: this.complement,
+      reference: this.reference,
     };
   }
 }

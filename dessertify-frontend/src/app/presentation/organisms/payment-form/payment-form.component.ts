@@ -69,8 +69,6 @@ export class PaymentFormComponent {
   public dialog = inject(MatDialog);
 
   ngOnChanges() {
-    console.log('mudou o client secret', this.clientSecret);
-
     if (this.clientSecret) {
       this.elementsOptions.clientSecret = this.clientSecret;
     }

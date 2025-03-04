@@ -22,16 +22,17 @@ model Order {
 }
 
 model DeliveryAddress {
-  id        String   @id @default(uuid())
-  order     Order?
-  street    String
-  country   String
-  state     String
-  city      String
-  zipcode   String
-  number    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(uuid())
+  order        Order?
+  zipcode      String
+  city         String
+  neighborhood String
+  street       String
+  number       Int
+  complement   String?
+  reference    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model OrderItem {

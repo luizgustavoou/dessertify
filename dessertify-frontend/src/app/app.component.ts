@@ -35,7 +35,6 @@ export class AppComponent {
   }
 
   onToolbarMenuToggle() {
-    console.log('Toolbar menu toggle', this.isMenuOpen);
     this.isMenuOpen = !this.isMenuOpen;
   }
 

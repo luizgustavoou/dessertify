@@ -23,12 +23,13 @@ export type TCreateOrderUseCaseParams = {
     quantity: number;
   }[];
   deliveryAddress: {
+    zipcode: string;
+    city: string;
     street: string;
     number: number;
-    city: string;
-    state: string;
-    country: string;
-    zipcode: string;
+    neighborhood: string;
+    complement: string;
+    reference: string;
   };
 };
 
@@ -90,8 +91,6 @@ export class CreateOrderUseCaseImpl implements CreateOrderUseCase {
       });
 
       order.clientSecret = res.client_secret;
-      console.log('res ', res);
-      console.log('order ', order);
 
       const savedOrder = await this.ordersRepository.saveOrder(order);
 
