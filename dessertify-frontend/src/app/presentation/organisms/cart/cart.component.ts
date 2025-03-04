@@ -14,7 +14,7 @@ import {
   selectCartTotal,
 } from '@/application/state/selectors/cart.selector';
 import { clearProduct } from '@/application/state/actions/cart.action';
-
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 @Component({
   standalone: true,
   selector: 'app-cart',
@@ -25,24 +25,22 @@ import { clearProduct } from '@/application/state/actions/cart.action';
 export class CartComponent {
   cartProducts$: Observable<CartProduct[]>;
   cartProductsLength$: Observable<number>;
+  dialog = inject(MatDialog);
+  breakpointObserver = inject(BreakpointObserver);
 
   constructor(private store: Store<AppState>) {
     this.cartProducts$ = this.store.select(selectCartProducts);
     this.cartProductsLength$ = this.store.select(selectCartTotal);
   }
 
-  public dialog = inject(MatDialog);
-
   async openDialog() {
-    // const products = await firstValueFrom(this.cartProducts$);
+    const isMobile = this.breakpointObserver.isMatched(Breakpoints.Handset);
 
     this.dialog.open(OrderCheckoutComponent, {
-      // data: {
-      //   products,
-      // },
       width: '600px',
-      maxWidth: '100vw',
+      maxWidth: isMobile ? '100vw' : '80vw',
       height: '600px',
+      position: isMobile ? { bottom: '0%' } : undefined,
     });
   }
 

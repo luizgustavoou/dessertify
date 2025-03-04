@@ -7,7 +7,7 @@
 <ng-content *ngIf="products$  | async as request; ">
 
   <ng-content *ngIf="!request.loading; else loadingState">
-    <ul class="flex flex-wrap gap-7">
+    <ul class="flex flex-wrap gap-7 justify-center lg:justify-normal">
       <li *ngFor="let product of request.data">
         <app-cart-item [product]="product" [cartProduct]="productInCart(product.id) | async"
           (addProduct)="handleAddProduct($event, product)" (removeProduct)="handleRemoveProduct($event, product)">
