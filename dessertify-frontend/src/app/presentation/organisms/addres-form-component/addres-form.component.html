@@ -1,4 +1,16 @@
 <form [formGroup]="form" class="flex flex-col h-full gap-2" (submit)="continue()">
+  <header class="flex items-center space-x-2 font-bold text-2xl text-[var(--mat-sys-on-surface)]">
+    <h2>
+      Delivery address
+
+    </h2>
+
+    <mat-icon>
+      motorcycle
+    </mat-icon>
+  </header>
+
+
   <mat-form-field appearance="fill">
     <input matInput placeholder="Ex.: RN" formControlName="city" />
 
