@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Inject,
   inject,
+  Input,
   Output,
   TemplateRef,
   ViewChild,
@@ -26,12 +27,20 @@ import { AppState } from '@/application/state/app.state';
 import { selectCartProducts } from '@/application/state/selectors/cart.selector';
 
 import { PizzaPartyAnnotatedComponent } from '@/presentation/molecules/pizza-party-annotated/pizza-party-annotated.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { BrazilApi } from '@/infra/http/brazil/brazil.api';
+
+
 @Component({
-  selector: 'app-address-form',
+  selector: 'app-confirm-order',
   imports: [
     CommonModule,
     MaterialModule,
@@ -40,10 +49,15 @@ import { BrazilApi } from '@/infra/http/brazil/brazil.api';
     CommonModule,
     MaterialModule,
   ],
-  templateUrl: './addres-form.component.html',
-  styleUrl: './addres-form.component.scss',
+  templateUrl: './confirm-order.component.html',
+  styleUrl: './confirm-order.component.scss',
 })
-export class AddressFormComponent {
+export class ConfirmOrderComponent {
+  @Input({
+    required: true,
+  })
+  form!: FormGroup;
+
   @Output()
   public onContinue = new EventEmitter<any>();
 
@@ -59,19 +73,9 @@ export class AddressFormComponent {
     this._store.select(selectCartProducts);
 
   // public data: Order = inject(MAT_DIALOG_DATA);
-  public dialogRef = inject(MatDialogRef<AddressFormComponent>);
+  public dialogRef = inject(MatDialogRef<ConfirmOrderComponent>);
 
   public dialog = inject(MatDialog);
-
-  form = this.fb.group({
-    zipcode: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
-    city: ['', Validators.required],
-    street: ['', Validators.required],
-    number: ['', Validators.required],
-    neighborhood: ['', Validators.required],
-    complement: [''],
-    reference: [''],
-  });
 
   openSnackBar(message: string) {
     // this._snackBar.openFromComponent(PizzaPartyAnnotatedComponent, {
@@ -93,7 +97,7 @@ export class AddressFormComponent {
   }
 
   ngAfterViewInit() {
-    this.form.controls.zipcode.valueChanges
+    this.form.controls['zipcode'].valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),

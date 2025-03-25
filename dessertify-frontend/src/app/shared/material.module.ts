@@ -21,7 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-
+import { MatStepperModule } from '@angular/material/stepper';
 @NgModule({
   imports: [
     MatDialogActions,
@@ -51,6 +51,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatListModule,
     MatCardModule,
     MatChipsModule,
+    MatStepperModule,
   ],
 })
 export class MaterialModule {}

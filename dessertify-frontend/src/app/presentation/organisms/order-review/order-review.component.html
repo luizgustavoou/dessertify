@@ -1,16 +1,12 @@
 <section class="h-full flex flex-col">
   <header class="mb-3">
-    <mat-icon aria-hidden="false" aria-label="Review order" fontIcon="playlist_add_check"
-      class="text-green-500 scale-[1.75] mb-7"></mat-icon>
-
     <h2 class="font-bold text-2xl text-[var(--mat-sys-on-surface)]">Review Your Order Before Delivery</h2>
     <p class="text-sm text-[var(--mat-sys-on-surface)] opacity-70">
       Please check your order details before proceeding to the delivery information.
     </p>
   </header>
 
-  <mat-dialog-content class="flex-1 p-8 space-y-4">
-    <ng-content *ngFor="let product of (cartProducts$ | async)">
+    <ng-container *ngFor="let product of (cartProducts$ | async)">
       <div class="flex items-center gap-3">
         <img [src]="product.image.thumbnail" [alt]="product.name" class="max-w-14 w-full rounded-lg" />
 
@@ -27,15 +23,20 @@
       </div>
 
       <app-separator />
-    </ng-content>
+    </ng-container>
 
     <section class="flex justify-between items-center">
       <p>Total</p>
       <p class="text-xl font-bold text-[var(--mat-sys-on-surface)]">{{ getTotal() | currency }}</p>
     </section>
-  </mat-dialog-content>
 
-  <button mat-flat-button class="w-full mb-2 mt-auto" (click)="continue()">
-    <span>Continue</span>
-  </button>
+    <div class="mt-auto">
+      <ng-content class="mt-auto" select="[actions]">
+
+      </ng-content>
+
+    </div>
+
+
+
 </section>

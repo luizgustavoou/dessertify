@@ -16,15 +16,22 @@ import { AppState } from '@/application/state/app.state';
 import { selectCartProducts } from '@/application/state/selectors/cart.selector';
 
 import { PizzaPartyAnnotatedComponent } from '@/presentation/molecules/pizza-party-annotated/pizza-party-annotated.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { OrdersApi } from '@/infra/http/orders/orders.api';
 import { OrderReviewComponent } from '../order-review/order-review.component';
-import { AddressFormComponent } from '../addres-form-component/addres-form.component';
+import { ConfirmOrderComponent } from '../confirm-order-component/confirm-order.component';
 import { PaymentFormComponent } from '../payment-form/payment-form.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-order-checkout',
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false },
+    },
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -33,17 +40,37 @@ import { PaymentFormComponent } from '../payment-form/payment-form.component';
     CommonModule,
     MaterialModule,
     OrderReviewComponent,
-    AddressFormComponent,
     PaymentFormComponent,
+    ConfirmOrderComponent,
   ],
   templateUrl: './order-checkout.component.html',
   styleUrl: './order-checkout.component.scss',
 })
 export class OrderCheckoutComponent {
+  stage = 0;
+
+  private _formBuilder = inject(FormBuilder);
+
+  addressForm = this._formBuilder.group({
+    zipcode: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
+    city: ['', Validators.required],
+    street: ['', Validators.required],
+    number: ['', Validators.required],
+    neighborhood: ['', Validators.required],
+    complement: [''],
+    reference: [''],
+  });
+
+  paymentElementForm = this._formBuilder.group({
+    // name: ['Luiz', [Validators.required]],
+    // email: ['luizgustavooumbelino@gmail.com', [Validators.email]],
+    // address: [''],
+    // zipcode: [''],
+    // city: [''],
+  });
+
   clientSecret: string | null = null;
   loadingContinue = signal(false);
-
-  stage = 0;
 
   private _snackBar = inject(MatSnackBar);
   private _store = inject(Store<AppState>);
@@ -59,12 +86,29 @@ export class OrderCheckoutComponent {
 
   public dialog = inject(MatDialog);
 
-  public handleOrderReview() {
+  next() {
+    if (this.stage === 2) return;
+
     this.stage++;
   }
 
-  public handleAddressFormSubmit(formValue: any) {
+  back() {
+    if (this.stage === 0) return;
+
+    this.stage--;
+  }
+
+  public handleOrderReview() {
+    this.next();
+  }
+
+  public handleConfirmOrderSubmit() {
     if (this.loadingContinue()) return;
+
+    if (this.addressForm.invalid) {
+      this.openSnackBar('Please fill all fields');
+      return;
+    }
 
     this.loadingContinue.set(true);
 
@@ -78,13 +122,13 @@ export class OrderCheckoutComponent {
           },
         ],
         deliveryAddress: {
-          zipcode: formValue.zipcode,
-          city: formValue.city,
-          street: formValue.street,
-          number: formValue.number,
-          neighborhood: formValue.neighborhood,
-          complement: formValue.complement,
-          reference: formValue.reference,
+          zipcode: this.addressForm.controls.zipcode.value as any,
+          city: this.addressForm.controls.city.value as any,
+          street: this.addressForm.controls.street.value as any,
+          number: this.addressForm.controls.number.value as any,
+          neighborhood: this.addressForm.controls.neighborhood.value as any,
+          complement: this.addressForm.controls.complement.value as any,
+          reference: this.addressForm.controls.reference.value as any,
         },
       })
       .subscribe({
@@ -93,6 +137,7 @@ export class OrderCheckoutComponent {
           this.stage = 2;
         },
         error: (error) => {
+          console.log('error ', error);
           const message =
             error.error.message instanceof Array
               ? error.error.message[0]

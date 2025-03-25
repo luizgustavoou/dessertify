@@ -1,34 +1,26 @@
 <form [formGroup]="form" class="flex flex-col h-full gap-2" (submit)="continue()">
-  <header class="flex items-center space-x-2 font-bold text-2xl text-[var(--mat-sys-on-surface)]">
-    <h2>
-      Delivery address
-
-    </h2>
-
-    <mat-icon>
-      motorcycle
-    </mat-icon>
-  </header>
-
+  <h2 class="font-bold text-2xl text-[var(--mat-sys-on-surface)]">
+    Confirm the order
+  </h2>
 
   <mat-form-field appearance="fill">
     <input matInput placeholder="Ex.: RN" formControlName="city" />
 
-    @if(form.controls.city.errors?.['required']) {
+    @if(form.controls['city'].errors?.['required']) {
     <mat-error>City is required</mat-error>
     }
   </mat-form-field>
   <mat-form-field appearance="fill">
     <input matInput placeholder="Ex.: Rua Sao Paulo" formControlName="street" />
 
-    @if(form.controls.street.errors?.['required']) {
+    @if(form.controls['street'].errors?.['required']) {
     <mat-error>Street is required</mat-error>
     }
   </mat-form-field>
   <mat-form-field appearance="fill">
     <input matInput placeholder="Ex.: 232" formControlName="number" type="number" />
 
-    @if(form.controls.number.errors?.['required']) {
+    @if(form.controls['number'].errors?.['required']) {
     <mat-error>Number is required</mat-error>
     }
   </mat-form-field>
@@ -36,10 +28,10 @@
     <input matInput placeholder="Ex.: 59149275" formControlName="zipcode" pattern="^(\d{5})(-?\d{3})$" minlength="8"
       maxlength="9" />
 
-    @if(form.controls.zipcode.errors?.['required']) {
+    @if(form.controls['zipcode'].errors?.['required']) {
     <mat-error>ZIP Code is required</mat-error>
     }
-    @if(form.controls.zipcode.errors?.['pattern']) {
+    @if(form.controls['zipcode'].errors?.['pattern']) {
     <mat-error>ZIP Code is invalid. The field should follow the example: 59149356</mat-error>
     }
   </mat-form-field>
@@ -47,7 +39,7 @@
   <mat-form-field appearance="fill">
     <input matInput placeholder="Ex.: Emaús" formControlName="neighborhood" />
 
-    @if(form.controls.street.errors?.['neighborhood']) {
+    @if(form.controls['street'].errors?.['neighborhood']) {
     <mat-error>Neighbourhood is required</mat-error>
     }
   </mat-form-field>
@@ -60,11 +52,12 @@
   </mat-form-field>
 
 
-  <button mat-flat-button class="w-full mt-auto" type="submit">
-    <div class="flex">
-      Continue
-    </div>
-  </button>
+  <div class="mt-auto">
+    <ng-content class="mt-auto" select="[actions]">
+
+    </ng-content>
+
+  </div>
 </form>
 
 

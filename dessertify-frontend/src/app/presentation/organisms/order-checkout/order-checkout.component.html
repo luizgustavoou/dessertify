@@ -1,21 +1,61 @@
-<div class="p-8 h-full flex flex-col">
-  <app-order-review class="h-full" *ngIf="stage == 0" (onNext)="handleOrderReview()"></app-order-review>
+<mat-dialog-content class="flex-1 p-8 space-y-4">
 
-  <app-address-form *ngIf="stage == 1" (onContinue)="handleAddressFormSubmit($event)"></app-address-form>
+  <mat-stepper #stepper [linear]="true" [selectedIndex]="stage" (selectionChange)="stage = $event.selectedIndex">
+    <mat-step label="Review" state="review">
+      <app-order-review class="h-full">
+        <ng-content actions>
+          <div class="flex">
+            <button mat-flat-button class="ms-auto mb-2 mt-auto" (click)="handleOrderReview()">
+              <span>Continue</span>
+            </button>
 
-  <app-payment-form class="h-full" *ngIf="stage == 2" [clientSecret]="clientSecret"
-    (onContinue)="handlePaymentFormSubmit()"></app-payment-form>
-</div>
+          </div>
+        </ng-content>
+      </app-order-review>
+    </mat-step>
 
+    <mat-step label="Confirm" state="confirm" [stepControl]="addressForm">
+      <app-confirm-order [form]="addressForm">
+        <ng-content actions>
+          <div class="flex">
+            <button mat-flat-button class="mb-2 mt-auto" (click)="back()" type="button">
+              <span>Back</span>
+            </button>
 
+            <button mat-flat-button class="ms-auto mb-2 mt-auto" (click)="handleConfirmOrderSubmit()">
+              <span>Confirm order</span>
+            </button>
 
+          </div>
+        </ng-content>
+      </app-confirm-order>
+    </mat-step>
 
-<!-- <ng-template let-snackBarRef="snackBarRef" #templateSnackBar>
-  <span class="example-pizza-party">
-    Pizza party!!!
-  </span>
-  <span>
-    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
-  </span>
+    <mat-step label="Pay" state="pay" [stepControl]="paymentElementForm">
+      <app-payment-form class="h-full" [clientSecret]="clientSecret"
+        (onContinue)="handlePaymentFormSubmit()"></app-payment-form>
+    </mat-step>
 
-</ng-template> -->
+    <!-- Ícones personalizados -->
+    <ng-template matStepperIcon="review">
+      <mat-icon>playlist_add_check</mat-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="confirm">
+      <mat-icon>call_end</mat-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="pay">
+      <mat-icon>forum</mat-icon>
+    </ng-template>
+
+    <!-- Ícone de etapa concluída customizado -->
+    <ng-template matStepperIcon="done">
+      <mat-icon class="text-green-500">check_circle</mat-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="create">
+      <mat-icon class="text-blue-500">check_circle</mat-icon>
+    </ng-template>
+  </mat-stepper>
+</mat-dialog-content>
