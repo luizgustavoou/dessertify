@@ -5,8 +5,6 @@
 
 ## Web Layout  
 ![image](https://github.com/user-attachments/assets/11a82905-991d-418f-a75d-cf2b5a9bed5b)
-![image](https://github.com/user-attachments/assets/3ae41950-2986-4d3f-979e-fb877f26ea29)
-
 ![image](https://github.com/user-attachments/assets/fd49f6a8-fd5a-49d3-9da1-66fac7e412bf)
 
 ![image](https://github.com/user-attachments/assets/89cdad99-0e92-4c86-9318-5e215680a2e8)
