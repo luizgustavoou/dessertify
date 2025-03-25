@@ -4,6 +4,8 @@
 **Dessertify** is an platform where users can browse and place orders for their favorite desserts. Designed to provide a seamless experience for dessert lovers, Dessertify combines an intuitive interface with robust backend functionality.  
 
 ## Web Layout  
+![image](https://github.com/user-attachments/assets/da50611e-1908-40ac-9a47-fc86dbbc39fc)
+
 ![image](https://github.com/user-attachments/assets/11a82905-991d-418f-a75d-cf2b5a9bed5b)
 ![image](https://github.com/user-attachments/assets/fd49f6a8-fd5a-49d3-9da1-66fac7e412bf)
 
